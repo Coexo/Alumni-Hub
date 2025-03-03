@@ -2,7 +2,7 @@
 
 ### Install dependencies
 ```sh
-pnpm add @mui/material @mui/icons-material @emotion/styled @emotion/react
+pnpm add @mui/material @mui/icons-material @emotion/styled @emotion/react react-router-dom
 ```
 
 ### Then
