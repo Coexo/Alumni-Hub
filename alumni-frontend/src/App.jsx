@@ -5,7 +5,8 @@ import './App.css'
 import SignUp from './components/signup component/SignUp';
 import SignIn from './components/signup component/SignIn';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
+import Alumni from './components/alumni component/Alumni';
+import Profile from './components/profile component/Profile';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,10 +15,11 @@ function App() {
     <>
     <Router>
       <Routes>
+        <Route path="/" element={<Profile/>} />
         {/* Default route is signup */}
-        <Route path="/" element={<Navigate to="/signup" />} />
+        {/* <Route path="/" element={<Navigate to="/signup" />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signin" element={<SignIn />} /> */}
       </Routes>
     </Router>
       {/* <div>
