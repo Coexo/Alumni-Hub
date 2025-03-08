@@ -30,4 +30,18 @@ router.route("/deletejob/:id").post(
     controller.verifyToken, controller.deleteJob
 )
 
+router.route("/create-event").post(
+    controller.verifyToken, controller.createEvent
+)
+
+
+
+router.route("/get-events").get(
+    controller.getAllEvents
+)
+
+router.route("/profile/:id").get(
+    controller.verifyToken, controller.getUserData
+)
+
 export default router;
