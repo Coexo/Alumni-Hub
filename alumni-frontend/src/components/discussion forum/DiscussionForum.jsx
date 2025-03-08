@@ -152,10 +152,11 @@ const DiscussionForm = (props) => {
   };
 
   const navLinks = [
-    { name: 'Alumni Directory', path: '/home' },
-    { name: 'Jobs', path: '/internships' },
-    { name: 'Events', path: '/events' },
-    { name: 'Forums', path: '/forum' }
+    { name: "Alumni Directory", path: "/home" },
+    { name: "Chat", path: "/chat" },
+    { name: "Jobs", path: "/internships" },
+    { name: "Events", path: "/events" },
+    { name: "Forums", path: "/forum" },
   ];
 
 

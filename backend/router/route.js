@@ -30,4 +30,7 @@ router.route("/deletejob/:id").post(
     controller.verifyToken, controller.deleteJob
 )
 
+router.route("/get-jobs-list").get(controller.jobsList);
+
+
 export default router;

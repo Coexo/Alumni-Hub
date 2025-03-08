@@ -12,6 +12,7 @@ import DiscussionForm from './components/discussion forum/DiscussionForum';
 import HomeComp from './components/job component/HomeComp';
 import Events from './components/event component/Events';
 import { getCookie } from 'cookies-next/client';
+import Chat from './components/main component/Chat';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -37,6 +38,7 @@ function App() {
           <Route path="/forum" element={<DiscussionForm />} />
           <Route path="/internships" element={<HomeComp />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/chats" element={<Chat />} />
         </Routes>
       </Router>
     </>

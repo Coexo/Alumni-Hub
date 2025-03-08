@@ -281,3 +281,15 @@ export const deleteJob = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
+export const jobsList = async (req, res) => {
+    try {
+        const job = await Job.find();
+        if (!job) return res.status(404).json({ message: "Job not found" });
+        res.status(200).json({ data:job });
+    } catch (error) {
+                res
+                  .status(500)
+                  .json({ message: "Server error", error: error.message });
+    }
+}
