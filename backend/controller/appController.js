@@ -131,17 +131,17 @@ export async function login(req, res, next) {
 export const updateEducation = async (req, res) => {
     console.log("Req.user = ",req.user);
     try {
-        const userId = req.user.userId;
-        // const userId = ; // Get user ID from authenticated request
+        // const userId = req.user.userId;
+        const userId = "67cc5515bc70d9f07e4ea85c"; // Get user ID from authenticated request
         console.log("Req Body:", req.body);
         const education = req.body; // Extract education details from request
-        console.log(education);
+        console.log("edu: ", education);
 
         if (!education) {
             return res.status(400).json({ message: "Education details are required" });
         }
 
-        let educationData = req.body;
+        let educationData = req.body.education;
 
         // if (!Array.isArray(educationData)) {
         //     educationData = [educationData]; // ✅ Convert object to array if needed
