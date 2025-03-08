@@ -10,7 +10,7 @@ import Profile from './components/profile component/Profile';
 import Main from './components/main component/Main';
 import DiscussionForm from './components/discussion forum/DiscussionForum';
 import HomeComp from './components/job component/HomeComp';
-import Events from './components/event component/Events';
+import EventsPage from './components/event component/Events';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -28,7 +28,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/forum" element={<DiscussionForm/>} />
         <Route path="/internships" element={<HomeComp/>} />
-        <Route path="/events" element={<Events/>} />
+        <Route path="/events" element={<EventsPage/>} />
       </Routes>
     </Router>
       {/* <div>
