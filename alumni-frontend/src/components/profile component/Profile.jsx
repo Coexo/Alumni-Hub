@@ -5,7 +5,7 @@ import {
   Checkbox, FormControlLabel
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import AppTheme from '../signup component/shared-theme/AppTheme';
+import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 
 const states = [
   { value: 'alabama', label: 'Alabama' },
