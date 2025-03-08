@@ -15,7 +15,7 @@ function App() {
     <>
     <Router>
       <Routes>
-        <Route path="/" element={<Profile/>} />
+        <Route path="/" element={<Alumni/>} />
         {/* Default route is signup */}
         {/* <Route path="/" element={<Navigate to="/signup" />} />
         <Route path="/signup" element={<SignUp />} />
