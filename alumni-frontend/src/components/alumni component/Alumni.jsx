@@ -16,7 +16,9 @@ import {
   Divider,
   TextField,
   InputAdornment,
-  IconButton
+  IconButton,
+  AppBar,
+  Toolbar
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -24,7 +26,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AppTheme from '../signup component/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import { Link, useLocation } from 'react-router-dom';
 
 // Mock data for alumni
 const mockAlumni = [
@@ -125,10 +127,129 @@ const Alumni = (props) => {
     setPage(1); // Reset to first page when searching
   };
 
+  const navLinks = [
+    { name: 'Alumni Directory', path: '/home' },
+    { name: 'Jobs', path: '/internships' },
+    { name: 'Events', path: '/events' },
+    { name: 'Forums', path: '/forum' }
+  ];
+
   return (
     <AppTheme {...props}>
     <CssBaseline enableColorScheme />
+
+
+
+    <AppBar 
+          position="fixed" 
+          color="default" 
+          elevation={1} 
+          sx={{ 
+            backgroundColor: 'white',
+            width: '100%',
+            top: 0,
+            left: 0
+          }}
+        >
+          <Container maxWidth={false} sx={{ width: '100%' }}>
+            <Toolbar disableGutters>
+              {/* Logo */}
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ 
+                  flexGrow: 1, 
+                  fontWeight: 'bold', 
+                  color: '#1976d2',
+                  fontSize: '1.5rem',
+                  display: 'flex',
+                alignItems: 'center'
+                }}
+              >
+                AlumniHub
+              </Typography>
+              
+              {/* Navigation Links */}
+              {/* <Box sx={{ display: 'flex', mr: 4 }}>
+                {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
+                  <Button
+                    key={page}
+                    sx={{ 
+                      my: 2, 
+                      color: 'rgba(0, 0, 0, 0.87)', 
+                      display: 'block',
+                      mx: 1,
+                      textTransform: 'none',
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box> */}
+
+              <Box sx={{ display: 'flex', mr: 4 }}>
+            {navLinks.map((link) => (
+              <Button
+                key={link.name}
+                component={Link}
+                to={link.path}
+                sx={{ 
+                  my: 2, 
+                  color: location.pathname === link.path ? '#1976d2' : 'rgba(0, 0, 0, 0.87)', 
+                  display: 'block',
+                  mx: 1,
+                  textTransform: 'none',
+                  fontSize: '0.95rem',
+                  fontWeight: location.pathname === link.path ? 'bold' : 'normal',
+                  borderBottom: location.pathname === link.path ? '2px solid #1976d2' : 'none'
+                }}
+              >
+                {link.name}
+              </Button>
+            ))}
+          </Box>
+              
+              {/* Auth Buttons */}
+              <Box>
+                {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+                <Button 
+                  color="primary" 
+                  sx={{ 
+                    mr: 2, 
+                    textTransform: 'none',
+                    fontWeight: 500 
+                  }}
+                >
+                  Sign In
+                </Button>
+                </Link> */}
+                <Link to="/profile" style={{ textDecoration: 'none' }}>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  sx={{ 
+                    borderRadius: 1,
+                    textTransform: 'none',
+                    fontWeight: 500
+                  }}
+                >
+                  Profile
+                </Button>
+                </Link>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+
+
+        
+
+
     <Container maxWidth="lg" sx={{ py: 4 }}>
+
+    
+
       <Box sx={{ mb: 4 }}>
         {/* <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
           Alumni Directory
@@ -163,6 +284,7 @@ const Alumni = (props) => {
               sx={{ 
                 height: '100%', 
                 display: 'flex', 
+                width:"100%",
                 flexDirection: 'column',
                 transition: '0.3s',
                 '&:hover': {
@@ -234,7 +356,7 @@ const Alumni = (props) => {
                   fullWidth
                   startIcon={<VisibilityIcon />}
                 >
-                  View Details
+                  Details
                 </Button>
               </CardActions>
             </Card>
