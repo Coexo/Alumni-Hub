@@ -11,15 +11,23 @@ import Main from './components/main component/Main';
 import DiscussionForm from './components/discussion forum/DiscussionForum';
 import HomeComp from './components/job component/HomeComp';
 import EventsPage from './components/event component/Events';
+import { getCookie } from 'cookies-next/client';
 
 function App() {
   const [count, setCount] = useState(0)
+  const isRegistered = getCookie("isRegistered") ?? false;
+  console.log(isRegistered);
+  
 
   return (
     <>
     <Router>
       <Routes>
-        <Route path="/" element={<Main/>} />
+      {!isRegistered ? 
+          <Route path="/" element={<Main />} />
+          :
+          <Route path="/" element={<Alumni />} />
+        }
         {/* Default route is signup */}
         {/* <Route path="/" element={<Navigate to="/signup" />} /> */}
         <Route path="/signup" element={<SignUp />} />
@@ -32,7 +40,7 @@ function App() {
       </Routes>
     </Router>
     </>
-  )
+  );
 }
 
 export default App
