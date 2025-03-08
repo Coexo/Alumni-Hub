@@ -2,10 +2,20 @@ import * as React from 'react';
 import {
   Box, Button, Card as MuiCard, CardActions, CardContent, CardHeader,
   Divider, FormControl, FormLabel, MenuItem, Select, TextField, CssBaseline,
-  Checkbox, FormControlLabel
+  Checkbox, FormControlLabel, Grid, Avatar, Typography,
+  Container
 } from '@mui/material';
+
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LinkIcon from '@mui/icons-material/Link';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PeopleIcon from '@mui/icons-material/People';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../signup component/shared-theme/AppTheme';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import { Link } from 'react-router-dom';
+
 
 const states = [
   { value: 'alabama', label: 'Alabama' },
@@ -25,6 +35,14 @@ const roles = [
   { value: 'student', label: 'Student' },
 ];
 
+const navLinks = [
+  { name: 'Alumni Directory', path: '/home' },
+  { name: 'Jobs', path: '/internships' },
+  { name: 'Events', path: '/events' },
+  { name: 'Forums', path: '/forum' }
+];
+
+
 const Card = styled(MuiCard)(({ theme }) => ({
   alignSelf: 'center',
   width: '100%',
@@ -43,7 +61,193 @@ export default function Profile(props) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, gap: 3 }}>
+
+
+
+    <AppBar 
+          position="fixed" 
+          color="default" 
+          elevation={1} 
+          sx={{ 
+            backgroundColor: 'white',
+            width: '100%',
+            top: 0,
+            left: 0
+          }}
+        >
+          <Container maxWidth={false} sx={{ width: '100%' }}>
+            <Toolbar disableGutters>
+              {/* Logo */}
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ 
+                  flexGrow: 1, 
+                  fontWeight: 'bold', 
+                  color: '#1976d2',
+                  fontSize: '1.5rem',
+                  display: 'flex',
+                alignItems: 'center'
+                }}
+              >
+                AlumniHub
+              </Typography>
+              
+              {/* Navigation Links */}
+              {/* <Box sx={{ display: 'flex', mr: 4 }}>
+                {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
+                  <Button
+                    key={page}
+                    sx={{ 
+                      my: 2, 
+                      color: 'rgba(0, 0, 0, 0.87)', 
+                      display: 'block',
+                      mx: 1,
+                      textTransform: 'none',
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box> */}
+
+              <Box sx={{ display: 'flex', mr: 4 }}>
+            {navLinks.map((link) => (
+              <Button
+                key={link.name}
+                component={Link}
+                to={link.path}
+                sx={{ 
+                  my: 2, 
+                  color: location.pathname === link.path ? '#1976d2' : 'rgba(0, 0, 0, 0.87)', 
+                  display: 'block',
+                  mx: 1,
+                  textTransform: 'none',
+                  fontSize: '0.95rem',
+                  fontWeight: location.pathname === link.path ? 'bold' : 'normal',
+                  borderBottom: location.pathname === link.path ? '2px solid #1976d2' : 'none'
+                }}
+              >
+                {link.name}
+              </Button>
+            ))}
+          </Box>
+              
+              {/* Auth Buttons */}
+              <Box>
+                {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+                <Button 
+                  color="primary" 
+                  sx={{ 
+                    mr: 2, 
+                    textTransform: 'none',
+                    fontWeight: 500 
+                  }}
+                >
+                  Sign In
+                </Button>
+                </Link> */}
+                <Link to="/profile" style={{ textDecoration: 'none' }}>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  sx={{ 
+                    borderRadius: 1,
+                    textTransform: 'none',
+                    fontWeight: 500
+                  }}
+                >
+                  Profile
+                </Button>
+                </Link>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+
+      <Container maxWidth="lg" sx={{ mt: 10, mb: 5, display:'flex', flexDirection:"row"}}>
+      <Grid container spacing={12}>
+      <Grid item xs={12} md={4}>
+      <Box sx={{ top: '100px'}}>
+          <Card 
+            sx={{ 
+              mb: 3, 
+              backgroundColor: 'white', 
+              color: 'white',
+              borderRadius: 2 
+              , maxWidth: '400px'
+            }}
+          >
+            <CardContent>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2}}>
+                <Avatar
+                  sx={{ width: 100, height: 100, mb: 2 }}
+                  alt="Manthan Nanaware"
+                  src="/api/placeholder/260/260"
+                />
+                <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', color: 'black' }}>
+                  Manthan Nanaware
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" sx={{ color: 'black' }}>
+                  Manthan-23
+                </Typography>
+              </Box>
+              
+              <Typography variant="body1" sx={{ mb: 2, color: 'grey'}}>
+                Hello, I am currently a student pursuing a degree in computer engineering. I am an intermediate full-stack developer with experience in various technologies.
+              </Typography>
+              
+              <Button 
+                variant="contained" 
+                fullWidth 
+                sx={{ 
+                  mb: 3, 
+                 
+                }}
+              >
+                Edit profile
+              </Button>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <PeopleIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Typography variant="body2" sx={{ color: '#8b949e' }}>
+                  <Box component="span" sx={{ fontWeight: 'bold', color: '#c9d1d9' }}>3</Box> followers · <Box component="span" sx={{ fontWeight: 'bold', color: '#c9d1d9' }}>1</Box> following
+                </Typography>
+              </Box>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <LocationOnIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Typography variant="body2" sx={{ color: '#c9d1d9' }}>
+                  Mumbai
+                </Typography>
+              </Box>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <LinkIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Link href="https://codingeazy.blogspot.com/" target="_blank" rel="noopener" sx={{ color: '#58a6ff', textDecoration: 'none' }}>
+                  https://codingeazy.blogspot.com/
+                </Link>
+              </Box>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <LinkedInIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Link href="https://linkedin.com/in/manthan-nanaware" target="_blank" rel="noopener" sx={{ color: '#58a6ff', textDecoration: 'none' }}>
+                  in/manthan-nanaware
+                </Link>
+              </Box>
+              
+             
+              
+              {/* Add organization logos here if needed */}
+            </CardContent>
+          </Card>
+          </Box>
+        </Grid>
+
+
+      <Grid  item xs={12} md={8}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, gap: 3, paddingTop: 0}}>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -302,6 +506,9 @@ export default function Profile(props) {
           </Card>
         </form>
       </Box>
+      </Grid>
+      </Grid>
+      </Container>
     </AppTheme>
   );
 }
