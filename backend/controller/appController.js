@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import ENV from 'dotenv';
 import Job from "../models/Job.model.js";
+import EventModel from "../models/Event.model.js";
 
 export async function verifyUser(req, res, next) {
     try {
@@ -80,57 +81,61 @@ export async function login(req, res, next) {
     const { email, password } = req.body;
 
     try {
-        UserModel.findOne({ email })
-            .then(user => {
-                if (!user) {
-                    return res.status(404).send({ error: "Email Not Found" });
-                }
+        // ✅ Find user by email
+        const user = await UserModel.findOne({ email });
 
-                bcrypt.compare(password, user.password)
-                    .then(passwordCheck => {
-                        if (!passwordCheck) {
-                            return res.status(400).send({ error: "Password not match!!" });
-                        }
+        if (!user) {
+            return res.status(404).send({ error: "Email Not Found" });
+        }
 
-                        const token = jwt.sign({
-                            userId: user._id,
-                            email: user.email,
-                            userRole: user.education[0].role
-                        }, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
-                            if (err) {
-                                return res.status(500).send({ error: "Error generating token" });
-                            }
+        // ✅ Compare password using bcrypt
+        const passwordCheck = await bcrypt.compare(password, user.password);
+        
+        console.log("Entered Password:", password);
+        console.log("Stored Hashed Password:", user.password);
+        console.log("Password Match:", passwordCheck);
 
-                            res.cookie('token', token);
-                            res.status(200).json({
-                                message: "Login Successful",
-                                access_token: token,
-                                userId: user._id,
-                                userEmail: user.email,
-                                userRole: user.education[0].role
-                            });
-                        });
-                    })
-                    .catch(error => {
-                        return res.status(400).send({ error: "Password not match!!" });
-                    });
-            })
-            .catch(error => {
-                return res.status(404).send({ error: "Email Not Found" });
-            });
+        if (!passwordCheck) {
+            return res.status(400).send({ error: "Password not match!!" });
+        }
+
+        // ✅ Generate JWT Token
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                email: user.email,
+                userRole: user.education.length > 0 ? user.education[0].role : "Student" // Ensure role exists
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        res.cookie("token", token); // ✅ Set token in cookie
+
+        // ✅ Send successful response
+        return res.status(200).json({
+            message: "Login Successful",
+            access_token: token,
+            userId: user._id,
+            userEmail: user.email,
+            userRole: user.education.length > 0 ? user.education[0].role : "Student"
+        });
+
     } catch (error) {
-        return res.status(500).send({ error });
+        console.error("Login Error:", error);
+        return res.status(500).send({ error: "Internal Server Error" });
     }
 };
 
 
 export const updateEducation = async (req, res) => {
+    console.log("Req.user = ",req.user);
     try {
-        // const userId = req.user.id;
-        const userId = "67c5b5ae599ccb511c93abb7"; // Get user ID from authenticated request
-        console.log("Req Body:", req.body.education);
-        const education = req.body.education; // Extract education details from request
-        console.log(education);
+        // const userId = req.user.userId;
+        const userId = "67cc5515bc70d9f07e4ea85c"; // Get user ID from authenticated request
+        console.log("Req Body:", req.body);
+        const education = req.body; // Extract education details from request
+        console.log("edu: ", education);
 
         if (!education) {
             return res.status(400).json({ message: "Education details are required" });
@@ -138,9 +143,10 @@ export const updateEducation = async (req, res) => {
 
         let educationData = req.body.education;
 
-        if (!Array.isArray(educationData)) {
-            educationData = [educationData]; // ✅ Convert object to array if needed
-        }
+        // if (!Array.isArray(educationData)) {
+        //     educationData = [educationData]; // ✅ Convert object to array if needed
+        // }
+        console.log("Edu", educationData)
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
@@ -279,5 +285,63 @@ export const deleteJob = async (req, res) => {
         res.status(200).json({ message: "Job deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const createEvent = async (req, res) => {
+    try {
+        const { title, description, date, time, location, eventType, college, registrationLink, bannerImage } = req.body;
+
+        // Ensure required fields are provided
+        if (!title || !description || !date || !time || !location || !eventType || !college) {
+            return res.status(400).json({ message: "All required fields must be provided." });
+        }
+
+        // Create new event
+        const newEvent = new EventModel({
+            title,
+            description,
+            date,
+            time,
+            location,
+            eventType,
+            college,
+            registrationLink,
+            bannerImage
+        });
+
+        await newEvent.save();
+        res.status(201).json({ message: "Event created successfully", event: newEvent });
+
+    } catch (error) {
+        console.error("Error creating event:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+
+
+/////////////////////////////////////// GET REQUESTS /////////////////////////////////////////////
+
+export const getAllEvents = async (req, res) => {
+    try {
+        const events = await EventModel.find().sort({ date: 1 }); // ✅ Sort by event date
+        res.status(200).json(events);
+    } catch (error) {
+        console.error("Error fetching events:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const getUserData = async (req, res) => {
+    console.log(req.params.id);
+    try {
+        const user = await UserModel.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
     }
 };

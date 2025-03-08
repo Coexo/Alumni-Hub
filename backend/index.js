@@ -10,7 +10,7 @@ app.use(e.json());
 app.use(cookieParser());
 app.use(cors({
   origin: 'http://localhost:5173', // Allow requests from this origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
   credentials: true,
 }));

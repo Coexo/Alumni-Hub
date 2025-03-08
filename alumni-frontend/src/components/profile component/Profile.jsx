@@ -5,7 +5,7 @@ import {
   Checkbox, FormControlLabel, Grid, Avatar, Typography, Link,
   Container
 } from '@mui/material';
-
+import { useEffect, useState } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -15,6 +15,9 @@ import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+
 
 
 const states = [
@@ -57,7 +60,117 @@ const Card = styled(MuiCard)(({ theme }) => ({
   },
 }));
 
+
+
+
+
 export default function Profile(props) {
+
+  const [formData, setFormData] = useState({
+    username:"",
+    password:"",
+    name:"",
+    mobileNo:"",
+    email:"",
+    bio:"",
+    gender:"",
+    education: [{
+      name: "",
+      startDate:"",
+      endDate:"",
+      isCurrentlyStudying:"",
+      degree:"",
+      fieldOfStudy:"",
+      grade:"",
+      collegeId:"",
+      certificates: [{
+        name:"",
+        link:"",
+        status:""
+      }],
+      role:""
+
+    }],
+    projects: [{
+      name:"",
+      description:"",
+      techStacks:[],
+      links:[]
+    }],
+    skills: [{
+      skillId:"",
+      level:"",
+      certificateImage:""
+    }],
+    experience: [{
+      companyName:"",
+      title:"",
+      employmentType:"",
+      startDate:"",
+      endDate:"",
+      isCurrentlyWorking:"",
+      location:"",
+      certificateImage:""
+    }],
+    links: [{
+      name:"",
+      link:""
+    }]
+
+});
+
+const handleChange = (e) => {
+  setFormData({ ...formData, [e.target.name]: e.target.value });
+};
+
+const handleEducationChange = (index, e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({
+      ...prev,
+      education: prev.education.map((edu, i) =>
+          i === index ? { ...edu, [name]: value } : edu
+      ),
+  }));
+};
+
+const handleSubmitEdu = async () => {
+  try {
+      const response = await fetch("http://localhost:4001/api/education-details", {
+          method: "PATCH",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ education: formData.education }),
+      });
+
+      const data = await response.json();
+      console.log("Response from backend:", data);  // Debugging
+
+      if (data.message === "Education details updated successfully") {
+          console.log("Updated Education Data:", formData.education);
+      } else {
+          console.error("Failed to update education details:", data);
+      }
+  } catch (error) {
+      console.error("Error updating education details:", error);
+  }
+};
+  // useEffect(() => {
+  //   // Fetch user data when the component loads
+  //   const fetchUserData = async () => {
+  //       try {
+  //           const response = await axios.get(`http://localhost:5000/api/profile/${userId}`);
+  //           setFormData(response.data); // Populate fields with user data
+  //       } catch (error) {
+  //           console.error("Error fetching user data", error);
+  //       }
+  //   };
+  //   fetchUserData();
+  // }, [userId]);
+
+
+  
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
@@ -250,6 +363,7 @@ export default function Profile(props) {
         <form
           onSubmit={(event) => {
             event.preventDefault();
+            handleSubmitEdu(event);
           }}
         >
           {/* Profile Details Card */}
@@ -260,22 +374,22 @@ export default function Profile(props) {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>First Name</FormLabel>
-                  <TextField name="firstName"/>
+                  <TextField name="firstName" onChange={handleChange} />
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Last Name</FormLabel>
-                  <TextField name="lastName"/>
+                  <TextField name="lastName" onChange={handleChange}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Email Address</FormLabel>
-                  <TextField name="email" type="email" />
+                  <TextField name="email" type="email" onChange={handleChange}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Phone Number</FormLabel>
-                  <TextField name="phone" type="tel" />
+                  <TextField name="phone" type="tel" onChange={handleChange}/>
                 </FormControl>
 
                 <FormControl fullWidth>
@@ -291,7 +405,7 @@ export default function Profile(props) {
 
                 <FormControl fullWidth>
                   <FormLabel>City</FormLabel>
-                  <TextField name="city" />
+                  <TextField name="city" onChange={handleChange}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
@@ -308,7 +422,7 @@ export default function Profile(props) {
               
               <FormControl fullWidth sx={{marginTop: 3}}>
                 <FormLabel>Bio</FormLabel>
-                <TextField name="bio"/>
+                <TextField name="bio" onChange={handleChange}/>
               </FormControl>
             </CardContent>
             <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2}}>
@@ -324,34 +438,34 @@ export default function Profile(props) {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Name</FormLabel>
-                  <TextField name="educationName"/>
+                  <TextField name="name" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].name}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Start Date</FormLabel>
-                  <TextField name="startDate" type="date"/>
+                  <TextField name="startDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].startDate}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>End Date</FormLabel>
-                  <TextField name="endDate" type="date"/>
+                  <TextField name="endDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].endDate}/>
                 </FormControl>
                 
                 <FormControlLabel control={<Checkbox />} label="Currently Studying"  sx={{marginTop: 3, paddingLeft: 0.5}}/>
                 
                 <FormControl fullWidth>
                   <FormLabel>Degree</FormLabel>
-                  <TextField name="degree"/>
+                  <TextField name="degree" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].degree}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Field of Study</FormLabel>
-                  <TextField name="fieldOfStudy"/>
+                  <TextField name="fieldOfStudy" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].fieldOfStudy}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Grade</FormLabel>
-                  <TextField name="grade"/>
+                  <TextField name="grade" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].grade}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
@@ -372,7 +486,7 @@ export default function Profile(props) {
               </Box>
             </CardContent>
               <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2, paddingTop: 2}}>
-              <Button variant="contained">Save Education</Button>
+              <Button type="submit" variant="contained">Save Education</Button>
             </CardActions>
           </Card>
 
@@ -384,22 +498,22 @@ export default function Profile(props) {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Name</FormLabel>
-                  <TextField name="projectName"/>
+                  <TextField name="projectName" onChange={handleChange} value={formData.projects[0].name}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Description</FormLabel>
-                  <TextField name="projectDescription"/>
+                  <TextField name="projectDescription" onChange={handleChange} value={formData.projects[0].description}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Tech Stacks (comma-separated)</FormLabel>
-                  <TextField name="techStacks"/>
+                  <TextField name="techStacks" onChange={handleChange} value={formData.projects[0].techStacks}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Links (comma-separated)</FormLabel>
-                  <TextField name="projectLinks"/>
+                  <TextField name="projectLinks" onChange={handleChange} value={formData.projects[0].links}/>
                 </FormControl>
               </Box>
             </CardContent>
@@ -416,11 +530,11 @@ export default function Profile(props) {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Skill ID</FormLabel>
-                  <TextField name="skills_id"/>
+                  <TextField name="skills_id" onChange={handleChange} value={formData.skills[0].skillId}/>
                 </FormControl>
                 <FormControl fullWidth>
                   <FormLabel>Skill Level</FormLabel>
-                  <TextField name="level"/>
+                  <TextField name="level" onChange={handleChange} value={formData.skills[0].level}/>
                 </FormControl>
                 <FormControl fullWidth>
                   <FormLabel>Certificate Image (URL)</FormLabel>
@@ -441,39 +555,39 @@ export default function Profile(props) {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Company Name</FormLabel>
-                  <TextField name="companyName"/>
+                  <TextField name="companyName" onChange={handleChange} value={formData.experience[0].companyName}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Title</FormLabel>
-                  <TextField name="title"/>
+                  <TextField name="title" onChange={handleChange} value={formData.experience[0].title}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Employment Type</FormLabel>
-                  <TextField name="employmentType"/>
+                  <TextField name="employmentType" onChange={handleChange} value={formData.experience[0].employmentType}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Start Date</FormLabel>
-                  <TextField name="startDate" type="date"/>
+                  <TextField name="startDate" type="date" value={formData.experience[0].startDate}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>End Date</FormLabel>
-                  <TextField name="endDate" type="date"/>
+                  <TextField name="endDate" type="date" value={formData.experience[0].endDate}/>
                 </FormControl>
                 
-                <FormControlLabel control={<Checkbox />} label="Currently Working"  sx={{marginTop: 3, paddingLeft: 0.5}}/>
+                <FormControlLabel control={<Checkbox />} label="Currently Working"  sx={{marginTop: 3, paddingLeft: 0.5}} value={formData.experience[0].isCurrentlyWorking}/>
                 
                 <FormControl fullWidth>
                   <FormLabel>Location</FormLabel>
-                  <TextField name="location"/>
+                  <TextField name="location" onChange={handleChange} value={formData.experience[0].location}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Certificate Image</FormLabel>
-                  <TextField name="certificateImage"/>
+                  <TextField name="certificateImage" />
                 </FormControl>
               </Box>
             </CardContent>
@@ -490,12 +604,12 @@ export default function Profile(props) {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Name</FormLabel>
-                  <TextField name="linkName"/>
+                  <TextField name="linkName" onChange={handleChange} value={formData.links[0].name}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Link</FormLabel>
-                  <TextField name="link"/>
+                  <TextField name="link" onChange={handleChange} value={formData.links[0].link}/>
                 </FormControl>
               </Box>
             </CardContent>
