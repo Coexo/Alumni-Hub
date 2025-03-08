@@ -133,7 +133,7 @@ export default function SignIn(props) {
 
         
         if (response.status == 200) {
-            navigate("/");
+            navigate("/home");
         } else {
             setError('Token storage failed');
         }
