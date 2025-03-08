@@ -18,6 +18,7 @@ import { GoogleIcon } from './CustomIcons';
 import AppTheme from './shared-theme/AppTheme';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { setCookie } from 'cookies-next/client';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -132,6 +133,7 @@ export default function SignIn(props) {
         console.log(response.data);
 
         localStorage.setItem('userId', response.data.userId);
+        setCookie("isRegistered", true);
 
         
         if (response.status == 200) {

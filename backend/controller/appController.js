@@ -60,7 +60,7 @@ export async function signin(req, res, next) {
                 })
 
                 user.save()
-                    .then(result => res.status(201).send({ msg: "User registered Successfully" }))
+                    .then(result => res.status(201).send({ msg: "User registered Successfully", user:result }))
                     .catch(error => res.status(500).send(console.log(error)))
 
             })

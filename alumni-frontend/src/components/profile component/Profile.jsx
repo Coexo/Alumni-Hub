@@ -156,18 +156,18 @@ const handleSubmitEdu = async () => {
       console.error("Error updating education details:", error);
   }
 };
-  // useEffect(() => {
-  //   // Fetch user data when the component loads
-  //   const fetchUserData = async () => {
-  //       try {
-  //           const response = await axios.get(`http://localhost:5000/api/profile/${userId}`);
-  //           setFormData(response.data); // Populate fields with user data
-  //       } catch (error) {
-  //           console.error("Error fetching user data", error);
-  //       }
-  //   };
-  //   fetchUserData();
-  // }, [userId]);
+  useEffect(() => {
+    // Fetch user data when the component loads
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/profile/${userId}`);
+            setFormData(response.data); // Populate fields with user data
+        } catch (error) {
+            console.error("Error fetching user data", error);
+        }
+    };
+    fetchUserData();
+  }, [userId]);
 
 
   

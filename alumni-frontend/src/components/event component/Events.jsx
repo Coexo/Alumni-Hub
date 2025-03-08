@@ -25,7 +25,7 @@ import {
   LocationOn,
   ArrowForward
 } from '@mui/icons-material';
-import AppTheme from '../signup component/shared-theme/AppTheme';
+import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Link } from 'react-router-dom';
 import {
@@ -40,92 +40,93 @@ const EventsPage = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [event, setEvents] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const eventsPerPage = 4;
 
   const navLinks = [
     { name: 'Alumni Directory', path: '/home' },
+    { name: 'Chat', path: '/chat' },
     { name: 'Jobs', path: '/internships' },
     { name: 'Events', path: '/events' },
     { name: 'Forums', path: '/forum' }
   ];
 
   // Sample events data
-  const events = [
-    {
-      id: 1,
-      title: 'The Ultimate Guide to Secure WordPress Plugin Development',
-      // image: 'https://example.com/wordpress-event.jpg',
-      hostedBy: 'WordPress Mumbai Meetup',
-      date: 'SAT, MAR 15',
-      time: '4:00 PM IST',
-      going: 41,
-      isFree: true,
-      location: 'SOFTACKIOUS LIMITED, Lower Parel West'
-    },
-    {
-      id: 2,
-      title: 'GLOBAL STARTUPS CLUB | STARTUP NETWORKING MUMBAI 2025',
-      // image: 'https://example.com/startup-networking.jpg',
-      hostedBy: 'Mumbai Startups & Business Meetups',
-      date: 'SUN, MAR 9',
-      time: '10:30 AM IST',
-      going: 28,
-      isFree: true
-    },
-    {
-      id: 3,
-      title: 'AI and Marketing: The New Growth Formula',
-      // image: 'https://example.com/ai-marketing.jpg',
-      hostedBy: 'eChai Mumbai Startup Network',
-      date: 'SAT, MAR 15',
-      time: '11:00 AM IST',
-      going: 14,
-      isFree: true
-    },
-    {
-      id: 4,
-      title: 'D2C Startups Meetup in Mumbai',
-      // image: 'https://example.com/d2c-startups.jpg',
-      hostedBy: 'eChai Mumbai Startup Network',
-      date: 'SAT, MAR 15',
-      time: '6:00 PM IST',
-      going: 9,
-      isFree: true
-    },
-    {
-      id: 5,
-      title: 'Tech Innovations in Healthcare',
-      // image: 'https://example.com/healthcare-tech.jpg',
-      hostedBy: 'Mumbai Tech Community',
-      date: 'FRI, MAR 21',
-      time: '3:00 PM IST',
-      going: 37,
-      isFree: false,
-      price: '₹500'
-    },
-    {
-      id: 6,
-      title: 'Blockchain Revolution: Web3 Developments',
-      // image: 'https://example.com/blockchain.jpg',
-      hostedBy: 'Mumbai Blockchain Association',
-      date: 'TUE, MAR 18',
-      time: '5:30 PM IST',
-      going: 22,
-      isFree: true
-    },
-    // Add more events as needed
-  ];
+  // const events = [
+  //   {
+  //     id: 1,
+  //     title: 'The Ultimate Guide to Secure WordPress Plugin Development',
+  //     // image: 'https://example.com/wordpress-event.jpg',
+  //     hostedBy: 'WordPress Mumbai Meetup',
+  //     date: 'SAT, MAR 15',
+  //     time: '4:00 PM IST',
+  //     going: 41,
+  //     isFree: true,
+  //     location: 'SOFTACKIOUS LIMITED, Lower Parel West'
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'GLOBAL STARTUPS CLUB | STARTUP NETWORKING MUMBAI 2025',
+  //     // image: 'https://example.com/startup-networking.jpg',
+  //     hostedBy: 'Mumbai Startups & Business Meetups',
+  //     date: 'SUN, MAR 9',
+  //     time: '10:30 AM IST',
+  //     going: 28,
+  //     isFree: true
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'AI and Marketing: The New Growth Formula',
+  //     // image: 'https://example.com/ai-marketing.jpg',
+  //     hostedBy: 'eChai Mumbai Startup Network',
+  //     date: 'SAT, MAR 15',
+  //     time: '11:00 AM IST',
+  //     going: 14,
+  //     isFree: true
+  //   },
+  //   {
+  //     id: 4,
+  //     title: 'D2C Startups Meetup in Mumbai',
+  //     // image: 'https://example.com/d2c-startups.jpg',
+  //     hostedBy: 'eChai Mumbai Startup Network',
+  //     date: 'SAT, MAR 15',
+  //     time: '6:00 PM IST',
+  //     going: 9,
+  //     isFree: true
+  //   },
+  //   {
+  //     id: 5,
+  //     title: 'Tech Innovations in Healthcare',
+  //     // image: 'https://example.com/healthcare-tech.jpg',
+  //     hostedBy: 'Mumbai Tech Community',
+  //     date: 'FRI, MAR 21',
+  //     time: '3:00 PM IST',
+  //     going: 37,
+  //     isFree: false,
+  //     price: '₹500'
+  //   },
+  //   {
+  //     id: 6,
+  //     title: 'Blockchain Revolution: Web3 Developments',
+  //     // image: 'https://example.com/blockchain.jpg',
+  //     hostedBy: 'Mumbai Blockchain Association',
+  //     date: 'TUE, MAR 18',
+  //     time: '5:30 PM IST',
+  //     going: 22,
+  //     isFree: true
+  //   },
+  //   // Add more events as needed
+  // ];
 
   // Filter events based on search term
   useEffect(() => {
-    const filtered = events.filter(event =>
+    const filtered = events ? events.filter(event =>
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.hostedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (event.location && event.location.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    ) : [];
     setFilteredEvents(filtered);
     setCurrentPage(1); // Reset to first page when search changes
   }, [searchTerm]);
@@ -337,7 +338,7 @@ const EventsPage = (props) => {
         </Paper>
 
         {/* No Results Message */}
-        {currentEvents.length === 0 && (
+        {currentEvents.length === 0 && !events && (
           <Box sx={{ textAlign: 'center', py: 6 }}>
             <Typography variant="h6" color="text.secondary">
               No events found matching "{searchTerm}"
@@ -355,7 +356,7 @@ const EventsPage = (props) => {
 
         {/* Events Grid */}
         <Grid container spacing={3}>
-          {event.map((ev) => (
+          {events.map((ev) => (
             <Grid item xs={12} sm={6} md={3} key={ev._id}>
               <Card sx={{
                 height: '100%',
@@ -370,10 +371,10 @@ const EventsPage = (props) => {
                 <CardMedia
                   component="img"
                   height="160"
-                  image={ev.bannerImage || 'https://via.placeholder.com/300x160?text=Event+Image'}
+                  image={ev.bannerImage || 'https://www.hire4event.com/blogs/wp-content/uploads/2019/03/Type-of-events.jpg'}
                   alt={ev.title}
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/300x160?text=Event+Image';
+                    e.target.src = 'https://www.hire4event.com/blogs/wp-content/uploads/2019/03/Type-of-events.jpg';
                   }}
                 />
                 <CardContent sx={{ flexGrow: 1, p: 2 }}>
