@@ -393,12 +393,12 @@ const EventsPage = (props) => {
                     Hosted at: {ev.college}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, color: 'text.secondary' }}>
-                    <CalendarMonth fontSize="small" sx={{ mr: 1 }} />
+                    <CalendarMonth fontSize="small" sx={{ ml: 1, mb: 2.5, mr:0 }} />
                     <Typography variant="body2">
                       {new Date(ev.date).toLocaleDateString()} · {ev.time}
                     </Typography>
                   </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{  }}>
                     <Button
                       variant="contained"
                       color="primary"

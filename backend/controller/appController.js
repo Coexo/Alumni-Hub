@@ -129,22 +129,24 @@ export async function login(req, res, next) {
 
 
 export const updateEducation = async (req, res) => {
+    console.log("Req.user = ",req.user);
     try {
-        // const userId = req.user.id;
-        const userId = "67c5b5ae599ccb511c93abb7"; // Get user ID from authenticated request
-        console.log("Req Body:", req.body.education);
-        const education = req.body.education; // Extract education details from request
+        const userId = req.user.userId;
+        // const userId = ; // Get user ID from authenticated request
+        console.log("Req Body:", req.body);
+        const education = req.body; // Extract education details from request
         console.log(education);
 
         if (!education) {
             return res.status(400).json({ message: "Education details are required" });
         }
 
-        let educationData = req.body.education;
+        let educationData = req.body;
 
-        if (!Array.isArray(educationData)) {
-            educationData = [educationData]; // ✅ Convert object to array if needed
-        }
+        // if (!Array.isArray(educationData)) {
+        //     educationData = [educationData]; // ✅ Convert object to array if needed
+        // }
+        console.log("Edu", educationData)
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
@@ -319,6 +321,7 @@ export const createEvent = async (req, res) => {
 
 
 
+/////////////////////////////////////// GET REQUESTS /////////////////////////////////////////////
 
 export const getAllEvents = async (req, res) => {
     try {
@@ -327,5 +330,18 @@ export const getAllEvents = async (req, res) => {
     } catch (error) {
         console.error("Error fetching events:", error);
         res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const getUserData = async (req, res) => {
+    console.log(req.params.id);
+    try {
+        const user = await UserModel.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
     }
 };
