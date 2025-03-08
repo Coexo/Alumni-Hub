@@ -16,13 +16,14 @@ collection = db["users"]  # Collection name
 
 # Function to process user data
 def process_user_data():
-    users = list(collection.find({}, {"_id": 0})) 
+    users = list(collection.find({})) 
     student_df = []
     alumni_df = []
 
     for user in users:
         for edu in user.get("education", []):
             entry = {
+                "_id":user["_id"],
                 "Name": user["name"],
                 "Institute": edu.get("name", ""),
                 "Degree": edu.get("degree", ""),
@@ -30,7 +31,7 @@ def process_user_data():
                 "Grade": edu.get("grade", ""),
                 "Role": edu.get("role", ""),
                 "Companies": ", ".join([exp.get("companyName", "") for exp in user.get("experience", [])]),
-                "Skills": ", ".join([skill.get("skillId", "") for skill in user.get("skills", [])])
+                "Skills": ", ".join([skill.get("id", "") for skill in user.get("skills", [])])
             }
             if edu.get("role", "").lower() == "student":
                 student_df.append(entry)
@@ -63,6 +64,15 @@ def find_sim(student_name, student_df, alumni_df):
     cosine_sim = cosine_similarity(alumni_binary, student_binary)
     return cosine_sim, filtered_alumni
 
+def serialize_alumni(alumni):
+    """Convert MongoDB document to a serializable format."""
+    alumni["_id"] = str(alumni["_id"])  # Convert ObjectId to string
+    return alumni
+
+def is_alumni(user):
+    """Check if the user's education field contains at least one entry with role as 'alumni'."""
+    return any(edu.get("role") == "Alumni" for edu in user.get("education", []))
+
 # API endpoint to get recommendations
 @app.route("/get_recommendations", methods=["GET"])
 def get_recommendations():
@@ -75,10 +85,11 @@ def get_recommendations():
     cosine_sim, filtered_alumni = find_sim(student_name, student_df, alumni_df)
 
     if cosine_sim is None:
-        alumni_data = list(collection.find({}, {"_id": 0}))  # Exclude _id for clean response
-        return alumni_data
+        # alumni_data = list(collection.find({}, {"_id": 0}))  # Exclude _id for clean response
+        # return alumni_data
 
-        # return jsonify({"error": "Student not found"}), 404
+
+        return jsonify({"error": "Student not found"}), 404
 
     # Find student index
     student_idx = next((i for i, s in enumerate(student_df) if s["Name"] == student_name), None)
@@ -90,7 +101,21 @@ def get_recommendations():
     top_indices = similarities.argsort()[::-1][:5]
     recommended_alumni = [filtered_alumni[i] for i in top_indices]
 
-    return recommended_alumni
+    recommended_data = [
+        {**collection.find_one({"_id": s["_id"]}), "is_recommended": True}
+        for s in recommended_alumni
+    ]
+
+    recommended_ids = [s["_id"] for s in recommended_alumni]
+    remaining_alumni = [
+        serialize_alumni(alum)
+        for alum in collection.find({"_id": {"$nin": recommended_ids}})
+        if is_alumni(alum)
+    ]
+
+    # Combine both lists (recommended first, remaining at the end)
+    final_alumni_data = recommended_data + remaining_alumni
+    return final_alumni_data
 
 if __name__ == "__main__":
     app.run(debug=True)

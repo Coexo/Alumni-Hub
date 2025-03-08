@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { 
   Container,
   Grid,
@@ -84,7 +84,7 @@ const generateMoreAlumni = async () => {
 
     console.log("Fetching from API...");
     const response = await fetch(
-      "http://127.0.0.1:5000/get_recommendations?student_name=Vedant Kale"
+      "http://127.0.0.1:5000/get_recommendations?student_name=User 2"
     );
 
     if (!response.ok) {
@@ -104,7 +104,6 @@ const generateMoreAlumni = async () => {
 };
 
 
-
 const Alumni = (props) => {
   
   const [page, setPage] = useState(1);
@@ -115,6 +114,7 @@ const Alumni = (props) => {
    const [selectedAlumni, setSelectedAlumni] = useState(null);
   const alumniPerPage = 20;
 
+
   useEffect(()=>{
     const fetchAlumni = async () => {
       setAllAlumni(await generateMoreAlumni());
@@ -124,13 +124,22 @@ const Alumni = (props) => {
   
   console.log(allAlumni);
   // Filter alumni based on search term
-  const filteredAlumni = allAlumni ? allAlumni?.filter(
-    (alumni) =>
-      alumni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      alumni.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      alumni.position.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      alumni.interestedIn.toLowerCase().includes(searchTerm.toLowerCase())
-  ) : [];
+  const filteredAlumni =
+    allAlumni?.length > 0
+      ? allAlumni?.filter(
+          (alumni) =>
+            alumni?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            alumni?.experience[alumni?.experience?.length - 1]?.companyName
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+            alumni?.skills[0]?.id
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+            alumni?.skills[1]?.id
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        )
+      : [];
 
   // Calculate pagination
   const totalPages = Math.ceil(filteredAlumni.length / alumniPerPage);
@@ -151,7 +160,6 @@ const Alumni = (props) => {
 
   const navLinks = [
     { name: 'Alumni Directory', path: '/home' },
-    { name: 'Chat', path: '/chat' },
     { name: 'Jobs', path: '/internships' },
     { name: 'Events', path: '/events' },
     { name: 'Forums', path: '/forum' }
@@ -290,8 +298,8 @@ const Alumni = (props) => {
         </Container>
       </AppBar>
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ mb: 4 }}>
+      <Container maxWidth="lg" sx={{ py: 4, mt:"64px" }}>
+        <Box sx={{ mb: 7 }}>
           {/* <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
           Alumni Directory
         </Typography>
@@ -328,22 +336,66 @@ const Alumni = (props) => {
                   width: "100%",
                   flexDirection: "column",
                   transition: "0.3s",
-                  "&:hover": {
-                    boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
-                    transform: "translateY(-4px)",
-                  },
+                  transform: "translateY(-4px)",
+                  // "&:hover": {
+                  //   boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                  //   transform: "translateY(-4px)",
+                  // },
                 }}
               >
-                <Box sx={{ p: 2, display: "flex", justifyContent: "center" }}>
-                  <Avatar
-                    src={alumni.profilePic}
-                    alt={alumni.name}
+                {/* Recommended by AI Tag */}
+                {alumni.is_recommended && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      left: 8,
+                      bgcolor: "#ff9800",
+                      color: "white",
+                      px: 1.5,
+                      py: 0.5,
+                      borderRadius: 1,
+                      fontSize: "0.75rem",
+                      fontWeight: "bold",
+                      boxShadow: "0px 2px 4px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    Recommended by AI
+                  </Box>
+                )}
+
+                <Box
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    justifyContent: "center",
+                    position: "relative",
+                  }}
+                >
+                  <Box
                     sx={{
                       width: 100,
                       height: 100,
+                      mt: 1,
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#89CFF0",
+                      color: "white",
+                      fontSize: "1.5rem",
+                      fontWeight: "bold",
                       border: "3px solid #f0f0f0",
                     }}
-                  />
+                  >
+                    {alumni.name
+                      .split(" ")
+                      .map((n, i) =>
+                        i === 0 ? n[0] : n.length > 1 ? n[1] : ""
+                      )
+                      .join("")
+                      .toUpperCase()}
+                  </Box>
                 </Box>
                 <CardContent sx={{ flexGrow: 1, pt: 0 }}>
                   <Typography
@@ -398,8 +450,6 @@ const Alumni = (props) => {
                         {alumni.bio}
                       </Typography>
                     </Box>
-
-                    <Box></Box>
                   </Stack>
                 </CardContent>
 
