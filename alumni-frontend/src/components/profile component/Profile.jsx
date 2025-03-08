@@ -2,8 +2,14 @@ import * as React from 'react';
 import {
   Box, Button, Card as MuiCard, CardActions, CardContent, CardHeader,
   Divider, FormControl, FormLabel, MenuItem, Select, TextField, CssBaseline,
-  Checkbox, FormControlLabel
+  Checkbox, FormControlLabel, Grid, Avatar, Typography, Link,
+  Container
 } from '@mui/material';
+
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LinkIcon from '@mui/icons-material/Link';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import PeopleIcon from '@mui/icons-material/People';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 
@@ -43,7 +49,88 @@ export default function Profile(props) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 2, gap: 3 }}>
+
+      <Container maxWidth="lg" sx={{ mt: 10, mb: 5, display:'flex', flexDirection:"row"}}>
+      <Grid container spacing={12}>
+      <Grid item xs={12} md={4}>
+      <Box sx={{ top: '100px'}}>
+          <Card 
+            sx={{ 
+              mb: 3, 
+              backgroundColor: 'white', 
+              color: 'white',
+              borderRadius: 2 
+              , maxWidth: '400px'
+            }}
+          >
+            <CardContent>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2}}>
+                <Avatar
+                  sx={{ width: 100, height: 100, mb: 2 }}
+                  alt="Manthan Nanaware"
+                  src="/api/placeholder/260/260"
+                />
+                <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', color: 'black' }}>
+                  Manthan Nanaware
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" sx={{color: 'black' }}>
+                  Manthan-23
+                </Typography>
+              </Box>
+              
+              <Typography variant="body1" sx={{ mb: 2, color: 'grey'}}>
+                Hello, I am currently a student pursuing a degree in computer engineering. I am an intermediate full-stack developer with experience in various technologies.
+              </Typography>
+              
+              <Button 
+                variant="contained" 
+                fullWidth 
+                sx={{ 
+                  mb: 3
+                }}
+              >
+                Edit profile
+              </Button>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <PeopleIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Typography variant="body2" sx={{ color: '#8b949e' }}>
+                  <Box component="span" sx={{ fontWeight: 'bold', color: '#c9d1d9' }}>3</Box> followers · <Box component="span" sx={{ fontWeight: 'bold', color: '#c9d1d9' }}>1</Box> following
+                </Typography>
+              </Box>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <LocationOnIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Typography variant="body2" sx={{ color: '#c9d1d9' }}>
+                  Mumbai
+                </Typography>
+              </Box>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <LinkIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Link href="https://codingeazy.blogspot.com/" target="_blank" rel="noopener" sx={{ color: '#58a6ff', textDecoration: 'none' }}>
+                  https://codingeazy.blogspot.com/
+                </Link>
+              </Box>
+              
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                <LinkedInIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
+                <Link href="https://linkedin.com/in/manthan-nanaware" target="_blank" rel="noopener" sx={{ color: '#58a6ff', textDecoration: 'none' }}>
+                  in/manthan-nanaware
+                </Link>
+              </Box>
+              
+             
+              
+              {/* Add organization logos here if needed */}
+            </CardContent>
+          </Card>
+          </Box>
+        </Grid>
+
+
+      <Grid  item xs={12} md={8}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, gap: 3, paddingTop: 0}}>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -302,6 +389,9 @@ export default function Profile(props) {
           </Card>
         </form>
       </Box>
+      </Grid>
+      </Grid>
+      </Container>
     </AppTheme>
   );
 }
