@@ -17,6 +17,9 @@ import { Link } from 'react-router-dom';
 import AppTheme from './shared-theme/AppTheme';
 import { GoogleIcon } from './CustomIcons';
 import axios from 'axios';
+import {
+  setCookie,
+} from "cookies-next/client";
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -83,6 +86,8 @@ export default function SignUp(props) {
             setFormData({ username: "", name: "", mobileNo: "", email: "", password: "" });
             setError("");
             setIsSignup(false);
+            setCookie("isRegistered",true);
+            window.location.href="/"
         } catch (err) {
             console.error("Signup error:", err);
             setError(err.response?.data?.message || "Signup failed, please try again.");

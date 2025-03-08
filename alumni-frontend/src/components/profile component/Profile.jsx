@@ -12,6 +12,10 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PeopleIcon from '@mui/icons-material/People';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../signupcomponent/shared-theme/AppTheme';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import { Link } from 'react-router-dom';
+
 
 const states = [
   { value: 'alabama', label: 'Alabama' },
@@ -31,6 +35,14 @@ const roles = [
   { value: 'student', label: 'Student' },
 ];
 
+const navLinks = [
+  { name: 'Alumni Directory', path: '/home' },
+  { name: 'Jobs', path: '/internships' },
+  { name: 'Events', path: '/events' },
+  { name: 'Forums', path: '/forum' }
+];
+
+
 const Card = styled(MuiCard)(({ theme }) => ({
   alignSelf: 'center',
   width: '100%',
@@ -49,6 +61,110 @@ export default function Profile(props) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
+
+
+
+    <AppBar 
+          position="fixed" 
+          color="default" 
+          elevation={1} 
+          sx={{ 
+            backgroundColor: 'white',
+            width: '100%',
+            top: 0,
+            left: 0
+          }}
+        >
+          <Container maxWidth={false} sx={{ width: '100%' }}>
+            <Toolbar disableGutters>
+              {/* Logo */}
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ 
+                  flexGrow: 1, 
+                  fontWeight: 'bold', 
+                  color: '#1976d2',
+                  fontSize: '1.5rem',
+                  display: 'flex',
+                alignItems: 'center'
+                }}
+              >
+                AlumniHub
+              </Typography>
+              
+              {/* Navigation Links */}
+              {/* <Box sx={{ display: 'flex', mr: 4 }}>
+                {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
+                  <Button
+                    key={page}
+                    sx={{ 
+                      my: 2, 
+                      color: 'rgba(0, 0, 0, 0.87)', 
+                      display: 'block',
+                      mx: 1,
+                      textTransform: 'none',
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box> */}
+
+              <Box sx={{ display: 'flex', mr: 4 }}>
+            {navLinks.map((link) => (
+              <Button
+                key={link.name}
+                component={Link}
+                to={link.path}
+                sx={{ 
+                  my: 2, 
+                  color: location.pathname === link.path ? '#1976d2' : 'rgba(0, 0, 0, 0.87)', 
+                  display: 'block',
+                  mx: 1,
+                  textTransform: 'none',
+                  fontSize: '0.95rem',
+                  fontWeight: location.pathname === link.path ? 'bold' : 'normal',
+                  borderBottom: location.pathname === link.path ? '2px solid #1976d2' : 'none'
+                }}
+              >
+                {link.name}
+              </Button>
+            ))}
+          </Box>
+              
+              {/* Auth Buttons */}
+              <Box>
+                {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+                <Button 
+                  color="primary" 
+                  sx={{ 
+                    mr: 2, 
+                    textTransform: 'none',
+                    fontWeight: 500 
+                  }}
+                >
+                  Sign In
+                </Button>
+                </Link> */}
+                <Link to="/profile" style={{ textDecoration: 'none' }}>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  sx={{ 
+                    borderRadius: 1,
+                    textTransform: 'none',
+                    fontWeight: 500
+                  }}
+                >
+                  Profile
+                </Button>
+                </Link>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
 
       <Container maxWidth="lg" sx={{ mt: 10, mb: 5, display:'flex', flexDirection:"row"}}>
       <Grid container spacing={12}>
