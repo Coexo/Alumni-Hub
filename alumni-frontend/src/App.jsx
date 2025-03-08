@@ -10,7 +10,7 @@ import Profile from './components/profile component/Profile';
 import Main from './components/main component/Main';
 import DiscussionForm from './components/discussion forum/DiscussionForum';
 import HomeComp from './components/job component/HomeComp';
-import Events from './components/event component/Events';
+import EventsPage from './components/event component/Events';
 import { getCookie } from 'cookies-next/client';
 import Chat from './components/main component/Chat';
 
@@ -22,25 +22,24 @@ function App() {
 
   return (
     <>
-      <Router>
-        <Routes>
-          {!isRegistered ? 
+    <Router>
+      <Routes>
+      {!isRegistered ? 
           <Route path="/" element={<Main />} />
           :
           <Route path="/" element={<Alumni />} />
         }
           {/* Default route is signup */}
-          {/* <Route path="/" element={<Navigate to="/signup" />} /> */}
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/home" element={<Alumni />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/forum" element={<DiscussionForm />} />
-          <Route path="/internships" element={<HomeComp />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/chats" element={<Chat />} />
-        </Routes>
-      </Router>
+        <Route path="/chats" element={<Chat />}/>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/home" element={<Alumni />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/forum" element={<DiscussionForm/>} />
+        <Route path="/internships" element={<HomeComp/>} />
+        <Route path="/events" element={<EventsPage/>} />
+      </Routes>
+    </Router>
     </>
   );
 }

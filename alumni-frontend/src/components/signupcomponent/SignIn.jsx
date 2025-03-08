@@ -131,6 +131,8 @@ export default function SignIn(props) {
 
         console.log(response.data);
 
+        localStorage.setItem('userId', response.data.userId);
+
         
         if (response.status == 200) {
             navigate("/home");

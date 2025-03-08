@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const eventSchema = new mongoose.Schema({
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Alumni or Admin who created the event
     title: { type: String, required: true }, // Event name
     description: { type: String, required: true }, // Event details
     date: { type: Date, required: true }, // Event date
