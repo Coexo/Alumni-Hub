@@ -23,7 +23,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
 import SendIcon from '@mui/icons-material/Send';
 import { Link } from 'react-router-dom';
-import AppTheme from '../signup component/shared-theme/AppTheme';
+import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';

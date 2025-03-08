@@ -2,15 +2,17 @@ from flask import Flask, request, jsonify
 from pymongo import MongoClient
 import numpy as np
 import json
+from flask_cors import CORS
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MultiLabelBinarizer
 
 app = Flask(__name__)
+CORS(app) 
 
 # Connect to MongoDB
 client = MongoClient("mongodb+srv://Vedant:bMhYa18KjBD0rJzV@alumni.twxqi.mongodb.net/")  # Update with your MongoDB URI
-db = client["User"]  # Database name
-collection = db["User"]  # Collection name
+db = client["alumni"]  # Database name
+collection = db["users"]  # Collection name
 
 # Function to process user data
 def process_user_data():
@@ -65,6 +67,7 @@ def find_sim(student_name, student_df, alumni_df):
 @app.route("/get_recommendations", methods=["GET"])
 def get_recommendations():
     student_name = request.args.get("student_name")
+    print("Student Name : ============== ", student_name)
     if not student_name:
         return jsonify({"error": "Please provide a student name"}), 400
 
@@ -72,7 +75,10 @@ def get_recommendations():
     cosine_sim, filtered_alumni = find_sim(student_name, student_df, alumni_df)
 
     if cosine_sim is None:
-        return jsonify({"error": "Student not found"}), 404
+        alumni_data = list(collection.find({}, {"_id": 0}))  # Exclude _id for clean response
+        return alumni_data
+
+        # return jsonify({"error": "Student not found"}), 404
 
     # Find student index
     student_idx = next((i for i, s in enumerate(student_df) if s["Name"] == student_name), None)
@@ -84,7 +90,7 @@ def get_recommendations():
     top_indices = similarities.argsort()[::-1][:5]
     recommended_alumni = [filtered_alumni[i] for i in top_indices]
 
-    return jsonify(recommended_alumni)
+    return recommended_alumni
 
 if __name__ == "__main__":
     app.run(debug=True)
