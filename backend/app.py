@@ -40,6 +40,8 @@ def process_user_data():
 
     return student_df, alumni_df
 
+
+
 # Function to find skill similarity
 def find_sim(student_name, student_df, alumni_df):
     # Find the student details
@@ -63,6 +65,8 @@ def find_sim(student_name, student_df, alumni_df):
     # Compute cosine similarity
     cosine_sim = cosine_similarity(alumni_binary, student_binary)
     return cosine_sim, filtered_alumni
+
+
 
 def serialize_alumni(alumni):
     """Convert MongoDB document to a serializable format."""
@@ -116,6 +120,8 @@ def get_recommendations():
     # Combine both lists (recommended first, remaining at the end)
     final_alumni_data = recommended_data + remaining_alumni
     return final_alumni_data
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

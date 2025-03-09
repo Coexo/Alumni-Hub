@@ -193,8 +193,7 @@ export default function CreateCoursePage() {
 
         const response = await axios.post(
           "http://localhost:4001/api/courses",
-          data,
-          {
+          data, {
             headers: {
               "Content-Type": "application/json",
             },

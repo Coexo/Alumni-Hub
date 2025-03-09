@@ -125,7 +125,7 @@ export async function login(req, res, next) {
           username: user.username,
           userEmail: user.email,
           userRole:
-            user.education.length > 0 ? user.education[0].role : "Student",
+            user.education.length >= 2 ? "Alumni" : "Student",
         });
 
     } catch (error) {
@@ -249,7 +249,7 @@ export const createJob = async (req, res) => {
     try {
         console.log("Req User:", req.user);
         const { title, companyName, location, experience, pay, role, jobDescription, skillsRequired, educationRequired, applyLink } = req.body;
-        const userId = req.user;
+        // const userId = req.user;
         // const username = req.params.username;
         
          // Get user ID from token
@@ -268,7 +268,7 @@ export const createJob = async (req, res) => {
           applyLink,
         });
 
-        window.location.href = "/internships"
+        // window.location.href = "/internships"
 
         await job.save();
         res.status(201).json({ message: "Job posted successfully", job });

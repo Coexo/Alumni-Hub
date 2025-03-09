@@ -43,6 +43,7 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { deleteCookie } from "cookies-next/client";
+import { CloudUploadIcon } from "lucide-react";
 
 const Profile = () => {
   // const [userData, setUserData] = useState({
@@ -362,7 +363,7 @@ const Profile = () => {
   ];
 
   return userData ? (
-    <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh", py: 4, mt:"64px" }}>
+    <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh", py: 4, mt: "64px" }}>
       <CssBaseline enableColorScheme />
 
       <AppBar
@@ -377,42 +378,47 @@ const Profile = () => {
         }}
       >
         <Container maxWidth={false} sx={{ width: "100%" }}>
-                  <Toolbar disableGutters sx={{ display: "flex" }}>
-                    <div style={{ flex: 1, display:"flex", justifyContent:"start",  }}>
-                      <img src="./image.png" alt="" width={90} style={{marginTop:10}}/>
-                    </div>
-                    <Box sx={{ display: "flex", mr: 4 }}>
-                      {navLinks.map((link) => (
-                        <Button
-                          key={link.name}
-                          component={Link}
-                          to={link.path}
-                          sx={{
-                            my: 2,
-                            color:
-                              location.pathname === link.path
-                                ? "#1976d2"
-                                : "rgba(0, 0, 0, 0.87)",
-                            display: "block",
-                            mx: 1,
-                            textTransform: "none",
-                            fontSize: "0.95rem",
-                            fontWeight:
-                              location.pathname === link.path ? "bold" : "normal",
-                            borderBottom:
-                              location.pathname === link.path
-                                ? "2px solid #1976d2"
-                                : "none",
-                          }}
-                        >
-                          {link.name}
-                        </Button>
-                      ))}
-                    </Box>
-        
-                    {/* Auth Buttons */}
-                    <Box>
-                      {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+          <Toolbar disableGutters sx={{ display: "flex" }}>
+            <div style={{ flex: 1, display: "flex", justifyContent: "start" }}>
+              <img
+                src="./image.png"
+                alt=""
+                width={90}
+                style={{ marginTop: 10 }}
+              />
+            </div>
+            <Box sx={{ display: "flex", mr: 4 }}>
+              {navLinks.map((link) => (
+                <Button
+                  key={link.name}
+                  component={Link}
+                  to={link.path}
+                  sx={{
+                    my: 2,
+                    color:
+                      location.pathname === link.path
+                        ? "#1976d2"
+                        : "rgba(0, 0, 0, 0.87)",
+                    display: "block",
+                    mx: 1,
+                    textTransform: "none",
+                    fontSize: "0.95rem",
+                    fontWeight:
+                      location.pathname === link.path ? "bold" : "normal",
+                    borderBottom:
+                      location.pathname === link.path
+                        ? "2px solid #1976d2"
+                        : "none",
+                  }}
+                >
+                  {link.name}
+                </Button>
+              ))}
+            </Box>
+
+            {/* Auth Buttons */}
+            <Box>
+              {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
                         <Button 
                           color="primary" 
                           sx={{ 
@@ -424,32 +430,35 @@ const Profile = () => {
                           Sign In
                         </Button>
                         </Link> */}
-                      <Link onClick={()=>{
-                        deleteCookie("isRegistered")
-                        localStorage.clear()
-                        window.location.href = "/"
-                      }} style={{ textDecoration: "none" }}>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          sx={{
-                            borderRadius: 1,
-                            textTransform: "none",
-                            fontWeight: 500,
-                          }}
-                        >
-                          Log out
-                        </Button>
-                      </Link>
-                    </Box>
-                  </Toolbar>
-                </Container>
+              <Link
+                onClick={() => {
+                  deleteCookie("isRegistered");
+                  localStorage.clear();
+                  window.location.href = "/";
+                }}
+                style={{ textDecoration: "none" }}
+              >
+                <Button
+                  variant="contained"
+                  color="error"
+                  sx={{
+                    borderRadius: 1,
+                    textTransform: "none",
+                    fontWeight: 500,
+                  }}
+                >
+                  Log out
+                </Button>
+              </Link>
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
-      <Container sx={{mt:4}}>
+      <Container sx={{ mt: 4 }}>
         <Grid container spacing={3}>
           {/* Sidebar */}
           <Grid item xs={12} md={3}>
-            <Card>
+            <Card sx={{ borderRadius: 3 }}>
               <CardContent sx={{ textAlign: "center" }}>
                 <Avatar
                   src="/api/placeholder/100/100"
@@ -498,7 +507,7 @@ const Profile = () => {
           {/* Main Content */}
           <Grid item xs={12} md={9}>
             {/* Basic Details */}
-            <Paper sx={{ p: 3, mb: 3 }}>
+            <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -544,7 +553,7 @@ const Profile = () => {
             </Paper>
 
             {/* Bio */}
-            <Paper sx={{ p: 3, mb: 3 }}>
+            <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -564,7 +573,7 @@ const Profile = () => {
             </Paper>
 
             {/* Education */}
-            <Paper sx={{ p: 3, mb: 3 }}>
+            <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -587,7 +596,11 @@ const Profile = () => {
               </Box>
 
               {userData.education.map((edu, index) => (
-                <Paper key={index} variant="outlined" sx={{ p: 2, mb: 2 }}>
+                <Paper
+                  key={index}
+                  variant="outlined"
+                  sx={{ p: 2, mb: 2, borderRadius: 2 }}
+                >
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
@@ -607,6 +620,13 @@ const Profile = () => {
                           sx={{ textAlign: "left" }}
                         >
                           {edu.name}
+                          <Chip
+                            label={edu.role}
+                            size="small"
+                            color={edu.role == "Alumni" ? "error" : "warning"}
+                            variant="outlined"
+                            sx={{ ml: 1 }}
+                          />
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           {formatDate(edu.startDate)} -{" "}
@@ -633,7 +653,9 @@ const Profile = () => {
                     </Box>
                   </Box>
 
-                  <Box sx={{ mt: 2, pl: 7, textAlign: "left" }}>
+                  <Box
+                    sx={{ mt: 2, pl: 7, textAlign: "left", borderRadius: 2 }}
+                  >
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
                         <Typography variant="body2" color="text.secondary">
@@ -674,7 +696,7 @@ const Profile = () => {
             </Paper>
 
             {/* Experience */}
-            <Paper sx={{ p: 3, mb: 3 }}>
+            <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -752,7 +774,7 @@ const Profile = () => {
             </Paper>
 
             {/* Projects */}
-            <Paper sx={{ p: 3 }}>
+            <Paper sx={{ p: 3, borderRadius: 2 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -1058,6 +1080,66 @@ const Profile = () => {
                     <MenuItem value="Alumni">Alumni</MenuItem>
                   </Select>
                 </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    border: `1px dashed ${
+                      false ? "#d32f2f" : "#cccccc"
+                    }`,
+                    borderRadius: 1,
+                    p: 3,
+                    textAlign: "center",
+                    cursor: "pointer",
+                    "&:hover": {
+                      backgroundColor: "#f5f5f5",
+                    },
+                    mt: 2,
+                    position: "relative",
+                  }}
+                  // onClick={handleThumbnailClick}
+                >
+                  {false ? (
+                    <Box>
+                      <img
+                        // src={previewURL}
+                        alt="Thumbnail preview"
+                        style={{
+                          maxHeight: "200px",
+                          maxWidth: "100%",
+                          display: "block",
+                          margin: "0 auto 16px",
+                        }}
+                      />
+                      <Typography variant="body2" color="textSecondary">
+                        {/* {uploadedFileName} */}
+                      </Typography>
+                      <Typography variant="body2">
+                        Click to change thumbnail
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <>
+                      <CloudUploadIcon
+                        sx={{ fontSize: 48, color: "#757575", mb: 2 }}
+                      />
+                      <Typography variant="body1" gutterBottom>
+                        Upload Course Thumbnail
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Click to browse or drag and drop image file
+                      </Typography>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    // ref={fileInputRef}
+                    // onChange={handleFileChange}
+                    accept="image/*"
+                    style={{ display: "none" }}
+                  />
+                </Box>
               </Grid>
             </Grid>
           )}

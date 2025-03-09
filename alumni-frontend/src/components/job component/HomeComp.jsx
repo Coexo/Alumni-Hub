@@ -95,16 +95,18 @@ export default function OpportunitiesComp(props) {
   const navLinks = [
     { name: "Alumni Directory", path: "/home" },
     { name: "Chat", path: "/chats" },
-    { name: "Opportunities", path: "/opportunities" },
+    { name: "Opportunities", path: "/internships" },
     { name: "Events", path: "/events" },
     { name: "Forums", path: "/forum" },
-    { name: 'Courses', path: '/courses' }
+    { name: "Courses", path: "/courses" },
   ];
 
   // Determines if an item is an internship or job
   const getItemType = (item) => {
     return item.duration ? "internship" : "job";
   };
+
+  let userRole = localStorage.getItem("userRole") ?? "Student";
 
   return (
     <>
@@ -164,6 +166,20 @@ export default function OpportunitiesComp(props) {
 
               {/* Auth Buttons */}
               <Box>
+                <Link to="/payment" style={{ textDecoration: "none" }}>
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  sx={{
+                                    borderRadius: 1,
+                                    textTransform: "none",
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  Subscribe
+                                </Button>
+                              </Link>
+                              &nbsp;&nbsp;&nbsp;
                 <Link to="/profile" style={{ textDecoration: "none" }}>
                   <Button
                     variant="contained"
@@ -191,9 +207,9 @@ export default function OpportunitiesComp(props) {
           </Typography>
 
           {/* Tab Navigation */}
-          <Tabs 
-            value={tabValue} 
-            onChange={handleTabChange} 
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
             centered
             sx={{ mb: 3 }}
           >
@@ -219,8 +235,8 @@ export default function OpportunitiesComp(props) {
               }}
             />
 
-            <Button
-              href="/create-opportunity"
+            {userRole == "Alumni" && <Button
+              href="/create-post"
               sx={{
                 backgroundColor: "#1976d2",
                 color: "white",
@@ -230,19 +246,19 @@ export default function OpportunitiesComp(props) {
               }}
             >
               Add Opportunity
-            </Button>
+            </Button>}
           </Box>
 
           {/* Loading Indicator */}
           {loading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+            <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
               <CircularProgress />
             </Box>
           )}
 
           {/* No Results Message */}
           {!loading && filteredItems.length === 0 && (
-            <Box sx={{ textAlign: 'center', my: 4 }}>
+            <Box sx={{ textAlign: "center", my: 4 }}>
               <Typography variant="h6" color="textSecondary">
                 No opportunities found. Try adjusting your search.
               </Typography>
@@ -261,7 +277,10 @@ export default function OpportunitiesComp(props) {
                       borderRadius: 2,
                       cursor: "pointer",
                       "&:hover": { boxShadow: 6 },
-                      borderLeft: itemType === "internship" ? "4px solid #4caf50" : "4px solid #1976d2"
+                      borderLeft:
+                        itemType === "internship"
+                          ? "4px solid #4caf50"
+                          : "4px solid #1976d2",
                     }}
                     onClick={() => handleItemClick(item._id)}
                   >
@@ -280,14 +299,29 @@ export default function OpportunitiesComp(props) {
                             gap: "5px",
                           }}
                         >
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                            <Typography variant="h6" sx={{ fontWeight: "bold", textAlign:"left" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Typography
+                              variant="h6"
+                              sx={{ fontWeight: "bold", textAlign: "left" }}
+                            >
                               {item.title}
                             </Typography>
-                            <Chip 
-                              label={itemType === "internship" ? "Internship" : "Job"} 
-                              size="small" 
-                              color={itemType === "internship" ? "success" : "primary"}
+                            <Chip
+                              label={
+                                itemType === "internship" ? "Internship" : "Job"
+                              }
+                              size="small"
+                              color={
+                                itemType === "internship"
+                                  ? "success"
+                                  : "primary"
+                              }
                               sx={{ height: 20 }}
                             />
                           </Box>
@@ -308,7 +342,15 @@ export default function OpportunitiesComp(props) {
                             <LocationOn fontSize="small" />
                             {item.location}
                           </Typography>
-                          <Box sx={{ mt: 1, mb: 2, display: "flex", flexWrap: "wrap", gap: 1 }}>
+                          <Box
+                            sx={{
+                              mt: 1,
+                              mb: 2,
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: 1,
+                            }}
+                          >
                             {itemType === "internship" ? (
                               <>
                                 <Chip
@@ -316,20 +358,29 @@ export default function OpportunitiesComp(props) {
                                   label={item.stipend}
                                   size="small"
                                   variant="outlined"
-                                  sx={{ borderRadius: 1, backgroundColor: "#f5f5f5" }}
+                                  sx={{
+                                    borderRadius: 1,
+                                    backgroundColor: "#f5f5f5",
+                                  }}
                                 />
                                 <Chip
                                   icon={<CalendarToday fontSize="small" />}
                                   label={item.duration}
                                   size="small"
                                   variant="outlined"
-                                  sx={{ borderRadius: 1, backgroundColor: "#f5f5f5" }}
+                                  sx={{
+                                    borderRadius: 1,
+                                    backgroundColor: "#f5f5f5",
+                                  }}
                                 />
                                 <Chip
                                   label={item.workType || "N/A"}
                                   size="small"
                                   variant="outlined"
-                                  sx={{ borderRadius: 1, backgroundColor: "#f5f5f5" }}
+                                  sx={{
+                                    borderRadius: 1,
+                                    backgroundColor: "#f5f5f5",
+                                  }}
                                 />
                               </>
                             ) : (
@@ -338,7 +389,10 @@ export default function OpportunitiesComp(props) {
                                 label={item.salary ?? item.pay}
                                 size="small"
                                 variant="outlined"
-                                sx={{ borderRadius: 1, backgroundColor: "#f5f5f5" }}
+                                sx={{
+                                  borderRadius: 1,
+                                  backgroundColor: "#f5f5f5",
+                                }}
                               />
                             )}
                           </Box>
@@ -349,16 +403,21 @@ export default function OpportunitiesComp(props) {
                       </Box>
 
                       <List dense sx={{ pl: 2 }}>
-                        {(item?.skills || item?.skillsRequired) && 
-                          (item?.skills || item?.skillsRequired).map((skill, index) => (
-                            <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
-                              <ListItemIcon sx={{ minWidth: 20 }}>
-                                <FiberManualRecord sx={{ fontSize: 8 }} />
-                              </ListItemIcon>
-                              <ListItemText primary={skill} />
-                            </ListItem>
-                          ))
-                        }
+                        {(item?.skills || item?.skillsRequired) &&
+                          (item?.skills || item?.skillsRequired).map(
+                            (skill, index) => (
+                              <ListItem
+                                key={index}
+                                disablePadding
+                                sx={{ mb: 0.5 }}
+                              >
+                                <ListItemIcon sx={{ minWidth: 20 }}>
+                                  <FiberManualRecord sx={{ fontSize: 8 }} />
+                                </ListItemIcon>
+                                <ListItemText primary={skill} />
+                              </ListItem>
+                            )
+                          )}
                       </List>
 
                       {expandedItem === item._id && (
@@ -368,46 +427,84 @@ export default function OpportunitiesComp(props) {
                             variant="subtitle1"
                             sx={{ fontWeight: "bold", mb: 1 }}
                           >
-                            {itemType === "internship" ? "Internship details" : "Job details"}
+                            {itemType === "internship"
+                              ? "Internship details"
+                              : "Job details"}
                           </Typography>
 
                           <Grid container spacing={2}>
                             {itemType === "internship" ? (
                               <>
                                 <Grid item xs={12} sm={4}>
-                                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mb: 2,
+                                    }}
+                                  >
                                     <AccessTime sx={{ mr: 1 }} />
                                     <Box>
-                                      <Typography variant="body2" color="textSecondary">
+                                      <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                      >
                                         Duration
                                       </Typography>
-                                      <Typography variant="body1" sx={{ textAlign: "left" }}>
+                                      <Typography
+                                        variant="body1"
+                                        sx={{ textAlign: "left" }}
+                                      >
                                         {item.duration}
                                       </Typography>
                                     </Box>
                                   </Box>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mb: 2,
+                                    }}
+                                  >
                                     <WorkOutline sx={{ mr: 1 }} />
                                     <Box>
-                                      <Typography variant="body2" color="textSecondary">
+                                      <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                      >
                                         Work Type
                                       </Typography>
-                                      <Typography variant="body1" sx={{ textAlign: "left" }}>
+                                      <Typography
+                                        variant="body1"
+                                        sx={{ textAlign: "left" }}
+                                      >
                                         {item.workType || "N/A"}
                                       </Typography>
                                     </Box>
                                   </Box>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mb: 2,
+                                    }}
+                                  >
                                     <MonetizationOn sx={{ mr: 1 }} />
                                     <Box>
-                                      <Typography variant="body2" color="textSecondary">
+                                      <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                      >
                                         Stipend
                                       </Typography>
-                                      <Typography variant="body1" sx={{ textAlign: "left" }}>
+                                      <Typography
+                                        variant="body1"
+                                        sx={{ textAlign: "left" }}
+                                      >
                                         {item.stipend}
                                       </Typography>
                                     </Box>
@@ -417,39 +514,76 @@ export default function OpportunitiesComp(props) {
                             ) : (
                               <>
                                 <Grid item xs={12} sm={4}>
-                                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mb: 2,
+                                    }}
+                                  >
                                     <WorkOutline sx={{ mr: 1 }} />
                                     <Box>
-                                      <Typography variant="body2" color="textSecondary">
+                                      <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                      >
                                         Experience Required
                                       </Typography>
-                                      <Typography variant="body1" sx={{ textAlign: "left" }}>
-                                        {item?.experience ?? item?.educationRequired ?? "N/A"}
+                                      <Typography
+                                        variant="body1"
+                                        sx={{ textAlign: "left" }}
+                                      >
+                                        {item?.experience ??
+                                          item?.educationRequired ??
+                                          "N/A"}
                                       </Typography>
                                     </Box>
                                   </Box>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mb: 2,
+                                    }}
+                                  >
                                     <AccessTime sx={{ mr: 1 }} />
                                     <Box>
-                                      <Typography variant="body2" color="textSecondary" sx={{ textAlign: "left" }}>
+                                      <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        sx={{ textAlign: "left" }}
+                                      >
                                         Shift and schedule
                                       </Typography>
                                       <Typography variant="body1">
-                                        {item.workType || "Full Time & Day shift"}
+                                        {item.workType ||
+                                          "Full Time & Day shift"}
                                       </Typography>
                                     </Box>
                                   </Box>
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mb: 2,
+                                    }}
+                                  >
                                     <MonetizationOn sx={{ mr: 1 }} />
                                     <Box>
-                                      <Typography variant="body2" color="textSecondary">
+                                      <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                      >
                                         Compensation
                                       </Typography>
-                                      <Typography variant="body1" sx={{ textAlign: "left" }}>
+                                      <Typography
+                                        variant="body1"
+                                        sx={{ textAlign: "left" }}
+                                      >
                                         {item.salary ?? item.pay ?? "N/A"}
                                       </Typography>
                                     </Box>
@@ -457,23 +591,40 @@ export default function OpportunitiesComp(props) {
                                 </Grid>
                               </>
                             )}
-                            
+
                             {item.description && (
                               <Grid item xs={12}>
-                                <Typography variant="body2" color="textSecondary" sx={{ mb: 0.5 }}>
+                                <Typography
+                                  variant="body2"
+                                  color="textSecondary"
+                                  sx={{ mb: 0.5 }}
+                                >
                                   Description
                                 </Typography>
-                                <Typography variant="body2" sx={{ textAlign: "left" }}>
+                                <Typography
+                                  variant="body2"
+                                  sx={{ textAlign: "left" }}
+                                >
                                   {item.description}
                                 </Typography>
                               </Grid>
                             )}
                           </Grid>
 
-                          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              mt: 2,
+                            }}
+                          >
                             <Button
                               variant="contained"
-                              color={itemType === "internship" ? "success" : "primary"}
+                              color={
+                                itemType === "internship"
+                                  ? "success"
+                                  : "primary"
+                              }
                               href={item.link ?? item.applyLink}
                               target="_blank"
                               sx={{
@@ -505,11 +656,14 @@ export default function OpportunitiesComp(props) {
                         }}
                       >
                         <Typography variant="body2" color="textSecondary">
-                          {item.postedDate 
-                            ? `Posted ${Math.floor((new Date() - new Date(item.postedDate)) / (1000 * 60 * 60 * 24))} days ago`
-                            : item.posted 
-                              ? `Active ${item.posted}` 
-                              : "Recently posted"}
+                          {item.postedDate
+                            ? `Posted ${Math.floor(
+                                (new Date() - new Date(item.postedDate)) /
+                                  (1000 * 60 * 60 * 24)
+                              )} days ago`
+                            : item.posted
+                            ? `Active ${item.posted}`
+                            : "Recently posted"}
                         </Typography>
                         {!expandedItem && (
                           <Typography
@@ -525,7 +679,7 @@ export default function OpportunitiesComp(props) {
                     </CardContent>
                   </Card>
                 </Grid>
-              )
+              );
             })}
           </Grid>
         </Container>

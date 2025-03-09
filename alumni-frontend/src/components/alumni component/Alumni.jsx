@@ -31,6 +31,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Link } from 'react-router-dom';
+import { Bell, Check } from 'lucide-react';
+import {Toaster, toast} from 'react-hot-toast'
 
 // Mock data for alumni
 const mockAlumni = [
@@ -85,7 +87,7 @@ const generateMoreAlumni = async () => {
     console.log("Fetching from API...");
     let name = localStorage.getItem("name");
     const response = await fetch(
-      "http://localhost:4001/get_recommendations?student_name=" + name
+      "http://localhost:5000/get_recommendations?student_name=" + name
     );
 
     if (!response.ok) {
@@ -112,6 +114,8 @@ const Alumni = (props) => {
   const [allAlumni,setAllAlumni] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [connectNote, setConnectNote] = useState("");
+  const [show, setShow] = useState(false);
+  const [hide, setHide] = useState(false);
    const [selectedAlumni, setSelectedAlumni] = useState(null);
   const alumniPerPage = 20;
 
@@ -162,7 +166,7 @@ const Alumni = (props) => {
   const navLinks = [
     { name: 'Alumni Directory', path: '/home' },
     { name: 'Chat', path: '/chats' },
-    { name: 'Jobs', path: '/internships' },
+    { name: 'Opportunities', path: '/internships' },
     { name: 'Events', path: '/events' },
     { name: 'Forums', path: '/forum' },
     { name: 'Courses', path: '/courses' }
@@ -188,6 +192,8 @@ const Alumni = (props) => {
     }
   };
 
+  let userRole = localStorage.getItem('userRole');
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
@@ -205,8 +211,13 @@ const Alumni = (props) => {
       >
         <Container maxWidth={false} sx={{ width: "100%" }}>
           <Toolbar disableGutters sx={{ display: "flex" }}>
-            <div style={{ flex: 1, display:"flex", justifyContent:"start",  }}>
-              <img src="./image.png" alt="" width={90} style={{marginTop:10}}/>
+            <div style={{ flex: 1, display: "flex", justifyContent: "start" }}>
+              <img
+                src="./image.png"
+                alt=""
+                width={90}
+                style={{ marginTop: 10 }}
+              />
             </div>
             <Box sx={{ display: "flex", mr: 4 }}>
               {navLinks.map((link) => (
@@ -251,19 +262,72 @@ const Alumni = (props) => {
                   Sign In
                 </Button>
                 </Link> */}
-                <Link to="/payment" style={{ textDecoration: 'none' }}>
-                <Button 
-                  variant="contained" 
-                  color="primary" 
-                  sx={{ 
+              {userRole == "Alumni" && (
+                <Bell
+                  style={{ marginBottom: "-10px", cursor: "pointer" }}
+                  onClick={() => setShow(!show)}
+                />
+              )}
+              {show && !hide && (
+                <div
+                  style={{
+                    position: "absolute",
+                    border: "1px solid #ddd",
+                    padding: "12px",
+                    borderRadius: "8px",
+                    backgroundColor: "#fff",
+                    marginTop: "10px",
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                    width: "250px",
+                    right:"80px",
+                    textAlign:"left"
+                  }}
+                >
+                  <Typography variant="body1" fontWeight="bold" mb={1} xs={{textAlign:"left"}}>
+                    Manav Shah sent you a connection request
+                  </Typography>
+
+                  <Stack direction="row" spacing={2}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={() => {
+                        setShow(false);
+                        setHide(true);
+                        toast.success("Request accepted");
+                      }}
+                      sx={{ textTransform: "none" }}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      sx={{ textTransform: "none" }}
+                    >
+                      Reject
+                    </Button>
+                  </Stack>
+                </div>
+              )}
+              &nbsp;&nbsp;
+              &nbsp;&nbsp;
+              <Link to="/payment" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
                     borderRadius: 1,
-                    textTransform: 'none',
-                    fontWeight: 500
+                    textTransform: "none",
+                    fontWeight: 500,
                   }}
                 >
                   Subscribe
                 </Button>
-                </Link>
+              </Link>
+              &nbsp;&nbsp;&nbsp;
               <Link to="/profile" style={{ textDecoration: "none" }}>
                 <Button
                   variant="contained"
@@ -441,16 +505,27 @@ const Alumni = (props) => {
                   <Button
                     variant="contained"
                     fullWidth
-                    startIcon={<PersonAddIcon />}
+                    startIcon={
+                      selectedAlumni?.name == alumni.name ? (
+                        <Check />
+                      ) : (
+                        <PersonAddIcon />
+                      )
+                    }
                     sx={{
                       mr: 1,
-                      bgcolor: "#4caf50",
+                      bgcolor:
+                        selectedAlumni?.name == alumni.name
+                          ? "green"
+                          : "#4caf50",
                       "&:hover": { bgcolor: "#388e3c" },
                       paddingX: 5,
                     }}
                     onClick={() => handleOpenDialog(alumni)}
                   >
-                    Connect
+                    {selectedAlumni?.name == alumni.name
+                      ? "Req Sent"
+                      : "Connect"}
                   </Button>
                   <Button
                     variant="outlined"
@@ -550,6 +625,7 @@ const Alumni = (props) => {
           </DialogActions>
         </Dialog>
       </Container>
+      <Toaster position="top-center" reverseOrder={false} />
     </AppTheme>
   );
 };

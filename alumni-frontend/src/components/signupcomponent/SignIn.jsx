@@ -138,6 +138,7 @@ export default function SignIn(props) {
       localStorage.setItem("name", response.data.name);
       localStorage.setItem("token", response.data.access_token);
       localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("userRole", response.data.userRole);
 
       if (response.status == 200) {
         navigate("/home");

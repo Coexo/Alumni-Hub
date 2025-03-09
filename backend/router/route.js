@@ -23,7 +23,7 @@ router.route("/experience-details").patch(
 )
 
 router.route("/create/:username").post(
-    controller.verifyToken, controller.createJob
+    controller.createJob
 )
 
 router.route("/deletejob/:id").post(

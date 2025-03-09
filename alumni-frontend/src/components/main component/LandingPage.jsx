@@ -94,7 +94,6 @@ export default function LandingPage() {
 
   return (
     <ThemeProvider theme={theme}>
-
       <Box sx={{ flexGrow: 1, bgcolor: "background.default", mt: "-64px" }}>
         {/* Hero Section */}
         <Box
@@ -316,14 +315,19 @@ export default function LandingPage() {
                         borderRadius: "50%",
                         bgcolor: "#e6f0ff",
                         mb: 2,
-                        margin:"auto",
+                        margin: "auto",
                       }}
                     >
                       <PeopleIcon
                         sx={{ color: "primary.main", fontSize: 30 }}
                       />
                     </Box>
-                    <Typography variant="h3" component="h3" gutterBottom sx={{mt:2}}>
+                    <Typography
+                      variant="h3"
+                      component="h3"
+                      gutterBottom
+                      sx={{ mt: 2 }}
+                    >
                       Alumni Directory
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -346,14 +350,19 @@ export default function LandingPage() {
                         borderRadius: "50%",
                         bgcolor: "#e6f0ff",
                         mb: 2,
-                        margin:"auto"
+                        margin: "auto",
                       }}
                     >
                       <HandshakeIcon
                         sx={{ color: "primary.main", fontSize: 30 }}
                       />
                     </Box>
-                    <Typography variant="h3" component="h3" gutterBottom sx={{mt:2}}>
+                    <Typography
+                      variant="h3"
+                      component="h3"
+                      gutterBottom
+                      sx={{ mt: 2 }}
+                    >
                       Mentorship Program
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -376,13 +385,17 @@ export default function LandingPage() {
                         borderRadius: "50%",
                         bgcolor: "#e6f0ff",
                         mb: 2,
-                        margin:"auto"
-
+                        margin: "auto",
                       }}
                     >
                       <WorkIcon sx={{ color: "primary.main", fontSize: 30 }} />
                     </Box>
-                    <Typography variant="h3" component="h3" gutterBottom sx={{mt:2}}>
+                    <Typography
+                      variant="h3"
+                      component="h3"
+                      gutterBottom
+                      sx={{ mt: 2 }}
+                    >
                       Referral Jobs
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -455,7 +468,12 @@ export default function LandingPage() {
         {/* Events Section */}
         <Box ref={eventsRef} sx={{ py: 10 }}>
           <Container>
-            <Typography variant="h2" component="h2" gutterBottom>
+            <Typography
+              variant="h2"
+              component="h2"
+              gutterBottom
+              sx={{ color: "black" }}
+            >
               Upcoming Events
             </Typography>
             <Grid container spacing={4}>
@@ -464,7 +482,7 @@ export default function LandingPage() {
                   <CardMedia
                     component="img"
                     height="200"
-                    image="/api/placeholder/400/200"
+                    image="https://news.ontariotechu.ca/archives/2024/02/images/feas-naygn-nuclear-industry-networking-thumbnail.jpg"
                     alt="Tech Industry Networking Night"
                   />
                   <CardContent>
@@ -498,7 +516,7 @@ export default function LandingPage() {
                   <CardMedia
                     component="img"
                     height="200"
-                    image="/api/placeholder/400/200"
+                    image="https://media.istockphoto.com/id/1066324992/photo/graduation-day.jpg?s=612x612&w=0&k=20&c=cleRpjTZbo430AbH-luZFYMMNqPwhwyTnFgWMbi_AiI="
                     alt="Career Development Webinar"
                   />
                   <CardContent>
@@ -532,7 +550,7 @@ export default function LandingPage() {
                   <CardMedia
                     component="img"
                     height="200"
-                    image="/api/placeholder/400/200"
+                    image="https://newsroom.aua.am/files/2024/06/Alumni-Reunion-2024-820x400.jpg"
                     alt="Annual Alumni Reunion"
                   />
                   <CardContent>
@@ -568,29 +586,47 @@ export default function LandingPage() {
         {/* Testimonials Section */}
         <Box ref={testimonialsRef} sx={{ py: 10, bgcolor: "white" }}>
           <Container>
-            <Typography variant="h2" component="h2" align="center" gutterBottom>
+            <Typography
+              variant="h2"
+              component="h2"
+              align="center"
+              gutterBottom
+              color="black"
+              sx={{ mb: 5 }}
+            >
               What Our Members Say
             </Typography>
             <Grid container spacing={4}>
               <Grid item xs={12} md={4}>
                 <Card sx={{ height: "100%" }}>
                   <CardContent>
-                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                      <Avatar src="/api/placeholder/50/50" alt="Sarah Chen" />
-                      <Box sx={{ ml: 2 }}>
-                        <Typography variant="h6">Sarah Chen</Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        mb: 2,
+                      }}
+                    >
+                      <Avatar
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWSkmBlsD7y4uWMI2UVfkhr2oEqiw4HRDVkg&s"
+                        alt="Rohan Jain"
+                      />
+                      <Box sx={{ mt: 2, textAlign: "center" }}>
+                        <Typography variant="h6">Rohan Jain</Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Software Engineer, Google
+                          Product Manager, Microsoft
                         </Typography>
                       </Box>
                     </Box>
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ fontStyle: "italic" }}
+                      sx={{ fontStyle: "italic", textAlign: "center" }}
                     >
-                      "Found my dream job through AlumniHub's network. The
-                      mentorship program was invaluable for my career growth."
+                      "Being a mentor on AlumniHub has been rewarding. It's
+                      great to give back to the community that helped me
+                      succeed."
                     </Typography>
                   </CardContent>
                 </Card>
@@ -598,12 +634,19 @@ export default function LandingPage() {
               <Grid item xs={12} md={4}>
                 <Card sx={{ height: "100%" }}>
                   <CardContent>
-                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        mb: 2,
+                      }}
+                    >
                       <Avatar
-                        src="/api/placeholder/50/50"
+                        src="https://i1.rgstatic.net/ii/profile.image/11431281154580863-1682911372616_Q512/Sharmila-Gaikwad.jpg"
                         alt="Sharmila Gaikwad"
                       />
-                      <Box sx={{ ml: 2 }}>
+                      <Box sx={{ mt: 2, textAlign: "center" }}>
                         <Typography variant="h6">Sharmila Gaikwad</Typography>
                         <Typography variant="body2" color="text.secondary">
                           Startup Founder
@@ -613,7 +656,7 @@ export default function LandingPage() {
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ fontStyle: "italic" }}
+                      sx={{ fontStyle: "italic", textAlign: "center" }}
                     >
                       "The alumni network helped me find co-founders and early
                       employees for my startup. Incredible community!"
@@ -624,9 +667,19 @@ export default function LandingPage() {
               <Grid item xs={12} md={4}>
                 <Card sx={{ height: "100%" }}>
                   <CardContent>
-                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                      <Avatar src="/api/placeholder/50/50" alt="Rohan Jain" />
-                      <Box sx={{ ml: 2 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        mb: 2,
+                      }}
+                    >
+                      <Avatar
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWSkmBlsD7y4uWMI2UVfkhr2oEqiw4HRDVkg&s"
+                        alt="Rohan Jain"
+                      />
+                      <Box sx={{ mt: 2, textAlign: "center" }}>
                         <Typography variant="h6">Rohan Jain</Typography>
                         <Typography variant="body2" color="text.secondary">
                           Product Manager, Microsoft
@@ -636,7 +689,7 @@ export default function LandingPage() {
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ fontStyle: "italic" }}
+                      sx={{ fontStyle: "italic", textAlign: "center" }}
                     >
                       "Being a mentor on AlumniHub has been rewarding. It's
                       great to give back to the community that helped me

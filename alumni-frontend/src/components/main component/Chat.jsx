@@ -45,9 +45,20 @@ const theme = createTheme({
   },
 });
 
+let userRole = localStorage.getItem("userRole");
+
+
 // Expanded sample data for contacts (more users added)
 const contacts = [
   
+  {
+    "id": 2,
+    "name": userRole == "Alumni" ? "Manav Shah" : "Pooja Varpe",
+    "email": userRole == "Alumni" ? "manav@gamil.com" : "pooja@gmail.com",
+    "avatar": "",
+    "lastActivity": "9:45 AM",
+    "hasUnread": false
+  },
     {
       "id": 1,
       "name": "Opal Bhonsle",
@@ -55,14 +66,6 @@ const contacts = [
       "avatar": "https://i.pinimg.com/474x/83/60/f6/8360f6e8e6167d545b0c34de7490cc1e.jpg",
       "lastActivity": "10:02 AM",
       "hasUnread": true
-    },
-    {
-      "id": 2,
-      "name": "Nara Chakraborty",
-      "email": "nara.chakraborty@webmail.com",
-      "avatar": "https://i.pinimg.com/originals/6b/7e/d6/6b7ed698713c09ad9e6afc7dcb996a09.jpg",
-      "lastActivity": "9:45 AM",
-      "hasUnread": false
     },
     {
       "id": 3,
@@ -127,48 +130,9 @@ const contacts = [
     avatar: 'https://i.pravatar.cc/150?img=10',
     lastActivity: 'Feb 28',
     hasUnread: true
-  },
-  {
-    id: 11,
-    name: 'Daniel Lee',
-    email: 'daniel.l@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=11',
-    lastActivity: 'Feb 27',
-    hasUnread: false
-  },
-  {
-    id: 12,
-    name: 'Olivia Martin',
-    email: 'olivia.m@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=12',
-    lastActivity: 'Feb 26',
-    hasUnread: false
-  },
-  {
-    id: 13,
-    name: 'James Taylor',
-    email: 'james.t@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=13',
-    lastActivity: 'Feb 25',
-    hasUnread: false
-  },
-  {
-    id: 14,
-    name: 'Sophia Brown',
-    email: 'sophia.b@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=14',
-    lastActivity: 'Feb 24',
-    hasUnread: true
-  },
-  {
-    id: 15,
-    name: 'William Davis',
-    email: 'william.d@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=15',
-    lastActivity: 'Feb 23',
-    hasUnread: false
   }
 ];
+
 
 // Sample conversations data with messages for all contacts
 const initialConversations = {
@@ -179,25 +143,19 @@ const initialConversations = {
       timestamp: '10:04 AM',
       sender: 'contact',
     },
-    {
-      id: 2,
-      text: 'Sure, let me check and get back to you.',
-      timestamp: '10:15 AM',
-      sender: 'user',
-    },
   ],
   2: [
     {
       id: 1,
-      text: 'Do you have time to review the closing documents today?',
-      timestamp: '9:30 AM',
-      sender: 'contact',
+      text: 'Hello!',
+      timestamp: "",
+      sender: userRole == "Alumni" ? "contact" : 'user',
     },
     {
-      id: 2,
-      text: 'Yes, I can look at them this afternoon.',
-      timestamp: '9:45 AM',
-      sender: 'user',
+      id: 1,
+      text:userRole == "Alumni" ? "" : 'Hii!',
+      timestamp: "",
+      sender: userRole == "Alumni" ? "user" : 'contact',
     },
   ],
   3: [
@@ -433,7 +391,7 @@ function ChatMessage({ message }) {
         mb: 1,
       }}
     >
-      <Paper
+      {message.text != "" && <Paper
         sx={{
           p: 2,
           borderRadius: 2,
@@ -454,7 +412,7 @@ function ChatMessage({ message }) {
         >
           {message.timestamp}
         </Typography>
-      </Paper>
+      </Paper>}
     </Box>
   );
 }
@@ -506,7 +464,7 @@ function ContactsList({ onSelectContact, selectedContact, contactsRef }) {
         <IconButton href="/home">
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6">Contacts</Typography>
+        <Typography variant="h6">Alumnus</Typography>
         <IconButton color="secondary">
           <AddIcon />
         </IconButton>
@@ -785,7 +743,7 @@ function ChatWindow({ selectedContact, conversations, setConversations, requestS
       </Box>
 
       {/* Show the request notification only if pending */}
-      {currentRequestStatus === "pending" && (
+      {currentRequestStatus === "pending" && selectedContact.id != 2 && (
         <Paper
           sx={{
             p: 2,

@@ -210,10 +210,10 @@ const DiscussionForm = (props) => {
   const navLinks = [
     { name: "Alumni Directory", path: "/home" },
     { name: "Chat", path: "/chats" },
-    { name: "Jobs", path: "/internships" },
+    { name: "Opportunities", path: "/internships" },
     { name: "Events", path: "/events" },
     { name: "Forums", path: "/forum" },
-    { name: 'Courses', path: '/courses' }
+    { name: "Courses", path: "/courses" },
   ];
 
 
@@ -285,6 +285,20 @@ const DiscussionForm = (props) => {
                   Sign In
                 </Button>
                 </Link> */}
+                <Link to="/payment" style={{ textDecoration: "none" }}>
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  sx={{
+                                    borderRadius: 1,
+                                    textTransform: "none",
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  Subscribe
+                                </Button>
+                              </Link>
+                              &nbsp;&nbsp;&nbsp;
               <Link to="/profile" style={{ textDecoration: "none" }}>
                 <Button
                   variant="contained"

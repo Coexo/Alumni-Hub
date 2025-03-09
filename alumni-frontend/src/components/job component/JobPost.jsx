@@ -152,7 +152,7 @@ export default function PostJobPage() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Include the token here
+              // Authorization: `Bearer ${token}`, // Include the token here
             },
             body: JSON.stringify(formData),
           }
@@ -180,6 +180,7 @@ export default function PostJobPage() {
             educationRequired: "",
             applyLink: "",
           });
+          window.location.href="/internships"
         } else {
           throw new Error(result.message || "Failed to post job");
         }
