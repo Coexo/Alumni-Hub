@@ -238,6 +238,22 @@ const Alumni = (props) => {
                   Profile
                 </Button>
                 </Link>
+
+                
+
+                <Link to="/payment" style={{ textDecoration: 'none' }}>
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  sx={{ 
+                    borderRadius: 1,
+                    textTransform: 'none',
+                    fontWeight: 500
+                  }}
+                >
+                  Subscribe
+                </Button>
+                </Link>
               </Box>
             </Toolbar>
           </Container>

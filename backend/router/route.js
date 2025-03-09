@@ -34,6 +34,14 @@ router.route("/create-event").post(
     controller.verifyToken, controller.createEvent
 )
 
+router.route("/subscribe").post(
+    controller.subscribe
+)
+
+
+
+
+
 
 
 router.route("/get-events").get(

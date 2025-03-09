@@ -13,6 +13,7 @@ import HomeComp from './components/job component/HomeComp';
 import EventsPage from './components/event component/Events';
 import Course from './components/course component/Courses';
 import Video from './components/course component/Video';
+import Payment from './components/payment component/Payment';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,6 +22,7 @@ function App() {
     <>
     <Router>
       <Routes>
+        {/* <Route path="/" element={<Main/>} /> */}
         <Route path="/" element={<Main/>} />
         {/* Default route is signup */}
         {/* <Route path="/" element={<Navigate to="/signup" />} /> */}
@@ -33,6 +35,7 @@ function App() {
         <Route path="/events" element={<EventsPage/>} />
         <Route path="/courses" element={<Course/>} />
         <Route path="/watch/:id" element={<Video />} />
+        <Route path="/payment" element={<Payment/>} />
       </Routes>
     </Router>
       {/* <div>
