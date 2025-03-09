@@ -87,6 +87,9 @@ export default function SignUp(props) {
             setError("");
             setIsSignup(false);
             setCookie("isRegistered",true);
+            localStorage.setItem("userId", response.data.user._id);
+            localStorage.setItem("username", response.data.user.username);
+            localStorage.setItem("name", response.data.user.name);
             window.location.href="/"
         } catch (err) {
             console.error("Signup error:", err);

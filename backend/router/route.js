@@ -10,8 +10,8 @@ router.route("/login").post(
     controller.verifyUser, controller.login
 )
 
-router.route("/education-details").patch(
-    controller.updateEducation
+router.route("/education-details").put(
+    controller.verifyToken, controller.updateEducation
 )
 
 router.route("/project-details").patch(
@@ -30,6 +30,9 @@ router.route("/deletejob/:id").post(
     controller.verifyToken, controller.deleteJob
 )
 
+router.route("/get-jobs-list").get(controller.jobsList);
+
+
 router.route("/create-event").post(
     controller.verifyToken, controller.createEvent
 )
@@ -40,8 +43,10 @@ router.route("/get-events").get(
     controller.getAllEvents
 )
 
-router.route("/profile/:id").get(
-    controller.verifyToken, controller.getUserData
-)
+router.route("/profile/:username").get(controller.getUserData);
+
+// router.route("/user/:id").get(
+//     controller.verifyToken, controller.getEduData
+// )
 
 export default router;
