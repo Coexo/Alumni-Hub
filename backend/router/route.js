@@ -45,9 +45,9 @@ router.route("/get-events").get(
 
 router.route("/profile/:username").get(controller.getUserData);
 
-router.post("/create-internship",  controller.createInternship);
-router.delete("/delete-internship/:id",  controller.deleteInternship);
-router.patch("/update-internship/:id",  controller.updateInternship);
+router.post("/create-internship", controller.createInternship);
+router.delete("/delete-internship/:id", controller.deleteInternship);
+router.patch("/update-internship/:id", controller.updateInternship);
 router.get("/get-internships-list", controller.internshipsList);
 
 // router.route("/user/:id").get(

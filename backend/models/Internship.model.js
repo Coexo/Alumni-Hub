@@ -1,44 +1,54 @@
-import mongoose from "mongoose";
+// models/Internship.model.js
+import mongoose from 'mongoose';
 
 const InternshipSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         required: true
     },
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     company: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     location: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     duration: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     stipend: {
-        type: String
+        type: String,
+        required: true,
+        trim: true
     },
     workType: {
         type: String,
-        enum: ["Remote", "In-person", "Hybrid"],
-        default: "In-person"
+        enum: ['Remote', 'In-office', 'Hybrid'],
+        required: true
     },
     description: {
-        type: String
+        type: String,
+        required: true
     },
     skills: {
         type: [String],
-        default: []
+        required: true
     },
     link: {
-        type: String
+        type: String,
+        required: true,
+        trim: true
     },
     postedDate: {
         type: Date,
@@ -50,5 +60,6 @@ const InternshipSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const Internship = mongoose.model("Internship", InternshipSchema);
+const Internship = mongoose.model('Internship', InternshipSchema);
+
 export default Internship;

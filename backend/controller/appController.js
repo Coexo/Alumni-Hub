@@ -319,15 +319,18 @@ export const createInternship = async (req, res) => {
             link 
         } = req.body;
         
-        const userId = req.user.userId; // Get user ID from token
-        const userRole = req.user.userRole; // Get user role from token
-
-        if (userRole !== "Alumni") {
-            return res.status(403).json({ message: "Only alumni can post internships." });
-        }
+        // Remove authentication check
+        // const userId = req.user.userId;
+        // const userRole = req.user.userRole;
+        
+        // Remove role check
+        // if (userRole !== "Alumni") {
+        //     return res.status(403).json({ message: "Only alumni can post internships." });
+        // }
 
         const internship = new Internship({
-            createdBy: userId,
+            // Set createdBy to null or remove it if it's required
+            // createdBy: userId,
             title,
             company,
             location,
@@ -338,7 +341,7 @@ export const createInternship = async (req, res) => {
             skills,
             link,
             postedDate: new Date(),
-            postedDays: 0 // Will be calculated when fetched
+            postedDays: 0
         });
 
         await internship.save();
@@ -354,9 +357,10 @@ export const deleteInternship = async (req, res) => {
         const internship = await Internship.findById(req.params.id);
         if (!internship) return res.status(404).json({ message: "Internship not found" });
 
-        if (internship.createdBy.toString() !== req.user.userId) {
-            return res.status(403).json({ message: "You are not authorized to delete this internship." });
-        }
+        // Remove authentication check
+        // if (internship.createdBy.toString() !== req.user.userId) {
+        //     return res.status(403).json({ message: "You are not authorized to delete this internship." });
+        // }
 
         await internship.deleteOne();
         res.status(200).json({ message: "Internship deleted successfully" });
@@ -396,7 +400,8 @@ export const updateInternship = async (req, res) => {
     try {
         const internshipId = req.params.id;
         const updates = req.body;
-        const userId = req.user.userId;
+        // Remove authentication
+        // const userId = req.user.userId;
         
         // Find the internship
         const internship = await Internship.findById(internshipId);
@@ -405,10 +410,10 @@ export const updateInternship = async (req, res) => {
             return res.status(404).json({ message: "Internship not found" });
         }
         
-        // Check if user is authorized to update
-        if (internship.createdBy.toString() !== userId) {
-            return res.status(403).json({ message: "You are not authorized to update this internship" });
-        }
+        // Remove authentication check
+        // if (internship.createdBy.toString() !== userId) {
+        //     return res.status(403).json({ message: "You are not authorized to update this internship" });
+        // }
         
         // Update the internship
         const updatedInternship = await Internship.findByIdAndUpdate(
@@ -426,7 +431,6 @@ export const updateInternship = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-
 export const createEvent = async (req, res) => {
     try {
         const { title, description, date, time, location, eventType, college, registrationLink, bannerImage } = req.body;
