@@ -11,6 +11,8 @@ import Main from './components/main component/Main';
 import DiscussionForm from './components/discussion forum/DiscussionForum';
 import HomeComp from './components/job component/HomeComp';
 import EventsPage from './components/event component/Events';
+import Course from './components/course component/Courses';
+import Video from './components/course component/Video';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -29,6 +31,8 @@ function App() {
         <Route path="/forum" element={<DiscussionForm/>} />
         <Route path="/internships" element={<HomeComp/>} />
         <Route path="/events" element={<EventsPage/>} />
+        <Route path="/courses" element={<Course/>} />
+        <Route path="/watch/:id" element={<Video />} />
       </Routes>
     </Router>
       {/* <div>
