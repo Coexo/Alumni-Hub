@@ -22,7 +22,7 @@ router.route("/experience-details").patch(
     controller.updateExperience
 )
 
-router.route("/create").post(
+router.route("/create/:username").post(
     controller.verifyToken, controller.createJob
 )
 
@@ -51,12 +51,15 @@ router.route("/get-events").get(
     controller.getAllEvents
 )
 
-router.route("/profile/:id").get(
-    controller.verifyToken, controller.getUserData
-)
+router.route("/profile/:username").get(controller.getUserData);
 
-router.route("/user/:id").get(
-    controller.verifyToken, controller.getEduData
-)
+router.post("/create-internship", controller.createInternship);
+router.delete("/delete-internship/:id", controller.deleteInternship);
+router.patch("/update-internship/:id", controller.updateInternship);
+router.get("/get-internships-list", controller.internshipsList);
+
+// router.route("/user/:id").get(
+//     controller.verifyToken, controller.getEduData
+// )
 
 export default router;

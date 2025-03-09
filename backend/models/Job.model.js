@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Alumni user ID
+    createdBy: { type: String }, // Alumni user ID
     title: { type: String, required: true },
     companyName: { type: String, required: true },
     location: { type: String, required: true },

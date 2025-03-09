@@ -18,82 +18,81 @@ import { GoogleIcon } from './CustomIcons';
 import AppTheme from './shared-theme/AppTheme';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { setCookie } from 'cookies-next/client';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignSelf: 'center',
-  width: '100%',
+  display: "flex",
+  flexDirection: "column",
+  alignSelf: "center",
+  width: "100%",
   padding: theme.spacing(4),
   gap: theme.spacing(2),
-  margin: 'auto',
+  margin: "auto",
   boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  [theme.breakpoints.up('sm')]: {
-    width: '450px',
+    "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
+  [theme.breakpoints.up("sm")]: {
+    width: "450px",
   },
-  ...theme.applyStyles('dark', {
+  ...theme.applyStyles("dark", {
     boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
+      "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
   }),
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
-  minHeight: '100%',
+  height: "calc((1 - var(--template-frame-height, 0)) * 100dvh)",
+  minHeight: "100%",
   padding: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     padding: theme.spacing(4),
   },
-  '&::before': {
+  "&::before": {
     content: '""',
-    display: 'block',
-    position: 'absolute',
+    display: "block",
+    position: "absolute",
     zIndex: -1,
     inset: 0,
     backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
-    backgroundRepeat: 'no-repeat',
-    ...theme.applyStyles('dark', {
+      "radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))",
+    backgroundRepeat: "no-repeat",
+    ...theme.applyStyles("dark", {
       backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+        "radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))",
     }),
   },
 }));
 
 export default function SignIn(props) {
-
-
   const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
   // const [email, setEmail] = useState('');
   // const [password, setPassword] = useState('');
   const [loginData, setLoginData] = useState({
-    email: '',
-    password: ''
-  })
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const navigate = useNavigate();
 
   const validateInputs = () => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
 
     let isValid = true;
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage("Please enter a valid email address.");
       isValid = false;
     } else {
       setEmailError(false);
-      setEmailErrorMessage('');
+      setEmailErrorMessage("");
     }
 
     // if (!password.value || password.value.length < 6) {
@@ -108,49 +107,55 @@ export default function SignIn(props) {
     return isValid;
   };
 
-
   const handleSubmit = async (event) => {
     console.log("inside");
     event.preventDefault();
     console.log(loginData.email, loginData.password);
     if (!loginData.email || !loginData.password) {
-        setError('Please fill in both fields');
-        return;
+      setError("Please fill in both fields");
+      return;
     }
 
     try {
-        const response = await axios.post('http://localhost:4001/api/login', loginData , {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        setLoginData({email:'', password:''});
-        setError('');
-        setSuccessMessage(response.data.message);
-
-        console.log(response.data);
-        localStorage.setItem('token', response.data.access_token);
-        localStorage.setItem('userId', response.data.userId);
-
-        
-        if (response.status == 200) {
-            navigate("/home");
-        } else {
-            setError('Token storage failed');
+      const response = await axios.post(
+        "http://localhost:4001/api/login",
+        loginData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      );
 
+      setLoginData({ email: "", password: "" });
+      setError("");
+      setSuccessMessage(response.data.message);
 
+      console.log(response.data);
+      setCookie("isRegistered", true);
+
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("name", response.data.name);
+      localStorage.setItem("token", response.data.access_token);
+      localStorage.setItem("userId", response.data.userId);
+
+      if (response.status == 200) {
+        navigate("/home");
+      } else {
+        setError("Token storage failed");
+      }
     } catch (err) {
-        console.error("Login error:", err);
-        setError(err.response?.data?.message || 'Login failed, please try again.');
-        setSuccessMessage('');
+      console.error("Login error:", err);
+      setError(
+        err.response?.data?.message || "Login failed, please try again."
+      );
+      setSuccessMessage("");
     }
-};
+  };
 
-const handleChange = (e) => {
-  setLoginData({ ...loginData, [e.target.name]: e.target.value });
-};
+  const handleChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
 
   // const handleSubmit = (event) => {
   //   if (emailError || passwordError) {
@@ -173,17 +178,27 @@ const handleChange = (e) => {
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', textAlign: 'left', paddingLeft: '2px'}}
+            sx={{
+              width: "100%",
+              fontSize: "clamp(2rem, 10vw, 2.15rem)",
+              textAlign: "left",
+              paddingLeft: "2px",
+            }}
           >
             Sign in
           </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <FormControl>
-              <FormLabel htmlFor="email" sx={{ textAlign: 'left', paddingLeft: '5px' }}>Email</FormLabel>
+              <FormLabel
+                htmlFor="email"
+                sx={{ textAlign: "left", paddingLeft: "5px" }}
+              >
+                Email
+              </FormLabel>
               <TextField
                 required
                 fullWidth
@@ -195,12 +210,17 @@ const handleChange = (e) => {
                 variant="outlined"
                 error={emailError}
                 helperText={emailErrorMessage}
-                color={emailError ? 'error' : 'primary'}
+                color={emailError ? "error" : "primary"}
                 onChange={handleChange}
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password" sx={{ textAlign: 'left', paddingLeft: '5px' }}>Password</FormLabel>
+              <FormLabel
+                htmlFor="password"
+                sx={{ textAlign: "left", paddingLeft: "5px" }}
+              >
+                Password
+              </FormLabel>
               <TextField
                 required
                 fullWidth
@@ -213,7 +233,7 @@ const handleChange = (e) => {
                 value={loginData.password}
                 error={passwordError}
                 helperText={passwordErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                color={passwordError ? "error" : "primary"}
                 onChange={handleChange}
               />
             </FormControl>
@@ -231,25 +251,21 @@ const handleChange = (e) => {
             </Button>
           </Box>
           <Divider>
-            <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+            <Typography sx={{ color: "text.secondary" }}>or</Typography>
           </Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Google')}
+              onClick={() => alert("Sign in with Google")}
               startIcon={<GoogleIcon />}
             >
               Sign in with Google
             </Button>
 
-            <Typography sx={{ textAlign: 'center' }}>
-              Don't have an account?{' '}
-              <Link
-                to="/signup"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
+            <Typography sx={{ textAlign: "center" }}>
+              Don't have an account?{" "}
+              <Link to="/signup" variant="body2" sx={{ alignSelf: "center" }}>
                 Sign up
               </Link>
             </Typography>

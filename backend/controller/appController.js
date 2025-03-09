@@ -8,6 +8,7 @@ import Job from "../models/Job.model.js";
 import EventModel from "../models/Event.model.js";
 import PremiumModel from "../models/Premium.model.js";
 import sendEmail from "../emailService.js";
+import Internship from "../models/Internship.model.js";
 
 export async function verifyUser(req, res, next) {
     try {
@@ -62,7 +63,7 @@ export async function signin(req, res, next) {
                 })
 
                 user.save()
-                    .then(result => res.status(201).send({ msg: "User registered Successfully" }))
+                    .then(result => res.status(201).send({ msg: "User registered Successfully", user:result }))
                     .catch(error => res.status(500).send(console.log(error)))
 
             })
@@ -116,11 +117,14 @@ export async function login(req, res, next) {
 
         // ✅ Send successful response
         return res.status(200).json({
-            message: "Login Successful",
-            access_token: token,
-            userId: user._id,
-            userEmail: user.email,
-            userRole: user.education.length > 0 ? user.education[0].role : "Student"
+          message: "Login Successful",
+          access_token: token,
+          userId: user._id,
+          name: user.name,
+          username: user.username,
+          userEmail: user.email,
+          userRole:
+            user.education.length > 0 ? user.education[0].role : "Student",
         });
 
     } catch (error) {
@@ -244,26 +248,26 @@ export const createJob = async (req, res) => {
     try {
         console.log("Req User:", req.user);
         const { title, companyName, location, experience, pay, role, jobDescription, skillsRequired, educationRequired, applyLink } = req.body;
-        const userId = req.user.userId; // Get user ID from token
-        const userRole = req.user.userRole; // Get user role from token
-
-        if (userRole !== "Alumni") {
-            return res.status(403).json({ message: "Only alumni can post jobs." });
-        }
+        const userId = req.user;
+        // const username = req.params.username;
+        
+         // Get user ID from token
 
         const job = new Job({
-            createdBy: userId,
-            title,
-            companyName,
-            location,
-            experience,
-            pay,
-            role,
-            jobDescription,
-            skillsRequired,
-            educationRequired,
-            applyLink,
+        //   createdBy: user._id,
+          title,
+          companyName,
+          location,
+          experience,
+          pay,
+          role,
+          jobDescription,
+          skillsRequired,
+          educationRequired,
+          applyLink,
         });
+
+        window.location.href = "/internships"
 
         await job.save();
         res.status(201).json({ message: "Job posted successfully", job });
@@ -301,6 +305,134 @@ export const jobsList = async (req, res) => {
                   .json({ message: "Server error", error: error.message });
     }
 }
+
+// INTERNSHIP CONTROLLERS
+export const createInternship = async (req, res) => {
+    try {
+        const { 
+            title, 
+            company, 
+            location, 
+            duration, 
+            stipend, 
+            workType,
+            description, 
+            skills, 
+            link 
+        } = req.body;
+        
+        // Remove authentication check
+        // const userId = req.user.userId;
+        // const userRole = req.user.userRole;
+        
+        // Remove role check
+        // if (userRole !== "Alumni") {
+        //     return res.status(403).json({ message: "Only alumni can post internships." });
+        // }
+
+        const internship = new Internship({
+            // Set createdBy to null or remove it if it's required
+            // createdBy: userId,
+            title,
+            company,
+            location,
+            duration,
+            stipend,
+            workType,
+            description,
+            skills,
+            link,
+            postedDate: new Date(),
+            postedDays: 0
+        });
+
+        await internship.save();
+        res.status(201).json({ message: "Internship posted successfully", internship });
+    } catch (error) {
+        console.error("Error creating internship:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const deleteInternship = async (req, res) => {
+    try {
+        const internship = await Internship.findById(req.params.id);
+        if (!internship) return res.status(404).json({ message: "Internship not found" });
+
+        // Remove authentication check
+        // if (internship.createdBy.toString() !== req.user.userId) {
+        //     return res.status(403).json({ message: "You are not authorized to delete this internship." });
+        // }
+
+        await internship.deleteOne();
+        res.status(200).json({ message: "Internship deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const internshipsList = async (req, res) => {
+    try {
+        const internships = await Internship.find();
+        
+        // Calculate days since posting for each internship
+        const internshipsWithDays = internships.map(internship => {
+            const internshipObj = internship.toObject();
+            
+            // Calculate days since posting
+            if (internshipObj.postedDate) {
+                const postedDate = new Date(internshipObj.postedDate);
+                const currentDate = new Date();
+                const diffTime = Math.abs(currentDate - postedDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                internshipObj.postedDays = diffDays;
+            }
+            
+            return internshipObj;
+        });
+        
+        res.status(200).json({ data: internshipsWithDays });
+    } catch (error) {
+        console.error("Error fetching internships:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const updateInternship = async (req, res) => {
+    try {
+        const internshipId = req.params.id;
+        const updates = req.body;
+        // Remove authentication
+        // const userId = req.user.userId;
+        
+        // Find the internship
+        const internship = await Internship.findById(internshipId);
+        
+        if (!internship) {
+            return res.status(404).json({ message: "Internship not found" });
+        }
+        
+        // Remove authentication check
+        // if (internship.createdBy.toString() !== userId) {
+        //     return res.status(403).json({ message: "You are not authorized to update this internship" });
+        // }
+        
+        // Update the internship
+        const updatedInternship = await Internship.findByIdAndUpdate(
+            internshipId,
+            updates,
+            { new: true, runValidators: true }
+        );
+        
+        res.status(200).json({ 
+            message: "Internship updated successfully", 
+            internship: updatedInternship 
+        });
+    } catch (error) {
+        console.error("Error updating internship:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
 export const createEvent = async (req, res) => {
     try {
         const { title, description, date, time, location, eventType, college, registrationLink, bannerImage } = req.body;
@@ -350,15 +482,15 @@ export const getAllEvents = async (req, res) => {
 };
 
 export const getUserData = async (req, res) => {
-    console.log(req.params.id);
+    console.log(req.params.username);
     try {
-        const user = await UserModel.findById(req.params.id);
+        const user = await User.findOne({ username: req.params.username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: error.message });
     }
 };
 
