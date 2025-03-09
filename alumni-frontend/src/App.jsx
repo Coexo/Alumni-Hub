@@ -15,6 +15,7 @@ import { getCookie } from 'cookies-next/client';
 import Course from './components/course component/Courses';
 import Video from './components/course component/Video';
 import Chat from './components/main component/Chat';
+import Payment from './components/payment component/Payment';
 import PostJobPage from './components/job component/JobPost';
 import CreateCoursePage from './components/course component/CreateCourse';
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/watch/:id" element={<Video />} />
           <Route path="/create-post" element={<PostJobPage />} />
           <Route path="/create-courses" element={<CreateCoursePage />} />
+          <Route path="/payment" element={<Payment/>} />
         </Routes>
       </Router>
     </>

@@ -7,6 +7,8 @@ import ENV from 'dotenv';
 import Job from "../models/Job.model.js";
 import EventModel from "../models/Event.model.js";
 import coursesModel from "../models/courses.model.js";
+import PremiumModel from "../models/Premium.model.js";
+import sendEmail from "../emailService.js";
 import Internship from "../models/Internship.model.js";
 
 export async function verifyUser(req, res, next) {
@@ -465,6 +467,9 @@ export const createEvent = async (req, res) => {
 
 
 
+
+
+
 /////////////////////////////////////// GET REQUESTS /////////////////////////////////////////////
 
 export const getAllEvents = async (req, res) => {
@@ -534,3 +539,58 @@ export const createCourse = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+export const getEduData = async (req, res) => {
+    console.log("Body",req.params);
+    try {
+        const user = await UserModel.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
+    }
+};
+
+export const subscribe = async (req, res) => {
+    console.log(req.body)
+    try {
+        const { userId } = req.body; // Get user ID from frontend
+    
+        // Fetch user details
+        const user = await UserModel.findById(userId);
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+    
+        // Check if user is already a premium user
+        const existingPremiumUser = await PremiumModel.findOne({ user_id: userId });
+        if (existingPremiumUser) {
+          return res.status(400).json({ message: "User is already a premium member" });
+        }
+    
+        // Save user details in PremiumUser collection
+        const premiumUser = new PremiumModel({
+          user_id: user._id,
+          name: user.name,
+          username: user.username,
+          email: user.email,
+        });
+
+    
+        await premiumUser.save();
+
+        await sendEmail(
+            user.email,
+            "Welcome to Premium Membership!",
+            `Hello ${user.name},\n\n🎉 You have successfully subscribed to our premium plan! Stay tuned for exclusive job postings and notifications.\n\nThank you for joining us!\n\n- Alumni Hub Team`
+          );
+    
+        res.status(201).json({ message: "Subscription successful", premiumUser });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+};
+
+

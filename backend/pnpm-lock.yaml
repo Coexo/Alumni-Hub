@@ -32,6 +32,9 @@ importers:
       mongoose:
         specifier: ^8.11.0
         version: 8.11.0
+      nodemailer:
+        specifier: ^6.10.0
+        version: 6.10.0
       nodemon:
         specifier: ^3.1.9
         version: 3.1.9
@@ -417,6 +420,9 @@ packages:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
 
+  nodemailer@6.10.0:
+    resolution: {integrity: sha512-SQ3wZCExjeSatLE/HBaXS5vqUOQk6GtBdIIKxiFdmm01mOQZX/POJkO3SUX1wDiYcwUOJwT23scFSC9fY2H8IA==}
+    engines: {node: '>=6.0.0'}
   nodemon@3.1.9:
     resolution: {integrity: sha512-hdr1oIb2p6ZSxu3PB2JWWYS7ZQ0qvaZsc3hK8DR8f02kRzc8rjYmxAIvdz+aYC+8F2IjNaB7HMcSDg8nQpJxyg==}
     engines: {node: '>=10'}
@@ -971,6 +977,7 @@ snapshots:
 
   negotiator@0.6.3: {}
 
+  nodemailer@6.10.0: {}
   nodemon@3.1.9:
     dependencies:
       chokidar: 3.6.0
