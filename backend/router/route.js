@@ -45,8 +45,8 @@ router.route("/get-events").get(
 
 router.route("/profile/:username").get(controller.getUserData);
 
-router.route("/user/:id").get(
-    controller.verifyToken, controller.getEduData
-)
+// router.route("/user/:id").get(
+//     controller.verifyToken, controller.getEduData
+// )
 
 export default router;

@@ -20,7 +20,7 @@ import {
     Chip
   } from '@mui/material';
   import { Search as SearchIcon } from '@mui/icons-material';
-import AppTheme from '../signup component/shared-theme/AppTheme';
+import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 //   import axios from 'axios';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Link, useLocation } from 'react-router-dom';
@@ -347,6 +347,7 @@ import { useNavigate } from 'react-router-dom';
 
     const navLinks = [
       { name: 'Alumni Directory', path: '/home' },
+      { name: 'Chat', path: '/chats' },
       { name: 'Jobs', path: '/internships' },
       { name: 'Events', path: '/events' },
       { name: 'Forums', path: '/forum' },

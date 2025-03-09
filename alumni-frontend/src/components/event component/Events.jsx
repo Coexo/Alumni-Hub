@@ -47,6 +47,7 @@ const EventsPage = (props) => {
 
   const navLinks = [
     { name: 'Alumni Directory', path: '/home' },
+    { name: 'Chat', path: '/chats' },
     { name: 'Jobs', path: '/internships' },
     { name: 'Events', path: '/events' },
     { name: 'Forums', path: '/forum' },
