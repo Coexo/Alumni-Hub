@@ -131,28 +131,26 @@ export async function login(req, res, next) {
 export const updateEducation = async (req, res) => {
     console.log("Req.user = ",req.user);
     try {
-        // const userId = req.user.userId;
-        const userId = "67cc5515bc70d9f07e4ea85c"; // Get user ID from authenticated request
-        console.log("Req Body:", req.body);
-        const education = req.body; // Extract education details from request
-        console.log("edu: ", education);
+        console.log("REQ",req.body.education[0]);
+        const userId = req.user.userId;
+        // const userId = "67cc5515bc70d9f07e4ea85c"; // Get user ID from authenticated request
+        const education = req.body;
 
         if (!education) {
             return res.status(400).json({ message: "Education details are required" });
         }
 
-        let educationData = req.body.education;
-
         // if (!Array.isArray(educationData)) {
         //     educationData = [educationData]; // ✅ Convert object to array if needed
         // }
-        console.log("Edu", educationData)
+        console.log("Edu", education)
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { $set: { education: educationData } }, // ✅ Only update education field
-            { new: true, runValidators: true } // Return updated user & validate data
+            { $push: { education: { $each: education } } }, // ✅ Push each entry into the array
+            { new: true, runValidators: true }
         );
+        
 
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
@@ -160,6 +158,8 @@ export const updateEducation = async (req, res) => {
 
         res.status(200).json({ message: "Education details updated successfully", user: updatedUser });
     } catch (error) {
+        // console.log(error.message);
+        
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };

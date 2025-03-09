@@ -15,10 +15,7 @@ import {
   Dialog,
   DialogContent,
   Collapse,
-  Divider,
-  AppBar,
-  Container,
-  Toolbar
+  Divider
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -29,9 +26,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
 import SendIcon from '@mui/icons-material/Send';
-import { Link } from 'react-router-dom';
 import AppTheme from '../signupcomponent/shared-theme/AppTheme';
-import CssBaseline from '@mui/material/CssBaseline';
 
 const DiscussionForm = (props) => {
   const [comments, setComments] = useState([]);
@@ -207,124 +202,8 @@ const DiscussionForm = (props) => {
     }
   };
 
-  const navLinks = [
-    { name: "Alumni Directory", path: "/home" },
-    { name: "Chat", path: "/chat" },
-    { name: "Jobs", path: "/internships" },
-    { name: "Events", path: "/events" },
-    { name: "Forums", path: "/forum" },
-    { name: 'Courses', path: '/courses' }
-  ];
-
-
   return (
     <AppTheme {...props}>
-        <CssBaseline enableColorScheme />
-    
-    
-    
-        <AppBar 
-              position="fixed" 
-              color="default" 
-              elevation={1} 
-              sx={{ 
-                backgroundColor: 'white',
-                width: '100%',
-                top: 0,
-                left: 0
-              }}
-            >
-              <Container maxWidth={false} sx={{ width: '100%' }}>
-                <Toolbar disableGutters>
-                  {/* Logo */}
-                  <Typography
-                    variant="h6"
-                    component="div"
-                    sx={{ 
-                      flexGrow: 1, 
-                      fontWeight: 'bold', 
-                      color: '#1976d2',
-                      fontSize: '1.5rem',
-                      display: 'flex',
-                    alignItems: 'center'
-                    }}
-                  >
-                    AlumniHub
-                  </Typography>
-                  
-                  {/* Navigation Links */}
-                  {/* <Box sx={{ display: 'flex', mr: 4 }}>
-                    {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
-                      <Button
-                        key={page}
-                        sx={{ 
-                          my: 2, 
-                          color: 'rgba(0, 0, 0, 0.87)', 
-                          display: 'block',
-                          mx: 1,
-                          textTransform: 'none',
-                          fontSize: '0.95rem'
-                        }}
-                      >
-                        {page}
-                      </Button>
-                    ))}
-                  </Box> */}
-    
-                  <Box sx={{ display: 'flex', mr: 4 }}>
-                {navLinks.map((link) => (
-                  <Button
-                    key={link.name}
-                    component={Link}
-                    to={link.path}
-                    sx={{ 
-                      my: 2, 
-                      color: location.pathname === link.path ? '#1976d2' : 'rgba(0, 0, 0, 0.87)', 
-                      display: 'block',
-                      mx: 1,
-                      textTransform: 'none',
-                      fontSize: '0.95rem',
-                      fontWeight: location.pathname === link.path ? 'bold' : 'normal',
-                      borderBottom: location.pathname === link.path ? '2px solid #1976d2' : 'none'
-                    }}
-                  >
-                    {link.name}
-                  </Button>
-                ))}
-              </Box>
-                  
-                  {/* Auth Buttons */}
-                  <Box>
-                    {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
-                    <Button 
-                      color="primary" 
-                      sx={{ 
-                        mr: 2, 
-                        textTransform: 'none',
-                        fontWeight: 500 
-                      }}
-                    >
-                      Sign In
-                    </Button>
-                    </Link> */}
-                    <Link to="/profile" style={{ textDecoration: 'none' }}>
-                    <Button 
-                      variant="contained" 
-                      color="primary" 
-                      sx={{ 
-                        borderRadius: 1,
-                        textTransform: 'none',
-                        fontWeight: 500
-                      }}
-                    >
-                      Profile
-                    </Button>
-                    </Link>
-                  </Box>
-                </Toolbar>
-              </Container>
-            </AppBar>
-
       <Box sx={{ minWidth: 800, mx: 'auto', p: 2 }}>
         {/* Discussion Forum Header */}
         <Paper elevation={3} sx={{ p: 3, mb: 4 }}>

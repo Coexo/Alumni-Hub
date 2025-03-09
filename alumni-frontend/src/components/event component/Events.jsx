@@ -50,7 +50,8 @@ const EventsPage = (props) => {
     { name: 'Chat', path: '/chat' },
     { name: 'Jobs', path: '/internships' },
     { name: 'Events', path: '/events' },
-    { name: 'Forums', path: '/forum' }
+    { name: 'Forums', path: '/forum' },
+    { name: 'Courses', path: '/courses' }
   ];
 
   // Sample events data

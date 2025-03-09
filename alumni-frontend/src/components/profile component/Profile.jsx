@@ -42,7 +42,8 @@ const navLinks = [
   { name: 'Alumni Directory', path: '/home' },
   { name: 'Jobs', path: '/internships' },
   { name: 'Events', path: '/events' },
-  { name: 'Forums', path: '/forum' }
+  { name: 'Forums', path: '/forum' },
+  { name: 'Courses', path: '/courses' }
 ];
 
 
@@ -78,7 +79,7 @@ export default function Profile(props) {
       name: "",
       startDate:"",
       endDate:"",
-      isCurrentlyStudying:"",
+      isCurrentlyStudying: Boolean,
       degree:"",
       fieldOfStudy:"",
       grade:"",
@@ -108,7 +109,7 @@ export default function Profile(props) {
       employmentType:"",
       startDate:"",
       endDate:"",
-      isCurrentlyWorking:"",
+      isCurrentlyWorking:false,
       location:"",
       certificateImage:""
     }],
@@ -123,6 +124,7 @@ const handleChange = (e) => {
   setFormData({ ...formData, [e.target.name]: e.target.value });
 };
 
+
 const handleEducationChange = (index, e) => {
   const { name, value } = e.target;
   setFormData((prev) => ({
@@ -133,16 +135,29 @@ const handleEducationChange = (index, e) => {
   }));
 };
 
+const handleProjectChange = (index, e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({
+      ...prev,
+      projects: prev.projects.map((proj, i) =>
+          i === index ? { ...proj, [name]: value } : proj
+      ),
+  }));
+};
+
+
 const handleSubmitEdu = async () => {
   try {
       const response = await fetch("http://localhost:4001/api/education-details", {
-          method: "PATCH",
+          method: "PUT",
           headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${localStorage.getItem("token")}`,
           },
+          
           body: JSON.stringify({ education: formData.education }),
-      });
+        });
+        console.log(formData.education);
 
       const data = await response.json();
       console.log("Response from backend:", data);  // Debugging
@@ -168,6 +183,24 @@ const handleSubmitEdu = async () => {
     };
     fetchUserData();
   }, [userId]);
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:4001/api/user/${localStorage.getItem('userId')}`, {
+              headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+            });
+            setFormData(response.data); // Update state with fetched data
+        } catch (error) {
+            console.error("Error fetching user data", error);
+        }
+    };
+    fetchUserData();
+}, 1000);
 
 
   
@@ -439,34 +472,34 @@ const handleSubmitEdu = async () => {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Name</FormLabel>
-                  <TextField name="name" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].name}/>
+                  <TextField name="name" onChange={(e) => handleEducationChange(0, e)} value={formData.education.name}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Start Date</FormLabel>
-                  <TextField name="startDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].startDate}/>
+                  <TextField name="startDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education.startDate}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>End Date</FormLabel>
-                  <TextField name="endDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].endDate}/>
+                  <TextField name="endDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education.endDate}/>
                 </FormControl>
                 
                 <FormControlLabel control={<Checkbox />} label="Currently Studying"  sx={{marginTop: 3, paddingLeft: 0.5}}/>
                 
                 <FormControl fullWidth>
                   <FormLabel>Degree</FormLabel>
-                  <TextField name="degree" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].degree}/>
+                  <TextField name="degree" onChange={(e) => handleEducationChange(0, e)} value={formData.education.degree}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Field of Study</FormLabel>
-                  <TextField name="fieldOfStudy" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].fieldOfStudy}/>
+                  <TextField name="fieldOfStudy" onChange={(e) => handleEducationChange(0, e)} value={formData.education.fieldOfStudy}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Grade</FormLabel>
-                  <TextField name="grade" onChange={(e) => handleEducationChange(0, e)} value={formData.education[0].grade}/>
+                  <TextField name="grade" onChange={(e) => handleEducationChange(0, e)} value={formData.education.grade}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
@@ -476,9 +509,9 @@ const handleSubmitEdu = async () => {
                 
                 <FormControl fullWidth>
                   <FormLabel>Role</FormLabel>
-                  <Select name="role">
+                  <Select name="role" value={formData.education.role} onChange={(e) => handleEducationChange(0, e)}>
                     {roles.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.value} onChange={(e) => handleEducationChange(0, e)}>
                         {option.label}
                       </MenuItem>
                     ))}
@@ -499,22 +532,23 @@ const handleSubmitEdu = async () => {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Name</FormLabel>
-                  <TextField name="projectName" onChange={handleChange} value={formData.projects[0].name}/>
+                  {console.log(formData.projects)}
+                  <TextField name="projectName" onChange={handleProjectChange} value={formData.projects.name}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Description</FormLabel>
-                  <TextField name="projectDescription" onChange={handleChange} value={formData.projects[0].description}/>
+                  <TextField name="projectDescription" onChange={handleChange} value={formData.projects.description}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Tech Stacks (comma-separated)</FormLabel>
-                  <TextField name="techStacks" onChange={handleChange} value={formData.projects[0].techStacks}/>
+                  <TextField name="techStacks" onChange={handleChange} value={formData.projects.techStacks}/>
                 </FormControl>
 
                 <FormControl fullWidth>
                   <FormLabel>Links (comma-separated)</FormLabel>
-                  <TextField name="projectLinks" onChange={handleChange} value={formData.projects[0].links}/>
+                  <TextField name="projectLinks" onChange={handleChange} value={formData.projects.links }/>
                 </FormControl>
               </Box>
             </CardContent>
@@ -531,11 +565,11 @@ const handleSubmitEdu = async () => {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Skill ID</FormLabel>
-                  <TextField name="skills_id" onChange={handleChange} value={formData.skills[0].skillId}/>
+                  <TextField name="skills_id" onChange={handleChange} value={formData.skills.skillId}/>
                 </FormControl>
                 <FormControl fullWidth>
                   <FormLabel>Skill Level</FormLabel>
-                  <TextField name="level" onChange={handleChange} value={formData.skills[0].level}/>
+                  <TextField name="level" onChange={handleChange} value={formData.skills.level}/>
                 </FormControl>
                 <FormControl fullWidth>
                   <FormLabel>Certificate Image (URL)</FormLabel>
@@ -556,34 +590,34 @@ const handleSubmitEdu = async () => {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Company Name</FormLabel>
-                  <TextField name="companyName" onChange={handleChange} value={formData.experience[0].companyName}/>
+                  <TextField name="companyName" onChange={handleChange} value={formData.experience.companyName}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Title</FormLabel>
-                  <TextField name="title" onChange={handleChange} value={formData.experience[0].title}/>
+                  <TextField name="title" onChange={handleChange} value={formData.experience.title}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Employment Type</FormLabel>
-                  <TextField name="employmentType" onChange={handleChange} value={formData.experience[0].employmentType}/>
+                  <TextField name="employmentType" onChange={handleChange} value={formData.experience.employmentType}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Start Date</FormLabel>
-                  <TextField name="startDate" type="date" value={formData.experience[0].startDate}/>
+                  <TextField name="startDate" type="date" value={formData.experience.startDate}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>End Date</FormLabel>
-                  <TextField name="endDate" type="date" value={formData.experience[0].endDate}/>
+                  <TextField name="endDate" type="date" value={formData.experience.endDate}/>
                 </FormControl>
                 
-                <FormControlLabel control={<Checkbox />} label="Currently Working"  sx={{marginTop: 3, paddingLeft: 0.5}} value={formData.experience[0].isCurrentlyWorking}/>
+                <FormControlLabel control={<Checkbox />} label="Currently Working"  sx={{marginTop: 3, paddingLeft: 0.5}} value={formData.experience.isCurrentlyWorking}/>
                 
                 <FormControl fullWidth>
                   <FormLabel>Location</FormLabel>
-                  <TextField name="location" onChange={handleChange} value={formData.experience[0].location}/>
+                  <TextField name="location" onChange={handleChange} value={formData.experience.location}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
@@ -605,12 +639,12 @@ const handleSubmitEdu = async () => {
               <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
                 <FormControl fullWidth>
                   <FormLabel>Name</FormLabel>
-                  <TextField name="linkName" onChange={handleChange} value={formData.links[0].name}/>
+                  <TextField name="linkName" onChange={handleChange} value={formData.links.name}/>
                 </FormControl>
                 
                 <FormControl fullWidth>
                   <FormLabel>Link</FormLabel>
-                  <TextField name="link" onChange={handleChange} value={formData.links[0].link}/>
+                  <TextField name="link" onChange={handleChange} value={formData.links.link}/>
                 </FormControl>
               </Box>
             </CardContent>
