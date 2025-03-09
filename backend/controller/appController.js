@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import ENV from 'dotenv';
 import Job from "../models/Job.model.js";
 import EventModel from "../models/Event.model.js";
+import Internship from "../models/Internship.model.js";
 
 export async function verifyUser(req, res, next) {
     try {
@@ -302,6 +303,130 @@ export const jobsList = async (req, res) => {
                   .json({ message: "Server error", error: error.message });
     }
 }
+
+// INTERNSHIP CONTROLLERS
+export const createInternship = async (req, res) => {
+    try {
+        const { 
+            title, 
+            company, 
+            location, 
+            duration, 
+            stipend, 
+            workType,
+            description, 
+            skills, 
+            link 
+        } = req.body;
+        
+        const userId = req.user.userId; // Get user ID from token
+        const userRole = req.user.userRole; // Get user role from token
+
+        if (userRole !== "Alumni") {
+            return res.status(403).json({ message: "Only alumni can post internships." });
+        }
+
+        const internship = new Internship({
+            createdBy: userId,
+            title,
+            company,
+            location,
+            duration,
+            stipend,
+            workType,
+            description,
+            skills,
+            link,
+            postedDate: new Date(),
+            postedDays: 0 // Will be calculated when fetched
+        });
+
+        await internship.save();
+        res.status(201).json({ message: "Internship posted successfully", internship });
+    } catch (error) {
+        console.error("Error creating internship:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const deleteInternship = async (req, res) => {
+    try {
+        const internship = await Internship.findById(req.params.id);
+        if (!internship) return res.status(404).json({ message: "Internship not found" });
+
+        if (internship.createdBy.toString() !== req.user.userId) {
+            return res.status(403).json({ message: "You are not authorized to delete this internship." });
+        }
+
+        await internship.deleteOne();
+        res.status(200).json({ message: "Internship deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const internshipsList = async (req, res) => {
+    try {
+        const internships = await Internship.find();
+        
+        // Calculate days since posting for each internship
+        const internshipsWithDays = internships.map(internship => {
+            const internshipObj = internship.toObject();
+            
+            // Calculate days since posting
+            if (internshipObj.postedDate) {
+                const postedDate = new Date(internshipObj.postedDate);
+                const currentDate = new Date();
+                const diffTime = Math.abs(currentDate - postedDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                internshipObj.postedDays = diffDays;
+            }
+            
+            return internshipObj;
+        });
+        
+        res.status(200).json({ data: internshipsWithDays });
+    } catch (error) {
+        console.error("Error fetching internships:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+export const updateInternship = async (req, res) => {
+    try {
+        const internshipId = req.params.id;
+        const updates = req.body;
+        const userId = req.user.userId;
+        
+        // Find the internship
+        const internship = await Internship.findById(internshipId);
+        
+        if (!internship) {
+            return res.status(404).json({ message: "Internship not found" });
+        }
+        
+        // Check if user is authorized to update
+        if (internship.createdBy.toString() !== userId) {
+            return res.status(403).json({ message: "You are not authorized to update this internship" });
+        }
+        
+        // Update the internship
+        const updatedInternship = await Internship.findByIdAndUpdate(
+            internshipId,
+            updates,
+            { new: true, runValidators: true }
+        );
+        
+        res.status(200).json({ 
+            message: "Internship updated successfully", 
+            internship: updatedInternship 
+        });
+    } catch (error) {
+        console.error("Error updating internship:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 export const createEvent = async (req, res) => {
     try {
         const { title, description, date, time, location, eventType, college, registrationLink, bannerImage } = req.body;

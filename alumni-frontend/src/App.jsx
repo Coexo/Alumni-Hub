@@ -12,9 +12,6 @@ import DiscussionForm from './components/discussion forum/DiscussionForum';
 import HomeComp from './components/job component/HomeComp';
 import EventsPage from './components/event component/Events';
 import { getCookie } from 'cookies-next/client';
-import Course from './components/course component/Courses';
-import Video from './components/course component/Video';
-import Chat from './components/main component/Chat';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -27,12 +24,12 @@ function App() {
     <Router>
       <Routes>
       {!isRegistered ? 
-          <Route path="/" element={<HomeComp />} />
+          <Route path="/" element={<Main />} />
           :
           <Route path="/" element={<Alumni />} />
         }
-          {/* Default route is signup */}
-        <Route path="/chats" element={<Chat />}/>
+        {/* Default route is signup */}
+        {/* <Route path="/" element={<Navigate to="/signup" />} /> */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/home" element={<Alumni />} />
@@ -40,8 +37,6 @@ function App() {
         <Route path="/forum" element={<DiscussionForm/>} />
         <Route path="/internships" element={<HomeComp/>} />
         <Route path="/events" element={<EventsPage/>} />
-        <Route path="/courses" element={<Course/>} />
-        <Route path="/watch/:id" element={<Video />} />
       </Routes>
     </Router>
     </>

@@ -36,6 +36,7 @@ import {
 import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function HomeComp(props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -228,7 +229,7 @@ export default function HomeComp(props) {
                           <LocationOn fontSize="small" />
                           {job.location}
                         </Typography>
-                        <Box sx={{ mt: 1, mb: 2 }} sx={{ display: "flex" }}>
+                        <Box sx={{ mt: 1, mb: 2, display: "flex" }}>
                           <Chip
                             label={job.salary}
                             size="small"
@@ -247,18 +248,7 @@ export default function HomeComp(props) {
                     </Box>
 
                     <List dense sx={{ pl: 2 }}>
-                      {/* {[
-                        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa, deleniti? Optio odit iusto dignissimos sequi voluptatem!.",
-                        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa, deleniti? Optio odit iusto dignissimos sequi voluptatem! Ducimus.",
-                        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos sequi voluptatem! Ducimus praesentium explicabo ipsum.",
-                      ].map((desc, index) => (
-                        <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
-                          <ListItemIcon sx={{ minWidth: 20 }}>
-                            <FiberManualRecord sx={{ fontSize: 8 }} />
-                          </ListItemIcon>
-                          <ListItemText primary={desc} />
-                        </ListItem>
-                      ))} */}
+                  
                       {job.skills.map((desc, index) => (
                         <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
                           <ListItemIcon sx={{ minWidth: 20 }}>
