@@ -331,7 +331,7 @@ const Alumni = (props) => {
                       boxShadow: "0px 2px 4px rgba(0,0,0,0.2)",
                     }}
                   >
-                    Recommended by AI
+                    Recommended for you
                   </Box>
                 )}
 
