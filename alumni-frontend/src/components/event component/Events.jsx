@@ -49,7 +49,8 @@ const EventsPage = (props) => {
     { name: 'Alumni Directory', path: '/home' },
     { name: 'Jobs', path: '/internships' },
     { name: 'Events', path: '/events' },
-    { name: 'Forums', path: '/forum' }
+    { name: 'Forums', path: '/forum' },
+    { name: 'Courses', path: '/courses' }
   ];
 
   // Sample events data

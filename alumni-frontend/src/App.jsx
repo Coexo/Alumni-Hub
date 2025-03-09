@@ -12,6 +12,8 @@ import DiscussionForm from './components/discussion forum/DiscussionForum';
 import HomeComp from './components/job component/HomeComp';
 import EventsPage from './components/event component/Events';
 import { getCookie } from 'cookies-next/client';
+import Course from './components/course component/Courses';
+import Video from './components/course component/Video';
 import Chat from './components/main component/Chat';
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
         <Route path="/forum" element={<DiscussionForm/>} />
         <Route path="/internships" element={<HomeComp/>} />
         <Route path="/events" element={<EventsPage/>} />
+        <Route path="/courses" element={<Course/>} />
+        <Route path="/watch/:id" element={<Video />} />
       </Routes>
     </Router>
     </>

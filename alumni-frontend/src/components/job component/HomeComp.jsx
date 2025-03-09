@@ -67,6 +67,7 @@ export default function HomeComp(props) {
     { name: "Jobs", path: "/internships" },
     { name: "Events", path: "/events" },
     { name: "Forums", path: "/forum" },
+    { name: 'Courses', path: '/courses' }
   ];
 
   return (
