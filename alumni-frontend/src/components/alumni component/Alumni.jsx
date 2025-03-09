@@ -84,7 +84,7 @@ const generateMoreAlumni = async () => {
 
     console.log("Fetching from API...");
     const response = await fetch(
-      "http://127.0.0.1:5000/get_recommendations?student_name=User 2"
+      "http://127.0.0.1:5000/get_recommendations?student_name=User 15"
     );
 
     if (!response.ok) {
@@ -160,6 +160,7 @@ const Alumni = (props) => {
 
   const navLinks = [
     { name: 'Alumni Directory', path: '/home' },
+    { name: 'Chat', path: '/chats' },
     { name: 'Jobs', path: '/internships' },
     { name: 'Events', path: '/events' },
     { name: 'Forums', path: '/forum' },

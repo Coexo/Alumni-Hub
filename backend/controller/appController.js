@@ -288,6 +288,17 @@ export const deleteJob = async (req, res) => {
     }
 };
 
+export const jobsList = async (req, res) => {
+    try {
+        const job = await Job.find();
+        if (!job) return res.status(404).json({ message: "Job not found" });
+        res.status(200).json({ data:job });
+    } catch (error) {
+                res
+                  .status(500)
+                  .json({ message: "Server error", error: error.message });
+    }
+}
 export const createEvent = async (req, res) => {
     try {
         const { title, description, date, time, location, eventType, college, registrationLink, bannerImage } = req.body;
@@ -343,18 +354,5 @@ export const getUserData = async (req, res) => {
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: "Server error" });
-    }
-};
-
-export const getEduData = async (req, res) => {
-    console.log("Body",req.params);
-    try {
-        const user = await UserModel.findById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error });
     }
 };

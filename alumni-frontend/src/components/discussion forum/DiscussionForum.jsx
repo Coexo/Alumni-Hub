@@ -43,14 +43,6 @@ const DiscussionForm = (props) => {
   const [replyStates, setReplyStates] = useState({});
   const [replyContents, setReplyContents] = useState({});
 
-  const navLinks = [
-    { name: 'Alumni Directory', path: '/home' },
-    { name: 'Jobs', path: '/internships' },
-    { name: 'Events', path: '/events' },
-    { name: 'Forums', path: '/forum' },
-    { name: 'Courses', path: '/courses' }
-  ];
-
   // Load comments from local storage
   useEffect(() => {
     const storedComments = localStorage.getItem('discussionComments');
@@ -214,6 +206,16 @@ const DiscussionForm = (props) => {
       },
     }
   };
+
+  const navLinks = [
+    { name: "Alumni Directory", path: "/home" },
+    { name: "Chat", path: "/chat" },
+    { name: "Jobs", path: "/internships" },
+    { name: "Events", path: "/events" },
+    { name: "Forums", path: "/forum" },
+    { name: 'Courses', path: '/courses' }
+  ];
+
 
   return (
     <AppTheme {...props}>

@@ -30,6 +30,9 @@ router.route("/deletejob/:id").post(
     controller.verifyToken, controller.deleteJob
 )
 
+router.route("/get-jobs-list").get(controller.jobsList);
+
+
 router.route("/create-event").post(
     controller.verifyToken, controller.createEvent
 )
