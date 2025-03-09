@@ -30,7 +30,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Mock data for alumni
 const mockAlumni = [
@@ -83,8 +83,9 @@ const generateMoreAlumni = async () => {
     }
 
     console.log("Fetching from API...");
+    let name = localStorage.getItem("name");
     const response = await fetch(
-      "http://127.0.0.1:5000/get_recommendations?student_name=User 15"
+      "http://127.0.0.1:5000/get_recommendations?student_name=" + name
     );
 
     if (!response.ok) {
@@ -203,42 +204,10 @@ const Alumni = (props) => {
         }}
       >
         <Container maxWidth={false} sx={{ width: "100%" }}>
-          <Toolbar disableGutters>
-            {/* Logo */}
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                flexGrow: 1,
-                fontWeight: "bold",
-                color: "#1976d2",
-                fontSize: "1.5rem",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              AlumniHub
-            </Typography>
-
-            {/* Navigation Links */}
-            {/* <Box sx={{ display: 'flex', mr: 4 }}>
-                {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
-                  <Button
-                    key={page}
-                    sx={{ 
-                      my: 2, 
-                      color: 'rgba(0, 0, 0, 0.87)', 
-                      display: 'block',
-                      mx: 1,
-                      textTransform: 'none',
-                      fontSize: '0.95rem'
-                    }}
-                  >
-                    {page}
-                  </Button>
-                ))}
-              </Box> */}
-
+          <Toolbar disableGutters sx={{ display: "flex" }}>
+            <div style={{ flex: 1, display:"flex", justifyContent:"start",  }}>
+              <img src="./image.png" alt="" width={90} style={{marginTop:10}}/>
+            </div>
             <Box sx={{ display: "flex", mr: 4 }}>
               {navLinks.map((link) => (
                 <Button
@@ -300,7 +269,7 @@ const Alumni = (props) => {
         </Container>
       </AppBar>
 
-      <Container maxWidth="lg" sx={{ py: 4, mt:"64px" }}>
+      <Container maxWidth="lg" sx={{ py: 4, mt: "64px" }}>
         <Box sx={{ mb: 7 }}>
           {/* <Typography variant="h3" component="h1" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
           Alumni Directory

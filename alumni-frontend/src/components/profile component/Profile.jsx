@@ -1,662 +1,1218 @@
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import {
-  Box, Button, Card as MuiCard, CardActions, CardContent, CardHeader,
-  Divider, FormControl, FormLabel, MenuItem, Select, TextField, CssBaseline,
-  Checkbox, FormControlLabel, Grid, Avatar, Typography,
-  Container
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import LinkIcon from '@mui/icons-material/Link';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import PeopleIcon from '@mui/icons-material/People';
-import { styled } from '@mui/material/styles';
-import AppTheme from '../signupcomponent/shared-theme/AppTheme';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  TextField,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControlLabel,
+  Checkbox,
+  AppBar,
+  CssBaseline,
+  Toolbar,
+} from "@mui/material";
+import {
+  Edit as EditIcon,
+  Close as CloseIcon,
+  Save as SaveIcon,
+  School as SchoolIcon,
+  Add as AddIcon,
+  Work as WorkIcon,
+  Code as CodeIcon,
+  Person as PersonIcon
+} from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import { deleteCookie } from "cookies-next/client";
 
+const Profile = () => {
+  // const [userData, setUserData] = useState({
+  //   username: "vedantkale",
+  //   password: "************",
+  //   name: "Vedant Mahendra Kale",
+  //   mobileNo: "+91 9876543210",
+  //   email: "vedant.kale@vjti.ac.in",
+  //   bio: "I'm Vedant Kale from Mumbai, India, currently pursuing a B.Tech degree at Veermata Jijabai Technological Institute. Passionate about continuous learning, exploring new coding languages, and diving into the world of programming. I want to become strong, skillful web developer to create best, user-friendly and creative web pages. Proficient in developing databases, creating user interfaces, writing codes, troubleshooting simple/complex issues. Apart from coding, I enjoy watching anime, drawing, sketching, and playing BGMI.",
+  //   gender: "Male",
+  //   education: [
+  //     {
+  //       name: "Veermata Jijabai Technological Institute, Mumbai",
+  //       startDate: new Date("2023-06-01"),
+  //       endDate: new Date("2026-05-31"),
+  //       isCurrentlyStudying: true,
+  //       degree: "B.Tech",
+  //       fieldOfStudy: "Computer Engineering",
+  //       grade: "8.49 CGPA (77.4%)",
+  //       collegeId: "/api/placeholder/100/100", // Placeholder for college ID
+  //       certificates: [
+  //         {
+  //           name: "First Year Excellence Certificate",
+  //           link: "/api/placeholder/100/100",
+  //           status: "Verified",
+  //         },
+  //       ],
+  //       role: "Student",
+  //     },
+  //     {
+  //       name: "Government Polytechnic, Mumbai",
+  //       startDate: new Date("2020-06-01"),
+  //       endDate: new Date("2023-05-31"),
+  //       isCurrentlyStudying: false,
+  //       degree: "Diploma",
+  //       fieldOfStudy: "Computer Engineering",
+  //       grade: "92.83%",
+  //       collegeId: "/api/placeholder/100/100", // Placeholder for college ID
+  //       certificates: [],
+  //       role: "Alumni",
+  //     },
+  //   ],
+  //   projects: [
+  //     {
+  //       name: "Student Portfolio Platform",
+  //       description:
+  //         "A web platform for students to showcase their projects, skills, and educational background to potential employers.",
+  //       techStacks: ["React", "Node.js", "MongoDB", "Express"],
+  //       links: [
+  //         "https://github.com/vedantkale/portfolio-platform",
+  //         "https://portfolio-platform.vercel.app",
+  //       ],
+  //     },
+  //   ],
+  //   experience: [
+  //     {
+  //       companyName: "Medisage",
+  //       title: "MERN Stack web developer intern",
+  //       employmentType: "Internship",
+  //       startDate: new Date("2023-01-01"),
+  //       endDate: new Date("2023-07-31"),
+  //       isCurrentlyWorking: false,
+  //       location: "Powai, Mumbai, Maharashtra",
+  //       certificateImage: "/api/placeholder/100/100",
+  //       description: [
+  //         "Learnt a lot of new languages and got new friends. I learned NextJs, VueJs, TailwindCSS, Laravel, MySQL and even ventured into Clevertap integration, etc.",
+  //         "Redesigned and built an important section where doctors can post their cases, with features like liking, sharing, commenting, searching, and filtering. Used Vue.js for the frontend and Laravel for the backend.",
+  //         "Created eight live event pages that allow medical users to register and join live events organized by clients.",
+  //         "Redesigned the live event section of the website, using Next.js and Tailwind CSS for the frontend, and Laravel to develop the APIs.",
+  //       ],
+  //     },
+  //   ],
+  // });
 
+  const [userData, setUserData] = useState(null);
+  let username = localStorage.getItem("username");
 
-
-const states = [
-  { value: 'alabama', label: 'Alabama' },
-  { value: 'new-york', label: 'New York' },
-  { value: 'san-francisco', label: 'San Francisco' },
-  { value: 'los-angeles', label: 'Los Angeles' },
-];
-
-const genders = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' },
-];
-
-const roles = [
-  { value: 'alumni', label: 'Alumni' },
-  { value: 'student', label: 'Student' },
-];
-
-const navLinks = [
-  { name: 'Alumni Directory', path: '/home' },
-  { name: 'Jobs', path: '/internships' },
-  { name: 'Events', path: '/events' },
-  { name: 'Forums', path: '/forum' },
-  { name: 'Courses', path: '/courses' }
-];
-
-
-const Card = styled(MuiCard)(({ theme }) => ({
-  alignSelf: 'center',
-  width: '100%',
-  padding: theme.spacing(4),
-  gap: theme.spacing(2),
-  margin: 'auto',
-  borderRadius: 14,
-  boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
-  [theme.breakpoints.up('sm')]: {
-    width: '800px',
-  },
-}));
-
-
-
-
-
-export default function Profile(props) {
-
-  const [formData, setFormData] = useState({
-    username:"",
-    password:"",
-    name:"",
-    mobileNo:"",
-    email:"",
-    bio:"",
-    gender:"",
-    education: [{
-      name: "",
-      startDate:"",
-      endDate:"",
-      isCurrentlyStudying: Boolean,
-      degree:"",
-      fieldOfStudy:"",
-      grade:"",
-      collegeId:"",
-      certificates: [{
-        name:"",
-        link:"",
-        status:""
-      }],
-      role:""
-
-    }],
-    projects: [{
-      name:"",
-      description:"",
-      techStacks:[],
-      links:[]
-    }],
-    skills: [{
-      skillId:"",
-      level:"",
-      certificateImage:""
-    }],
-    experience: [{
-      companyName:"",
-      title:"",
-      employmentType:"",
-      startDate:"",
-      endDate:"",
-      isCurrentlyWorking:false,
-      location:"",
-      certificateImage:""
-    }],
-    links: [{
-      name:"",
-      link:""
-    }]
-
-});
-
-const handleChange = (e) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-};
-
-
-const handleEducationChange = (index, e) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({
-      ...prev,
-      education: prev.education.map((edu, i) =>
-          i === index ? { ...edu, [name]: value } : edu
-      ),
-  }));
-};
-
-const handleProjectChange = (index, e) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({
-      ...prev,
-      projects: prev.projects.map((proj, i) =>
-          i === index ? { ...proj, [name]: value } : proj
-      ),
-  }));
-};
-
-
-const handleSubmitEdu = async () => {
-  try {
-      const response = await fetch("http://localhost:4001/api/education-details", {
-          method: "PUT",
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem("token")}`,
-          },
-          
-          body: JSON.stringify({ education: formData.education }),
-        });
-        console.log(formData.education);
-
-      const data = await response.json();
-      console.log("Response from backend:", data);  // Debugging
-
-      if (data.message === "Education details updated successfully") {
-          console.log("Updated Education Data:", formData.education);
-      } else {
-          console.error("Failed to update education details:", data);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:4001/api/profile/${username}`
+        );
+        if (!response.ok) {
+          throw new Error("User not found");
+        }
+        const data = await response.json();
+        setUserData(data);
+      } catch (err) {
+        console.log(err);
       }
-  } catch (error) {
-      console.error("Error updating education details:", error);
-  }
-};
-  useEffect(() => {
-    // Fetch user data when the component loads
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/api/profile/${userId}`);
-            setFormData(response.data); // Populate fields with user data
-        } catch (error) {
-            console.error("Error fetching user data", error);
-        }
     };
+
     fetchUserData();
-  }, [userId]);
+  }, []);
 
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:4001/api/user/${localStorage.getItem('userId')}`, {
-              headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem("token")}`,
-          },
-            });
-            setFormData(response.data); // Update state with fetched data
-        } catch (error) {
-            console.error("Error fetching user data", error);
-        }
-    };
-    fetchUserData();
-}, 1000);
-
-
+  console.log(userData);
   
-  return (
-    <AppTheme {...props}>
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editSection, setEditSection] = useState("");
+  const [formData, setFormData] = useState({});
+  const [editIndex, setEditIndex] = useState(0);
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  };
+
+  const handleEdit = (section, index = 0) => {
+    setEditSection(section);
+    setEditIndex(index);
+
+    if (section === "basic") {
+      setFormData({
+        name: userData.name,
+        mobileNo: userData.mobileNo,
+        email: userData.email,
+        gender: userData.gender,
+      });
+    } else if (section === "bio") {
+      setFormData({
+        bio: userData.bio,
+      });
+    } else if (section === "education") {
+      const edu = userData.education[index];
+      setFormData({
+        name: edu.name,
+        startDate: edu.startDate.toISOString().split("T")[0],
+        endDate: edu.endDate ? edu.endDate.toISOString().split("T")[0] : "",
+        isCurrentlyStudying: edu.isCurrentlyStudying,
+        degree: edu.degree,
+        fieldOfStudy: edu.fieldOfStudy,
+        grade: edu.grade,
+        role: edu.role,
+      });
+    } else if (section === "experience") {
+      const exp = userData.experience[index];
+      setFormData({
+        companyName: exp.companyName,
+        title: exp.title,
+        employmentType: exp.employmentType,
+        startDate: exp.startDate.toISOString().split("T")[0],
+        endDate: exp.endDate ? exp.endDate.toISOString().split("T")[0] : "",
+        isCurrentlyWorking: exp.isCurrentlyWorking,
+        location: exp.location,
+      });
+    } else if (section === "project") {
+      const proj = userData.projects[index];
+      setFormData({
+        name: proj.name,
+        description: proj.description,
+        techStacks: proj.techStacks.join(", "),
+        links: proj.links.join(", "),
+      });
+    }
+
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value, checked, type } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSave = () => {
+    if (editSection === "basic") {
+      setUserData({
+        ...userData,
+        name: formData.name,
+        mobileNo: formData.mobileNo,
+        email: formData.email,
+        gender: formData.gender,
+      });
+    } else if (editSection === "bio") {
+      setUserData({
+        ...userData,
+        bio: formData.bio,
+      });
+    } else if (editSection === "education") {
+      const updatedEducation = [...userData.education];
+      updatedEducation[editIndex] = {
+        ...userData.education[editIndex],
+        name: formData.name,
+        startDate: new Date(formData.startDate),
+        endDate: formData.isCurrentlyStudying
+          ? null
+          : new Date(formData.endDate),
+        isCurrentlyStudying: formData.isCurrentlyStudying,
+        degree: formData.degree,
+        fieldOfStudy: formData.fieldOfStudy,
+        grade: formData.grade,
+        role: formData.role,
+      };
+
+      setUserData({
+        ...userData,
+        education: updatedEducation,
+      });
+    } else if (editSection === "experience") {
+      const updatedExperience = [...userData.experience];
+      updatedExperience[editIndex] = {
+        ...userData.experience[editIndex],
+        companyName: formData.companyName,
+        title: formData.title,
+        employmentType: formData.employmentType,
+        startDate: new Date(formData.startDate),
+        endDate: formData.isCurrentlyWorking
+          ? null
+          : new Date(formData.endDate),
+        isCurrentlyWorking: formData.isCurrentlyWorking,
+        location: formData.location,
+      };
+
+      setUserData({
+        ...userData,
+        experience: updatedExperience,
+      });
+    } else if (editSection === "project") {
+      const updatedProjects = [...userData.projects];
+      updatedProjects[editIndex] = {
+        ...userData.projects[editIndex],
+        name: formData.name,
+        description: formData.description,
+        techStacks: formData.techStacks.split(",").map((tech) => tech.trim()),
+        links: formData.links.split(",").map((link) => link.trim()),
+      };
+
+      setUserData({
+        ...userData,
+        projects: updatedProjects,
+      });
+    }
+
+    setOpenDialog(false);
+  };
+
+  const handleAddNew = (section) => {
+    if (section === "education") {
+      setEditSection("education");
+      setEditIndex(userData.education.length);
+      setFormData({
+        name: "",
+        startDate: new Date().toISOString().split("T")[0],
+        endDate: "",
+        isCurrentlyStudying: true,
+        degree: "",
+        fieldOfStudy: "",
+        grade: "",
+        role: "Student",
+      });
+    } else if (section === "experience") {
+      setEditSection("experience");
+      setEditIndex(userData.experience.length);
+      setFormData({
+        companyName: "",
+        title: "",
+        employmentType: "Internship",
+        startDate: new Date().toISOString().split("T")[0],
+        endDate: "",
+        isCurrentlyWorking: true,
+        location: "",
+      });
+    } else if (section === "project") {
+      setEditSection("project");
+      setEditIndex(userData.projects.length);
+      setFormData({
+        name: "",
+        description: "",
+        techStacks: "",
+        links: "",
+      });
+    }
+
+    setOpenDialog(true);
+  };
+
+  const handleDelete = (section, index) => {
+    if (section === "education") {
+      const updatedEducation = userData.education.filter((_, i) => i !== index);
+      setUserData({
+        ...userData,
+        education: updatedEducation,
+      });
+    } else if (section === "experience") {
+      const updatedExperience = userData.experience.filter(
+        (_, i) => i !== index
+      );
+      setUserData({
+        ...userData,
+        experience: updatedExperience,
+      });
+    } else if (section === "project") {
+      const updatedProjects = userData.projects.filter((_, i) => i !== index);
+      setUserData({
+        ...userData,
+        projects: updatedProjects,
+      });
+    }
+  };
+
+  const navLinks = [
+    { name: "Alumni Directory", path: "/home" },
+    { name: "Chat", path: "/chats" },
+    { name: "Jobs", path: "/internships" },
+    { name: "Events", path: "/events" },
+    { name: "Forums", path: "/forum" },
+    { name: "Courses", path: "/courses" },
+  ];
+
+  return userData ? (
+    <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh", py: 4, mt:"64px" }}>
       <CssBaseline enableColorScheme />
 
+      <AppBar
+        position="fixed"
+        color="default"
+        // elevation={1}
+        sx={{
+          backgroundColor: "white",
+          width: "100%",
+          top: 0,
+          left: 0,
+        }}
+      >
+        <Container maxWidth={false} sx={{ width: "100%" }}>
+                  <Toolbar disableGutters sx={{ display: "flex" }}>
+                    <div style={{ flex: 1, display:"flex", justifyContent:"start",  }}>
+                      <img src="./image.png" alt="" width={90} style={{marginTop:10}}/>
+                    </div>
+                    <Box sx={{ display: "flex", mr: 4 }}>
+                      {navLinks.map((link) => (
+                        <Button
+                          key={link.name}
+                          component={Link}
+                          to={link.path}
+                          sx={{
+                            my: 2,
+                            color:
+                              location.pathname === link.path
+                                ? "#1976d2"
+                                : "rgba(0, 0, 0, 0.87)",
+                            display: "block",
+                            mx: 1,
+                            textTransform: "none",
+                            fontSize: "0.95rem",
+                            fontWeight:
+                              location.pathname === link.path ? "bold" : "normal",
+                            borderBottom:
+                              location.pathname === link.path
+                                ? "2px solid #1976d2"
+                                : "none",
+                          }}
+                        >
+                          {link.name}
+                        </Button>
+                      ))}
+                    </Box>
+        
+                    {/* Auth Buttons */}
+                    <Box>
+                      {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+                        <Button 
+                          color="primary" 
+                          sx={{ 
+                            mr: 2, 
+                            textTransform: 'none',
+                            fontWeight: 500 
+                          }}
+                        >
+                          Sign In
+                        </Button>
+                        </Link> */}
+                      <Link onClick={()=>{
+                        deleteCookie("isRegistered")
+                        localStorage.clear()
+                        window.location.href = "/"
+                      }} style={{ textDecoration: "none" }}>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          sx={{
+                            borderRadius: 1,
+                            textTransform: "none",
+                            fontWeight: 500,
+                          }}
+                        >
+                          Log out
+                        </Button>
+                      </Link>
+                    </Box>
+                  </Toolbar>
+                </Container>
+      </AppBar>
+      <Container sx={{mt:4}}>
+        <Grid container spacing={3}>
+          {/* Sidebar */}
+          <Grid item xs={12} md={3}>
+            <Card>
+              <CardContent sx={{ textAlign: "center" }}>
+                <Avatar
+                  src="/api/placeholder/100/100"
+                  alt="profile"
+                  sx={{ width: 96, height: 96, mx: "auto", mb: 2 }}
+                />
+                <Typography variant="h6" fontWeight="bold">
+                  {userData.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  @{userData.username}
+                </Typography>
 
+                <Divider sx={{ my: 2 }} />
 
-    <AppBar 
-          position="fixed" 
-          color="default" 
-          elevation={1} 
-          sx={{ 
-            backgroundColor: 'white',
-            width: '100%',
-            top: 0,
-            left: 0
-          }}
-        >
-          <Container maxWidth={false} sx={{ width: '100%' }}>
-            <Toolbar disableGutters>
-              {/* Logo */}
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ 
-                  flexGrow: 1, 
-                  fontWeight: 'bold', 
-                  color: '#1976d2',
-                  fontSize: '1.5rem',
-                  display: 'flex',
-                alignItems: 'center'
+                <List component="nav" disablePadding>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PersonIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Basic Details" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <SchoolIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Education" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <WorkIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Experience" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <CodeIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Projects" />
+                  </ListItem>
+                </List>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Main Content */}
+          <Grid item xs={12} md={9}>
+            {/* Basic Details */}
+            <Paper sx={{ p: 3, mb: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
                 }}
               >
-                AlumniHub
-              </Typography>
-              
-              {/* Navigation Links */}
-              {/* <Box sx={{ display: 'flex', mr: 4 }}>
-                {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
-                  <Button
-                    key={page}
-                    sx={{ 
-                      my: 2, 
-                      color: 'rgba(0, 0, 0, 0.87)', 
-                      display: 'block',
-                      mx: 1,
-                      textTransform: 'none',
-                      fontSize: '0.95rem'
-                    }}
-                  >
-                    {page}
-                  </Button>
-                ))}
-              </Box> */}
-
-              <Box sx={{ display: 'flex', mr: 4 }}>
-            {navLinks.map((link) => (
-              <Button
-                key={link.name}
-                component={Link}
-                to={link.path}
-                sx={{ 
-                  my: 2, 
-                  color: location.pathname === link.path ? '#1976d2' : 'rgba(0, 0, 0, 0.87)', 
-                  display: 'block',
-                  mx: 1,
-                  textTransform: 'none',
-                  fontSize: '0.95rem',
-                  fontWeight: location.pathname === link.path ? 'bold' : 'normal',
-                  borderBottom: location.pathname === link.path ? '2px solid #1976d2' : 'none'
-                }}
-              >
-                {link.name}
-              </Button>
-            ))}
-          </Box>
-              
-              {/* Auth Buttons */}
-              <Box>
-                {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
-                <Button 
-                  color="primary" 
-                  sx={{ 
-                    mr: 2, 
-                    textTransform: 'none',
-                    fontWeight: 500 
-                  }}
-                >
-                  Sign In
-                </Button>
-                </Link> */}
-                <Link to="/profile" style={{ textDecoration: 'none' }}>
-                <Button 
-                  variant="contained" 
-                  color="primary" 
-                  sx={{ 
-                    borderRadius: 1,
-                    textTransform: 'none',
-                    fontWeight: 500
-                  }}
-                >
-                  Profile
-                </Button>
-                </Link>
+                <Typography variant="h6" fontWeight="bold">
+                  Basic Details
+                </Typography>
+                <IconButton color="primary" onClick={() => handleEdit("basic")}>
+                  <EditIcon />
+                </IconButton>
               </Box>
-            </Toolbar>
-          </Container>
-        </AppBar>
 
-      <Container maxWidth="lg" sx={{ mt: 10, mb: 5, display:'flex', flexDirection:"row"}}>
-      <Grid container spacing={12}>
-      <Grid item xs={12} md={4}>
-      <Box sx={{ top: '100px'}}>
-          <Card 
-            sx={{ 
-              mb: 3, 
-              backgroundColor: 'white', 
-              color: 'white',
-              borderRadius: 2 
-              , maxWidth: '400px'
+              <Grid container spacing={2} sx={{ textAlign: "left" }}>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body2" color="text.secondary">
+                    Full Name:
+                  </Typography>
+                  <Typography variant="body1">{userData.name}</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body2" color="text.secondary">
+                    Email:
+                  </Typography>
+                  <Typography variant="body1">{userData.email}</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body2" color="text.secondary">
+                    Mobile Number:
+                  </Typography>
+                  <Typography variant="body1">{userData.mobileNo}</Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="body2" color="text.secondary">
+                    Gender:
+                  </Typography>
+                  <Typography variant="body1">{userData.gender}</Typography>
+                </Grid>
+              </Grid>
+            </Paper>
+
+            {/* Bio */}
+            <Paper sx={{ p: 3, mb: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  Bio
+                </Typography>
+                <IconButton color="primary" onClick={() => handleEdit("bio")}>
+                  <EditIcon />
+                </IconButton>
+              </Box>
+              <Typography variant="body2">{userData.bio}</Typography>
+            </Paper>
+
+            {/* Education */}
+            <Paper sx={{ p: 3, mb: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  Education
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                  onClick={() => handleAddNew("education")}
+                >
+                  Add new
+                </Button>
+              </Box>
+
+              {userData.education.map((edu, index) => (
+                <Paper key={index} variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Avatar
+                        sx={{
+                          bgcolor: "primary.lighter",
+                          color: "primary.dark",
+                        }}
+                      >
+                        <SchoolIcon />
+                      </Avatar>
+                      <Box>
+                        <Typography
+                          variant="subtitle1"
+                          fontWeight="bold"
+                          sx={{ textAlign: "left" }}
+                        >
+                          {edu.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {formatDate(edu.startDate)} -{" "}
+                          {edu.isCurrentlyStudying
+                            ? "Present"
+                            : formatDate(edu.endDate)}{" "}
+                          | <strong>{edu.role}</strong>
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleEdit("education", index)}
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDelete("education", index)}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ mt: 2, pl: 7, textAlign: "left" }}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6}>
+                        <Typography variant="body2" color="text.secondary">
+                          Degree:
+                        </Typography>
+                        <Typography variant="body2">
+                          {edu.degree} in {edu.fieldOfStudy}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Typography variant="body2" color="text.secondary">
+                          Grade:
+                        </Typography>
+                        <Typography variant="body2">{edu.grade}</Typography>
+                      </Grid>
+                    </Grid>
+
+                    {edu.certificates.length > 0 && (
+                      <Box sx={{ textAlign: "left" }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {/* Certificates: */}
+                        </Typography>
+                        {edu.certificates.map((cert, i) => (
+                          <Chip
+                            key={i}
+                            label={cert.Name}
+                            size="small"
+                            color="primary"
+                            variant="outlined"
+                            sx={{ mr: 1, mt: 1 }}
+                          />
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+                </Paper>
+              ))}
+            </Paper>
+
+            {/* Experience */}
+            <Paper sx={{ p: 3, mb: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  Work Experience
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                  onClick={() => handleAddNew("experience")}
+                >
+                  Add new
+                </Button>
+              </Box>
+
+              {userData.experience.map((exp, index) => (
+                <Paper key={index} variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Avatar sx={{ bgcolor: "grey.200", color: "grey.700" }}>
+                        {exp.companyName.charAt(0)}
+                      </Avatar>
+                      <Box>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ textAlign: "left" }}
+                          fontWeight="bold"
+                        >
+                          {exp.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {exp.companyName} | {formatDate(exp.startDate)} -{" "}
+                          {exp.isCurrentlyWorking
+                            ? "Present"
+                            : formatDate(exp.endDate)}{" "}
+                          | {exp.location}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleEdit("experience", index)}
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDelete("experience", index)}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </Box>
+
+                  {exp.description && (
+                    <Box sx={{ mt: 2, pl: 7 }}>
+                      {exp.description.map((desc, i) => (
+                        <Typography key={i} variant="body2" paragraph>
+                          {desc}
+                        </Typography>
+                      ))}
+                    </Box>
+                  )}
+                </Paper>
+              ))}
+            </Paper>
+
+            {/* Projects */}
+            <Paper sx={{ p: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 3,
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  Projects
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<AddIcon />}
+                  onClick={() => handleAddNew("project")}
+                >
+                  Add new
+                </Button>
+              </Box>
+
+              {userData.projects.map((project, index) => (
+                <Paper key={index} variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Avatar
+                        sx={{ bgcolor: "info.lighter", color: "info.dark" }}
+                      >
+                        <CodeIcon />
+                      </Avatar>
+                      <Box>
+                        <Typography
+                          variant="subtitle1"
+                          fontWeight="bold"
+                          sx={{ textAlign: "left" }}
+                        >
+                          {project.name}
+                        </Typography>
+                        <Box sx={{ mt: 1 }}>
+                          {project.techStacks.map((tech, i) => (
+                            <Chip
+                              key={i}
+                              label={tech}
+                              size="small"
+                              color="primary"
+                              variant="outlined"
+                              sx={{ mr: 1, mb: 1 }}
+                            />
+                          ))}
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleEdit("project", index)}
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDelete("project", index)}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ mt: 2, pl: 7 }}>
+                    <Typography
+                      variant="body2"
+                      paragraph
+                      sx={{ textAlign: "left" }}
+                    >
+                      {project.description}
+                    </Typography>
+
+                    {project.links.length > 0 && (
+                      <Box sx={{ textAlign: "left" }}>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          Project Links:
+                        </Typography>
+                        {project.links.map((link, i) => (
+                          <Button
+                            key={i}
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            href={link}
+                            target="_blank"
+                            sx={{ mr: 2, mb: 1 }}
+                          >
+                            {link.includes("github") ? "GitHub" : "Demo"}
+                          </Button>
+                        ))}
+                      </Box>
+                    )}
+                  </Box>
+                </Paper>
+              ))}
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+
+      {/* Edit Dialog */}
+      <Dialog open={openDialog} onClose={handleClose} maxWidth="sm" fullWidth>
+        <DialogTitle>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <CardContent>
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2}}>
-                <Avatar
-                  sx={{ width: 100, height: 100, mb: 2 }}
-                  alt="Manthan Nanaware"
-                  src="/api/placeholder/260/260"
-                />
-                <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', color: 'black' }}>
-                  Manthan Nanaware
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary" sx={{ color: 'black' }}>
-                  Manthan-23
-                </Typography>
-              </Box>
-              
-              <Typography variant="body1" sx={{ mb: 2, color: 'grey'}}>
-                Hello, I am currently a student pursuing a degree in computer engineering. I am an intermediate full-stack developer with experience in various technologies.
-              </Typography>
-              
-              <Button 
-                variant="contained" 
-                fullWidth 
-                sx={{ 
-                  mb: 3, 
-                 
-                }}
-              >
-                Edit profile
-              </Button>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <PeopleIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
-                <Typography variant="body2" sx={{ color: '#8b949e' }}>
-                  <Box component="span" sx={{ fontWeight: 'bold', color: '#c9d1d9' }}>3</Box> followers · <Box component="span" sx={{ fontWeight: 'bold', color: '#c9d1d9' }}>1</Box> following
-                </Typography>
-              </Box>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <LocationOnIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
-                <Typography variant="body2" sx={{ color: '#c9d1d9' }}>
-                  Mumbai
-                </Typography>
-              </Box>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <LinkIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
-                <Link href="https://codingeazy.blogspot.com/" target="_blank" rel="noopener" sx={{ color: '#58a6ff', textDecoration: 'none' }}>
-                  https://codingeazy.blogspot.com/
-                </Link>
-              </Box>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                <LinkedInIcon sx={{ fontSize: 20, mr: 1, color: '#8b949e' }} />
-                <Link href="https://linkedin.com/in/manthan-nanaware" target="_blank" rel="noopener" sx={{ color: '#58a6ff', textDecoration: 'none' }}>
-                  in/manthan-nanaware
-                </Link>
-              </Box>
-              
-             
-              
-              {/* Add organization logos here if needed */}
-            </CardContent>
-          </Card>
+            <Typography variant="h6">
+              {editIndex >=
+              (editSection === "education"
+                ? userData.education.length
+                : editSection === "experience"
+                ? userData.experience.length
+                : editSection === "project"
+                ? userData.projects.length
+                : 0)
+                ? `Add New ${
+                    editSection.charAt(0).toUpperCase() + editSection.slice(1)
+                  }`
+                : `Edit ${
+                    editSection.charAt(0).toUpperCase() + editSection.slice(1)
+                  }`}
+            </Typography>
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
           </Box>
-        </Grid>
-
-
-      <Grid  item xs={12} md={8}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2, gap: 3, paddingTop: 0}}>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            handleSubmitEdu(event);
-          }}
-        >
-          {/* Profile Details Card */}
-          <Card variant="outlined" sx={{ textAlign: "left" }}>
-            <CardHeader title="Profile details" />
-            <Divider sx={{ marginBottom: 3, marginTop: 1.5 }}/>
-            <CardContent>
-              <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
-                <FormControl fullWidth>
-                  <FormLabel>First Name</FormLabel>
-                  <TextField name="firstName" onChange={handleChange} />
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>Last Name</FormLabel>
-                  <TextField name="lastName" onChange={handleChange}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>Email Address</FormLabel>
-                  <TextField name="email" type="email" onChange={handleChange}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>Phone Number</FormLabel>
-                  <TextField name="phone" type="tel" onChange={handleChange}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>State</FormLabel>
-                  <Select name="state">
-                    {states.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
+        </DialogTitle>
+        <DialogContent dividers sx={{ maxHeight: 500 }}>
+          {editSection === "basic" && (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Full Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Mobile Number"
+                  name="mobileNo"
+                  value={formData.mobileNo}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth margin="dense">
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    name="gender"
+                    value={formData.gender}
+                    label="Gender"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
                   </Select>
                 </FormControl>
+              </Grid>
+            </Grid>
+          )}
 
-                <FormControl fullWidth>
-                  <FormLabel>City</FormLabel>
-                  <TextField name="city" onChange={handleChange}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Gender</FormLabel>
-                  <Select name="gender">
-                    {genders.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
+          {editSection === "bio" && (
+            <TextField
+              label="Bio"
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
+              fullWidth
+              multiline
+              rows={5}
+              margin="dense"
+            />
+          )}
+
+          {editSection === "education" && (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Institution Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Start Date"
+                  name="startDate"
+                  type="date"
+                  value={formData.startDate}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.isCurrentlyStudying}
+                      onChange={handleChange}
+                      name="isCurrentlyStudying"
+                    />
+                  }
+                  label="Currently Studying"
+                />
+              </Grid>
+              {!formData.isCurrentlyStudying && (
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="End Date"
+                    name="endDate"
+                    type="date"
+                    value={formData.endDate}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="dense"
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+              )}
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Degree"
+                  name="degree"
+                  value={formData.degree}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Field of Study"
+                  name="fieldOfStudy"
+                  value={formData.fieldOfStudy}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Grade"
+                  name="grade"
+                  value={formData.grade}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth margin="dense">
+                  <InputLabel>Role</InputLabel>
+                  <Select
+                    name="role"
+                    value={formData.role}
+                    label="Role"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="Student">Student</MenuItem>
+                    <MenuItem value="Alumni">Alumni</MenuItem>
                   </Select>
                 </FormControl>
-              </Box>
-              
-              <FormControl fullWidth sx={{marginTop: 3}}>
-                <FormLabel>Bio</FormLabel>
-                <TextField name="bio" onChange={handleChange}/>
-              </FormControl>
-            </CardContent>
-            <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2}}>
-              <Button variant="contained">Save Info</Button>
-            </CardActions>
-          </Card>
+              </Grid>
+            </Grid>
+          )}
 
-          {/* Education Details Card */}
-          <Card variant="outlined" sx={{ textAlign: "left", marginTop: 3 }}>
-            <CardHeader title="Education" />
-            <Divider sx={{ marginBottom: 3, marginTop: 1.5 }}/>
-            <CardContent>
-              <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
-                <FormControl fullWidth>
-                  <FormLabel>Name</FormLabel>
-                  <TextField name="name" onChange={(e) => handleEducationChange(0, e)} value={formData.education.name}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>Start Date</FormLabel>
-                  <TextField name="startDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education.startDate}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>End Date</FormLabel>
-                  <TextField name="endDate" type="date" onChange={(e) => handleEducationChange(0, e)} value={formData.education.endDate}/>
-                </FormControl>
-                
-                <FormControlLabel control={<Checkbox />} label="Currently Studying"  sx={{marginTop: 3, paddingLeft: 0.5}}/>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Degree</FormLabel>
-                  <TextField name="degree" onChange={(e) => handleEducationChange(0, e)} value={formData.education.degree}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Field of Study</FormLabel>
-                  <TextField name="fieldOfStudy" onChange={(e) => handleEducationChange(0, e)} value={formData.education.fieldOfStudy}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Grade</FormLabel>
-                  <TextField name="grade" onChange={(e) => handleEducationChange(0, e)} value={formData.education.grade}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>College ID (Image Link)</FormLabel>
-                  <TextField name="collegeId"/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Role</FormLabel>
-                  <Select name="role" value={formData.education.role} onChange={(e) => handleEducationChange(0, e)}>
-                    {roles.map((option) => (
-                      <MenuItem key={option.value} value={option.value} onChange={(e) => handleEducationChange(0, e)}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
+          {editSection === "experience" && (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Company Name"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Job Title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth margin="dense">
+                  <InputLabel>Employment Type</InputLabel>
+                  <Select
+                    name="employmentType"
+                    value={formData.employmentType}
+                    label="Employment Type"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="Full-time">Full-time</MenuItem>
+                    <MenuItem value="Part-time">Part-time</MenuItem>
+                    <MenuItem value="Internship">Internship</MenuItem>
+                    <MenuItem value="Freelance">Freelance</MenuItem>
                   </Select>
                 </FormControl>
-              </Box>
-            </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2, paddingTop: 2}}>
-              <Button type="submit" variant="contained">Save Education</Button>
-            </CardActions>
-          </Card>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Start Date"
+                  name="startDate"
+                  type="date"
+                  value={formData.startDate}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.isCurrentlyWorking}
+                      onChange={handleChange}
+                      name="isCurrentlyWorking"
+                    />
+                  }
+                  label="Currently Working"
+                />
+              </Grid>
+              {!formData.isCurrentlyWorking && (
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="End Date"
+                    name="endDate"
+                    type="date"
+                    value={formData.endDate}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="dense"
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+              )}
+              <Grid item xs={12}>
+                <TextField
+                  label="Location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+            </Grid>
+          )}
 
-          {/* Projects Card */}
-          <Card variant="outlined" sx={{ textAlign: "left", marginTop: 3 }}>
-            <CardHeader title="Projects" />
-            <Divider sx={{ marginBottom: 3, marginTop: 1.5 }}/>
-            <CardContent>
-              <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
-                <FormControl fullWidth>
-                  <FormLabel>Name</FormLabel>
-                  {console.log(formData.projects)}
-                  <TextField name="projectName" onChange={handleProjectChange} value={formData.projects.name}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>Description</FormLabel>
-                  <TextField name="projectDescription" onChange={handleChange} value={formData.projects.description}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>Tech Stacks (comma-separated)</FormLabel>
-                  <TextField name="techStacks" onChange={handleChange} value={formData.projects.techStacks}/>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <FormLabel>Links (comma-separated)</FormLabel>
-                  <TextField name="projectLinks" onChange={handleChange} value={formData.projects.links }/>
-                </FormControl>
-              </Box>
-            </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2 }}>
-              <Button variant="contained">Save Project</Button>
-            </CardActions>
-          </Card>
-
-          {/* Skills Card */}
-          <Card variant="outlined" sx={{ textAlign: "left", marginTop: 3 }}>
-            <CardHeader title="Skills" />
-            <Divider sx={{ marginBottom: 3, marginTop: 1.5 }}/>
-            <CardContent>
-              <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
-                <FormControl fullWidth>
-                  <FormLabel>Skill ID</FormLabel>
-                  <TextField name="skills_id" onChange={handleChange} value={formData.skills.skillId}/>
-                </FormControl>
-                <FormControl fullWidth>
-                  <FormLabel>Skill Level</FormLabel>
-                  <TextField name="level" onChange={handleChange} value={formData.skills.level}/>
-                </FormControl>
-                <FormControl fullWidth>
-                  <FormLabel>Certificate Image (URL)</FormLabel>
-                  <TextField name="certificateImage" type="url"/>
-                </FormControl>
-              </Box>
-            </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2 }}>
-              <Button variant="contained">Save Skill</Button>
-            </CardActions>
-          </Card>
-
-          {/* Experience Card */}
-          <Card variant="outlined" sx={{ textAlign: "left", marginTop: 3 }}>
-            <CardHeader title="Experience" />
-            <Divider sx={{ marginBottom: 3, marginTop: 1.5 }}/>
-            <CardContent>
-              <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
-                <FormControl fullWidth>
-                  <FormLabel>Company Name</FormLabel>
-                  <TextField name="companyName" onChange={handleChange} value={formData.experience.companyName}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Title</FormLabel>
-                  <TextField name="title" onChange={handleChange} value={formData.experience.title}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Employment Type</FormLabel>
-                  <TextField name="employmentType" onChange={handleChange} value={formData.experience.employmentType}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Start Date</FormLabel>
-                  <TextField name="startDate" type="date" value={formData.experience.startDate}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>End Date</FormLabel>
-                  <TextField name="endDate" type="date" value={formData.experience.endDate}/>
-                </FormControl>
-                
-                <FormControlLabel control={<Checkbox />} label="Currently Working"  sx={{marginTop: 3, paddingLeft: 0.5}} value={formData.experience.isCurrentlyWorking}/>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Location</FormLabel>
-                  <TextField name="location" onChange={handleChange} value={formData.experience.location}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Certificate Image</FormLabel>
-                  <TextField name="certificateImage" />
-                </FormControl>
-              </Box>
-            </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2 }}>
-              <Button variant="contained">Save Experience</Button>
-            </CardActions>
-          </Card>
-
-          {/* Links Card */}
-          <Card variant="outlined" sx={{ textAlign: "left", marginTop: 3 }}>
-            <CardHeader title="Links" />
-            <Divider sx={{ marginBottom: 3, marginTop: 1.5 }}/>
-            <CardContent>
-              <Box display="grid" gridTemplateColumns={{ xs: '1fr', md: '1fr 1fr' }} gap={2.5}>
-                <FormControl fullWidth>
-                  <FormLabel>Name</FormLabel>
-                  <TextField name="linkName" onChange={handleChange} value={formData.links.name}/>
-                </FormControl>
-                
-                <FormControl fullWidth>
-                  <FormLabel>Link</FormLabel>
-                  <TextField name="link" onChange={handleChange} value={formData.links.link}/>
-                </FormControl>
-              </Box>
-            </CardContent>
-              <CardActions sx={{ justifyContent: 'flex-end', marginTop: 2 }}>
-              <Button variant="contained">Save Link</Button>
-            </CardActions>
-          </Card>
-        </form>
-      </Box>
-      </Grid>
-      </Grid>
-      </Container>
-    </AppTheme>
+          {editSection === "project" && (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Project Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  fullWidth
+                  multiline
+                  rows={3}
+                  margin="dense"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Tech Stacks (comma separated)"
+                  name="techStacks"
+                  value={formData.techStacks}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                  helperText="E.g. React, Node.js, MongoDB"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Project Links (comma separated)"
+                  name="links"
+                  value={formData.links}
+                  onChange={handleChange}
+                  fullWidth
+                  margin="dense"
+                  helperText="E.g. https://github.com/username/project, https://project-demo.com"
+                />
+              </Grid>
+            </Grid>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="inherit">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} color="primary" startIcon={<SaveIcon />}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  ) : (
+    <p>Loading</p>
   );
-}
+};
+
+export default Profile;

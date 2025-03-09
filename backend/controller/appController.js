@@ -114,11 +114,14 @@ export async function login(req, res, next) {
 
         // ✅ Send successful response
         return res.status(200).json({
-            message: "Login Successful",
-            access_token: token,
-            userId: user._id,
-            userEmail: user.email,
-            userRole: user.education.length > 0 ? user.education[0].role : "Student"
+          message: "Login Successful",
+          access_token: token,
+          userId: user._id,
+          name: user.name,
+          username: user.username,
+          userEmail: user.email,
+          userRole:
+            user.education.length > 0 ? user.education[0].role : "Student",
         });
 
     } catch (error) {
@@ -345,14 +348,14 @@ export const getAllEvents = async (req, res) => {
 };
 
 export const getUserData = async (req, res) => {
-    console.log(req.params.id);
+    console.log(req.params.username);
     try {
-        const user = await UserModel.findById(req.params.id);
+        const user = await User.findOne({ username: req.params.username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: error.message });
     }
 };
