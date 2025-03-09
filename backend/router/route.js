@@ -45,6 +45,13 @@ router.route("/get-events").get(
 
 router.route("/profile/:username").get(controller.getUserData);
 
+
+// Route to get all courses
+router.get("/courses", controller.getAllCourses);
+
+// Route to create a new course
+router.post("/courses", controller.createCourse);
+
 // router.route("/user/:id").get(
 //     controller.verifyToken, controller.getEduData
 // )

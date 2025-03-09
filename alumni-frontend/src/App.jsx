@@ -16,6 +16,7 @@ import Course from './components/course component/Courses';
 import Video from './components/course component/Video';
 import Chat from './components/main component/Chat';
 import PostJobPage from './components/job component/JobPost';
+import CreateCoursePage from './components/course component/CreateCourse';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -44,6 +45,7 @@ function App() {
           <Route path="/courses" element={<Course />} />
           <Route path="/watch/:id" element={<Video />} />
           <Route path="/create-post" element={<PostJobPage />} />
+          <Route path="/create-courses" element={<CreateCoursePage />} />
         </Routes>
       </Router>
     </>

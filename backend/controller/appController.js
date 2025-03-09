@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import ENV from 'dotenv';
 import Job from "../models/Job.model.js";
 import EventModel from "../models/Event.model.js";
+import coursesModel from "../models/courses.model.js";
 
 export async function verifyUser(req, res, next) {
     try {
@@ -358,4 +359,49 @@ export const getUserData = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+};
+
+
+// Get all courses
+export const getAllCourses = async (req, res) => {
+  try {
+    const courses = await coursesModel.find();
+    res.status(200).json({ success: true, data: courses });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to fetch courses" });
+  }
+};
+
+// Create a new course
+export const createCourse = async (req, res) => {
+  try {
+    const {
+      courseName,
+      description,
+      fees,
+      points,
+      videoLink,
+      thumbnail,
+      createdBy,
+    } = req.body;
+    
+    const newCourse = new coursesModel({
+      courseName,
+      description,
+      fees,
+      points,
+      videoLink,
+      thumbnail,
+      buyedUsers: [],
+      createdBy,
+    });
+
+    console.log(newCourse);
+    
+
+    await newCourse.save();
+    res.status(201).json({ success: true, message: "Course created successfully!" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 };
