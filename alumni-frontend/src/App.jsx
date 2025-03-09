@@ -24,7 +24,7 @@ function App() {
     <Router>
       <Routes>
       {!isRegistered ? 
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<HomeComp />} />
           :
           <Route path="/" element={<Alumni />} />
         }
