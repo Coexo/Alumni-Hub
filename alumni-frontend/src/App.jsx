@@ -15,6 +15,7 @@ import { getCookie } from 'cookies-next/client';
 import Course from './components/course component/Courses';
 import Video from './components/course component/Video';
 import Chat from './components/main component/Chat';
+import Payment from './components/payment component/Payment';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -31,7 +32,7 @@ function App() {
           :
           <Route path="/" element={<Alumni />} />
         }
-          {/* Default route is signup */}
+          {/s* Default route is signup */}
         <Route path="/chats" element={<Chat />}/>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
@@ -42,6 +43,7 @@ function App() {
         <Route path="/events" element={<EventsPage/>} />
         <Route path="/courses" element={<Course/>} />
         <Route path="/watch/:id" element={<Video />} />
+        <Route path="/payment" element={<Payment/>} />
       </Routes>
     </Router>
     </>
