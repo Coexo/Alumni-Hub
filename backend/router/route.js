@@ -22,7 +22,7 @@ router.route("/experience-details").patch(
     controller.updateExperience
 )
 
-router.route("/create").post(
+router.route("/create/:username").post(
     controller.verifyToken, controller.createJob
 )
 
