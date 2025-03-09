@@ -130,7 +130,7 @@ export default function SignIn(props) {
         setSuccessMessage(response.data.message);
 
         console.log(response.data);
-
+        localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('userId', response.data.userId);
 
         

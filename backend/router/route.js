@@ -10,8 +10,8 @@ router.route("/login").post(
     controller.verifyUser, controller.login
 )
 
-router.route("/education-details").patch(
-    controller.updateEducation
+router.route("/education-details").put(
+    controller.verifyToken, controller.updateEducation
 )
 
 router.route("/project-details").patch(
@@ -42,6 +42,10 @@ router.route("/get-events").get(
 
 router.route("/profile/:id").get(
     controller.verifyToken, controller.getUserData
+)
+
+router.route("/user/:id").get(
+    controller.verifyToken, controller.getEduData
 )
 
 export default router;
