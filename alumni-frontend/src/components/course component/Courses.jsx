@@ -356,41 +356,39 @@ import { useNavigate } from 'react-router-dom';
   
     return (
       <AppTheme {...props}>
-          <CssBaseline enableColorScheme />
-      
-      
-      
-          <AppBar 
-                position="fixed" 
-                color="default" 
-                elevation={1} 
-                sx={{ 
-                  backgroundColor: 'white',
-                  width: '100%',
-                  top: 0,
-                  left: 0
+        <CssBaseline enableColorScheme />
+
+        <AppBar
+          position="fixed"
+          color="default"
+          elevation={1}
+          sx={{
+            backgroundColor: "white",
+            width: "100%",
+            top: 0,
+            left: 0,
+          }}
+        >
+          <Container maxWidth={false} sx={{ width: "100%" }}>
+            <Toolbar disableGutters>
+              {/* Logo */}
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  flexGrow: 1,
+                  fontWeight: "bold",
+                  color: "#1976d2",
+                  fontSize: "1.5rem",
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                <Container maxWidth={false} sx={{ width: '100%' }}>
-                  <Toolbar disableGutters>
-                    {/* Logo */}
-                    <Typography
-                      variant="h6"
-                      component="div"
-                      sx={{ 
-                        flexGrow: 1, 
-                        fontWeight: 'bold', 
-                        color: '#1976d2',
-                        fontSize: '1.5rem',
-                        display: 'flex',
-                      alignItems: 'center'
-                      }}
-                    >
-                      AlumniHub
-                    </Typography>
-                    
-                    {/* Navigation Links */}
-                    {/* <Box sx={{ display: 'flex', mr: 4 }}>
+                AlumniHub
+              </Typography>
+
+              {/* Navigation Links */}
+              {/* <Box sx={{ display: 'flex', mr: 4 }}>
                       {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
                         <Button
                           key={page}
@@ -407,32 +405,39 @@ import { useNavigate } from 'react-router-dom';
                         </Button>
                       ))}
                     </Box> */}
-      
-                    <Box sx={{ display: 'flex', mr: 4 }}>
-                  {navLinks.map((link) => (
-                    <Button
-                      key={link.name}
-                      component={Link}
-                      to={link.path}
-                      sx={{ 
-                        my: 2, 
-                        color: location.pathname === link.path ? '#1976d2' : 'rgba(0, 0, 0, 0.87)', 
-                        display: 'block',
-                        mx: 1,
-                        textTransform: 'none',
-                        fontSize: '0.95rem',
-                        fontWeight: location.pathname === link.path ? 'bold' : 'normal',
-                        borderBottom: location.pathname === link.path ? '2px solid #1976d2' : 'none'
-                      }}
-                    >
-                      {link.name}
-                    </Button>
-                  ))}
-                </Box>
-                    
-                    {/* Auth Buttons */}
-                    <Box>
-                      {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+
+              <Box sx={{ display: "flex", mr: 4 }}>
+                {navLinks.map((link) => (
+                  <Button
+                    key={link.name}
+                    component={Link}
+                    to={link.path}
+                    sx={{
+                      my: 2,
+                      color:
+                        location.pathname === link.path
+                          ? "#1976d2"
+                          : "rgba(0, 0, 0, 0.87)",
+                      display: "block",
+                      mx: 1,
+                      textTransform: "none",
+                      fontSize: "0.95rem",
+                      fontWeight:
+                        location.pathname === link.path ? "bold" : "normal",
+                      borderBottom:
+                        location.pathname === link.path
+                          ? "2px solid #1976d2"
+                          : "none",
+                    }}
+                  >
+                    {link.name}
+                  </Button>
+                ))}
+              </Box>
+
+              {/* Auth Buttons */}
+              <Box>
+                {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
                       <Button 
                         color="primary" 
                         sx={{ 
@@ -444,33 +449,44 @@ import { useNavigate } from 'react-router-dom';
                         Sign In
                       </Button>
                       </Link> */}
-                      <Link to="/profile" style={{ textDecoration: 'none' }}>
-                      <Button 
-                        variant="contained" 
-                        color="primary" 
-                        sx={{ 
-                          borderRadius: 1,
-                          textTransform: 'none',
-                          fontWeight: 500
-                        }}
-                      >
-                        Profile
-                      </Button>
-                      </Link>
-                    </Box>
-                  </Toolbar>
-                </Container>
-              </AppBar>
+                <Link to="/profile" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      borderRadius: 1,
+                      textTransform: "none",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Profile
+                  </Button>
+                </Link>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
 
-      <div className="App">
-        {/* App Bar with Search */}
-        <AppBar position="static" sx={{ mb: 4, mt: 10, bgcolor:'none', borderRadius:'10px' }}>
-          {/* <Toolbar> */}
+        <div className="App">
+          {/* App Bar with Search */}
+          <AppBar
+            position="static"
+            sx={{ mb: 4, mt: 10, bgcolor: "none", borderRadius: "10px" }}
+          >
+            {/* <Toolbar> */}
             {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Course Catalog
             </Typography> */}
-            <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: 'white', borderRadius: 1, p: 0.5 }}>
-              <SearchIcon sx={{ color: 'action.active', mr: 1, ml: 1 }} />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                bgcolor: "white",
+                borderRadius: 1,
+                p: 0.5,
+              }}
+            >
+              <SearchIcon sx={{ color: "action.active", mr: 1, ml: 1 }} />
               <TextField
                 variant="standard"
                 placeholder="Search courses..."
@@ -480,130 +496,155 @@ import { useNavigate } from 'react-router-dom';
                 sx={{ width: 250 }}
               />
             </Box>
-        </AppBar>
-  
-        <Container maxWidth="lg">
-  <Typography variant="h4" component="h1" gutterBottom>
-    Explore free online courses
-  </Typography>
-  <Typography variant="subtitle1" color="textSecondary" paragraph>
-    from the world's top universities and companies
-  </Typography>
+          </AppBar>
 
-  {loading ? (
-    <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
-      <CircularProgress />
-    </Box>
-  ) : filteredCourses.length === 0 ? (
-    <Typography variant="h6" align="center" sx={{ my: 4 }}>
-      No courses found. Try a different search term.
-    </Typography>
-  ) : (
-    <>
-       <Grid container spacing={3} sx={{ mt: 2 }}>
-      {dummyCourses.map((course) => (
-        <Grid item key={course.id} xs={12} sm={6} md={3}>
-          <Card
-            sx={{
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              transition: "transform 0.2s, box-shadow 0.2s",
-              "&:hover": { transform: "translateY(-5px)", boxShadow: 6, cursor: "pointer" },
-              position: "relative",
-            }}
-            onClick={() => navigate(`/watch/${course.youtubeId}`)}
-          >
-            <CardMedia
-              component="img"
-              height="140"
-              image={`https://img.youtube.com/vi/${course.youtubeId}/maxresdefault.jpg`}
-              alt={course.title}
-            />
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Typography variant="body2" color="textSecondary">
-                {course.provider}
-              </Typography>
-              <Typography gutterBottom variant="h6" component="h2">
-                {course.title}
-              </Typography>
-              <Typography variant="caption" color="textSecondary">
-                {course.type}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+          <Container maxWidth="lg">
+            <Typography variant="h4" component="h1" gutterBottom>
+              Explore courses
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary" paragraph>
+              from the world's top universities and companies
+            </Typography>
 
-
-      {visibleCourses < filteredCourses.length && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 4 }}>
-          <Button 
-            variant="outlined" 
-            color="primary" 
-            onClick={handleLoadMore}
-          >
-            Load More Courses
-          </Button>
-        </Box>
-      )}
-    </>
-  )}
-</Container>
-  
-        {/* Course Details Dialog */}
-        <Dialog
-          open={openDialog}
-          onClose={handleCloseDialog}
-          maxWidth="md"
-          fullWidth
-        >
-          {selectedCourse && (
-            <>
-              <DialogTitle>{selectedCourse.title}</DialogTitle>
-              <DialogContent dividers>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={6}>
-                    <img 
-                      src={courses.image} 
-                      alt={selectedCourse.title} 
-                      style={{ width: '100%', borderRadius: '8px' }} 
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1" color="primary" gutterBottom>
-                      {selectedCourse.provider}
-                    </Typography>
-                    <Typography variant="body1" paragraph>
-                      {selectedCourse.description}
-                    </Typography>
-                    <Typography variant="subtitle2" gutterBottom>
-                      Course Type:
-                    </Typography>
-                    <Chip label={selectedCourse.type} size="small" sx={{ mb: 2 }} />
-                    <Typography variant="subtitle2" gutterBottom>
-                      Tags:
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                      {selectedCourse.tags.map((tag, index) => (
-                        <Chip key={index} label={tag} size="small" variant="outlined" />
-                      ))}
-                    </Box>
-                  </Grid>
+            {loading ? (
+              <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : filteredCourses.length === 0 ? (
+              <Typography variant="h6" align="center" sx={{ my: 4 }}>
+                No courses found. Try a different search term.
+              </Typography>
+            ) : (
+              <>
+                <Grid container spacing={3} sx={{ mt: 2 }}>
+                  {dummyCourses.map((course) => (
+                    <Grid item key={course.id} xs={12} sm={6} md={3}>
+                      <Card
+                        sx={{
+                          height: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          transition: "transform 0.2s, box-shadow 0.2s",
+                          "&:hover": {
+                            transform: "translateY(-5px)",
+                            boxShadow: 6,
+                            cursor: "pointer",
+                          },
+                          position: "relative",
+                        }}
+                        onClick={() => navigate(`/watch/${course.youtubeId}`)}
+                      >
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          image={`https://img.youtube.com/vi/${course.youtubeId}/maxresdefault.jpg`}
+                          alt={course.title}
+                        />
+                        <CardContent sx={{ flexGrow: 1 }}>
+                          <Typography variant="body2" color="textSecondary">
+                            {course.provider}
+                          </Typography>
+                          <Typography gutterBottom variant="h6" component="h2">
+                            {course.title}
+                          </Typography>
+                          <Typography variant="caption" color="textSecondary">
+                            {course.type}&nbsp;&nbsp;&nbsp;{"  Rs.1300"}
+                          </Typography>
+                        </CardContent>
+                        <Button style={{ backgroundColor: "#1976d2", color:"white" }}>
+                          Enroll
+                        </Button>
+                      </Card>
+                    </Grid>
+                  ))}
                 </Grid>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseDialog}>Close</Button>
-                <Button variant="contained" color="primary">
-                  Enroll Now
-                </Button>
-              </DialogActions>
-            </>
-          )}
-        </Dialog>
-      </div>
 
+                {visibleCourses < filteredCourses.length && (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      mt: 4,
+                      mb: 4,
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleLoadMore}
+                    >
+                      Load More Courses
+                    </Button>
+                  </Box>
+                )}
+              </>
+            )}
+          </Container>
+
+          {/* Course Details Dialog */}
+          <Dialog
+            open={openDialog}
+            onClose={handleCloseDialog}
+            maxWidth="md"
+            fullWidth
+          >
+            {selectedCourse && (
+              <>
+                <DialogTitle>{selectedCourse.title}</DialogTitle>
+                <DialogContent dividers>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                      <img
+                        src={courses.image}
+                        alt={selectedCourse.title}
+                        style={{ width: "100%", borderRadius: "8px" }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography
+                        variant="subtitle1"
+                        color="primary"
+                        gutterBottom
+                      >
+                        {selectedCourse.provider}
+                      </Typography>
+                      <Typography variant="body1" paragraph>
+                        {selectedCourse.description}
+                      </Typography>
+                      <Typography variant="subtitle2" gutterBottom>
+                        Course Type:
+                      </Typography>
+                      <Chip
+                        label={selectedCourse.type}
+                        size="small"
+                        sx={{ mb: 2 }}
+                      />
+                      <Typography variant="subtitle2" gutterBottom>
+                        Tags:
+                      </Typography>
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                        {selectedCourse.tags.map((tag, index) => (
+                          <Chip
+                            key={index}
+                            label={tag}
+                            size="small"
+                            variant="outlined"
+                          />
+                        ))}
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseDialog}>Close</Button>
+                  <Button variant="contained" color="primary">
+                    Enroll Now
+                  </Button>
+                </DialogActions>
+              </>
+            )}
+          </Dialog>
+        </div>
       </AppTheme>
     );
   }

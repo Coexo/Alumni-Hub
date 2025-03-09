@@ -33,10 +33,12 @@ import {
   MonetizationOn,
   CalendarToday
 } from '@mui/icons-material';
-import AppTheme from '../signupcomponent/shared-theme/AppTheme';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Link } from 'react-router-dom';
+import AppTheme from "../signupcomponent/shared-theme/AppTheme";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Link } from "react-router-dom";
+import PostJobPage from "./JobPost";
 import axios from 'axios';
+
 
 export default function HomeComp(props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,7 +50,8 @@ export default function HomeComp(props) {
     axios
       .get("http://localhost:4001/api/get-jobs-list")
       .then((response) => {
-        setJobData(response.data.data || []);
+        const jobs = response.data.data || [];
+        setJobData(jobs.reverse());
       })
       .catch((error) => console.error("Error fetching jobs:", error));
   }, []);
@@ -90,42 +93,49 @@ export default function HomeComp(props) {
           }}
         >
           <Container maxWidth={false} sx={{ width: "100%" }}>
-                    <Toolbar disableGutters sx={{ display: "flex" }}>
-                      <div style={{ flex: 1, display:"flex", justifyContent:"start",  }}>
-                        <img src="./image.png" alt="" width={90} style={{marginTop:10}}/>
-                      </div>
-                      <Box sx={{ display: "flex", mr: 4 }}>
-                        {navLinks.map((link) => (
-                          <Button
-                            key={link.name}
-                            component={Link}
-                            to={link.path}
-                            sx={{
-                              my: 2,
-                              color:
-                                location.pathname === link.path
-                                  ? "#1976d2"
-                                  : "rgba(0, 0, 0, 0.87)",
-                              display: "block",
-                              mx: 1,
-                              textTransform: "none",
-                              fontSize: "0.95rem",
-                              fontWeight:
-                                location.pathname === link.path ? "bold" : "normal",
-                              borderBottom:
-                                location.pathname === link.path
-                                  ? "2px solid #1976d2"
-                                  : "none",
-                            }}
-                          >
-                            {link.name}
-                          </Button>
-                        ))}
-                      </Box>
-          
-                      {/* Auth Buttons */}
-                      <Box>
-                        {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+            <Toolbar disableGutters sx={{ display: "flex" }}>
+              <div
+                style={{ flex: 1, display: "flex", justifyContent: "start" }}
+              >
+                <img
+                  src="./image.png"
+                  alt=""
+                  width={90}
+                  style={{ marginTop: 10 }}
+                />
+              </div>
+              <Box sx={{ display: "flex", mr: 4 }}>
+                {navLinks.map((link) => (
+                  <Button
+                    key={link.name}
+                    component={Link}
+                    to={link.path}
+                    sx={{
+                      my: 2,
+                      color:
+                        location.pathname === link.path
+                          ? "#1976d2"
+                          : "rgba(0, 0, 0, 0.87)",
+                      display: "block",
+                      mx: 1,
+                      textTransform: "none",
+                      fontSize: "0.95rem",
+                      fontWeight:
+                        location.pathname === link.path ? "bold" : "normal",
+                      borderBottom:
+                        location.pathname === link.path
+                          ? "2px solid #1976d2"
+                          : "none",
+                    }}
+                  >
+                    {link.name}
+                  </Button>
+                ))}
+              </Box>
+
+              {/* Auth Buttons */}
+              <Box>
+                {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
                           <Button 
                             color="primary" 
                             sx={{ 
@@ -137,22 +147,22 @@ export default function HomeComp(props) {
                             Sign In
                           </Button>
                           </Link> */}
-                        <Link to="/profile" style={{ textDecoration: "none" }}>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            sx={{
-                              borderRadius: 1,
-                              textTransform: "none",
-                              fontWeight: 500,
-                            }}
-                          >
-                            Profile
-                          </Button>
-                        </Link>
-                      </Box>
-                    </Toolbar>
-                  </Container>
+                <Link to="/profile" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      borderRadius: 1,
+                      textTransform: "none",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Profile
+                  </Button>
+                </Link>
+              </Box>
+            </Toolbar>
+          </Container>
         </AppBar>
         <Container maxWidth="lg" sx={{ py: 4, mt: 10 }}>
           <Typography
@@ -164,7 +174,7 @@ export default function HomeComp(props) {
           </Typography>
 
           {/* Search Bar */}
-          <Box sx={{ mb: 4 }}>
+          <Box sx={{ mb: 4, display: "flex" }}>
             <TextField
               fullWidth
               placeholder="Search for jobs, companies, or keywords..."
@@ -179,6 +189,19 @@ export default function HomeComp(props) {
                 ),
               }}
             />
+
+            <Button
+              href="/create-post"
+              sx={{
+                backgroundColor: "#1976d2",
+                color: "white",
+                py: 2,
+                width: "200px",
+                ml: "10px",
+              }}
+            >
+              Add Opportunity
+            </Button>
           </Box>
 
           {/* Job Listings */}
@@ -209,14 +232,14 @@ export default function HomeComp(props) {
                           gap: "5px",
                         }}
                       >
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                        <Typography variant="h6" sx={{ fontWeight: "bold", textAlign:"left" }}>
                           {job.title}
                         </Typography>
                         <Typography
                           color="textSecondary"
                           sx={{ textAlign: "left" }}
                         >
-                          {job.company}
+                          {job.company ?? job.companyName}
                         </Typography>
                         <Typography
                           color="textSecondary"
@@ -231,7 +254,7 @@ export default function HomeComp(props) {
                         </Typography>
                         <Box sx={{ mt: 1, mb: 2, display: "flex" }}>
                           <Chip
-                            label={job.salary}
+                            label={job.salary ?? job.pay}
                             size="small"
                             variant="outlined"
                             sx={{
@@ -248,15 +271,37 @@ export default function HomeComp(props) {
                     </Box>
 
                     <List dense sx={{ pl: 2 }}>
-                  
-                      {job.skills.map((desc, index) => (
+                      {/* {[
+                        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa, deleniti? Optio odit iusto dignissimos sequi voluptatem!.",
+                        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Culpa, deleniti? Optio odit iusto dignissimos sequi voluptatem! Ducimus.",
+                        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos sequi voluptatem! Ducimus praesentium explicabo ipsum.",
+                      ].map((desc, index) => (
                         <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
                           <ListItemIcon sx={{ minWidth: 20 }}>
                             <FiberManualRecord sx={{ fontSize: 8 }} />
                           </ListItemIcon>
                           <ListItemText primary={desc} />
                         </ListItem>
-                      ))}
+                      ))} */}
+                      {job?.skills &&
+                        job?.skills.map((desc, index) => (
+                          <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
+                            <ListItemIcon sx={{ minWidth: 20 }}>
+                              <FiberManualRecord sx={{ fontSize: 8 }} />
+                            </ListItemIcon>
+                            <ListItemText primary={desc} />
+                          </ListItem>
+                        ))}
+                      {job?.skillsRequired && job?.skillsRequired.map(
+                        (desc, index) => (
+                          <ListItem key={index} disablePadding sx={{ mb: 0.5 }}>
+                            <ListItemIcon sx={{ minWidth: 20 }}>
+                              <FiberManualRecord sx={{ fontSize: 8 }} />
+                            </ListItemIcon>
+                            <ListItemText primary={desc} />
+                          </ListItem>
+                        )
+                      )}
                     </List>
 
                     {expandedJob === job._id && (
@@ -290,7 +335,7 @@ export default function HomeComp(props) {
                                   variant="body1"
                                   sx={{ textAlign: "left" }}
                                 >
-                                  {job?.experience}
+                                  {job?.experience ?? job?.educationRequired}
                                 </Typography>
                               </Box>
                             </Box>
@@ -340,11 +385,13 @@ export default function HomeComp(props) {
                           <Button
                             variant="contained"
                             color="primary"
-                            href={job.link}
+                            href={job.link ?? job.applyLink}
                             target="_blank"
-                            sx={{ "&:hover": {
-                              color:"white"
-                            } }}
+                            sx={{
+                              "&:hover": {
+                                color: "white",
+                              },
+                            }}
                           >
                             Apply now
                           </Button>
@@ -369,14 +416,14 @@ export default function HomeComp(props) {
                       }}
                     >
                       <Typography variant="body2" color="textSecondary">
-                        Active {job.postedDays} days ago
+                        Active {job.posted ?? "1 days ago"}
                       </Typography>
                       {!expandedJob && (
                         <Typography
                           variant="body2"
                           color="primary"
                           sx={{ cursor: "pointer", fontWeight: "bold" }}
-                          onClick={() => handleJobClick(job.id)}
+                          onClick={() => handleJobClick(job._id)}
                         >
                           More...
                         </Typography>

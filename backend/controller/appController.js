@@ -246,26 +246,26 @@ export const createJob = async (req, res) => {
     try {
         console.log("Req User:", req.user);
         const { title, companyName, location, experience, pay, role, jobDescription, skillsRequired, educationRequired, applyLink } = req.body;
-        const userId = req.user.userId; // Get user ID from token
-        const userRole = req.user.userRole; // Get user role from token
-
-        if (userRole !== "Alumni") {
-            return res.status(403).json({ message: "Only alumni can post jobs." });
-        }
+        const userId = req.user;
+        // const username = req.params.username;
+        
+         // Get user ID from token
 
         const job = new Job({
-            createdBy: userId,
-            title,
-            companyName,
-            location,
-            experience,
-            pay,
-            role,
-            jobDescription,
-            skillsRequired,
-            educationRequired,
-            applyLink,
+        //   createdBy: user._id,
+          title,
+          companyName,
+          location,
+          experience,
+          pay,
+          role,
+          jobDescription,
+          skillsRequired,
+          educationRequired,
+          applyLink,
         });
+
+        window.location.href = "/internships"
 
         await job.save();
         res.status(201).json({ message: "Job posted successfully", job });
