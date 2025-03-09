@@ -107,7 +107,7 @@ export default function LandingPage() {
         />
       </Head>
 
-      <Box sx={{ flexGrow: 1, bgcolor: "background.default", mt:"-64px"}}>
+      <Box sx={{ flexGrow: 1, bgcolor: "background.default", mt: "-64px" }}>
         {/* Hero Section */}
         <Box
           ref={homeRef}
@@ -120,19 +120,25 @@ export default function LandingPage() {
           }}
         >
           <Container>
-            <Grid container spacing={6} alignItems="center">
+            <Grid container spacing={6} alignItems="left">
               <Grid item xs={12} md={6}>
                 <Typography
                   variant="h1"
                   component="h1"
                   color="text.primary"
+                  sx={{ textAlign: "left" }}
                   gutterBottom
                 >
                   Connect, Grow, and Give Back to Your Alma Mater
                 </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ fontSize: "1.125rem", mb: 4, color: "text.secondary" }}
+                  sx={{
+                    fontSize: "1.125rem",
+                    mb: 4,
+                    color: "text.secondary",
+                    textAlign: "left",
+                  }}
                 >
                   Join our thriving community of alumni and students. Share
                   experiences, mentor others, and advance your career.
@@ -322,13 +328,14 @@ export default function LandingPage() {
                         borderRadius: "50%",
                         bgcolor: "#e6f0ff",
                         mb: 2,
+                        margin:"auto",
                       }}
                     >
                       <PeopleIcon
                         sx={{ color: "primary.main", fontSize: 30 }}
                       />
                     </Box>
-                    <Typography variant="h3" component="h3" gutterBottom>
+                    <Typography variant="h3" component="h3" gutterBottom sx={{mt:2}}>
                       Alumni Directory
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -351,13 +358,14 @@ export default function LandingPage() {
                         borderRadius: "50%",
                         bgcolor: "#e6f0ff",
                         mb: 2,
+                        margin:"auto"
                       }}
                     >
                       <HandshakeIcon
                         sx={{ color: "primary.main", fontSize: 30 }}
                       />
                     </Box>
-                    <Typography variant="h3" component="h3" gutterBottom>
+                    <Typography variant="h3" component="h3" gutterBottom sx={{mt:2}}>
                       Mentorship Program
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
@@ -380,11 +388,13 @@ export default function LandingPage() {
                         borderRadius: "50%",
                         bgcolor: "#e6f0ff",
                         mb: 2,
+                        margin:"auto"
+
                       }}
                     >
                       <WorkIcon sx={{ color: "primary.main", fontSize: 30 }} />
                     </Box>
-                    <Typography variant="h3" component="h3" gutterBottom>
+                    <Typography variant="h3" component="h3" gutterBottom sx={{mt:2}}>
                       Referral Jobs
                     </Typography>
                     <Typography variant="body2" color="text.secondary">

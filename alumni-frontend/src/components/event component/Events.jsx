@@ -182,100 +182,75 @@ const EventsPage = (props) => {
           left: 0
         }}
       >
-        <Container maxWidth={false} sx={{ width: '100%' }}>
-          <Toolbar disableGutters>
-            {/* Logo */}
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                flexGrow: 1,
-                fontWeight: 'bold',
-                color: '#1976d2',
-                fontSize: '1.5rem',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              AlumniHub
-            </Typography>
-
-            {/* Navigation Links */}
-            {/* <Box sx={{ display: 'flex', mr: 4 }}>
-                    {['Directory', 'Mentorship', 'Jobs', 'Events', 'Forums'].map((page) => (
-                      <Button
-                        key={page}
-                        sx={{ 
-                          my: 2, 
-                          color: 'rgba(0, 0, 0, 0.87)', 
-                          display: 'block',
-                          mx: 1,
-                          textTransform: 'none',
-                          fontSize: '0.95rem'
-                        }}
-                      >
-                        {page}
-                      </Button>
-                    ))}
-                  </Box> */}
-
-            <Box sx={{ display: 'flex', mr: 4 }}>
-              {navLinks.map((link) => (
-                <Button
-                  key={link.name}
-                  component={Link}
-                  to={link.path}
-                  sx={{
-                    my: 2,
-                    color: location.pathname === link.path ? '#1976d2' : 'rgba(0, 0, 0, 0.87)',
-                    display: 'block',
-                    mx: 1,
-                    textTransform: 'none',
-                    fontSize: '0.95rem',
-                    fontWeight: location.pathname === link.path ? 'bold' : 'normal',
-                    borderBottom: location.pathname === link.path ? '2px solid #1976d2' : 'none'
-                  }}
-                >
-                  {link.name}
-                </Button>
-              ))}
-            </Box>
-
-            {/* Auth Buttons */}
-            <Box>
-              {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
-                    <Button 
-                      color="primary" 
-                      sx={{ 
-                        mr: 2, 
-                        textTransform: 'none',
-                        fontWeight: 500 
-                      }}
-                    >
-                      Sign In
-                    </Button>
-                    </Link> */}
-              <Link to="/profile" style={{ textDecoration: 'none' }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    borderRadius: 1,
-                    textTransform: 'none',
-                    fontWeight: 500
-                  }}
-                >
-                  Profile
-                </Button>
-              </Link>
-            </Box>
-          </Toolbar>
-        </Container>
+       <Container maxWidth={false} sx={{ width: "100%" }}>
+                 <Toolbar disableGutters sx={{ display: "flex" }}>
+                   <div style={{ flex: 1, display:"flex", justifyContent:"start",  }}>
+                     <img src="./image.png" alt="" width={90} style={{marginTop:10}}/>
+                   </div>
+                   <Box sx={{ display: "flex", mr: 4 }}>
+                     {navLinks.map((link) => (
+                       <Button
+                         key={link.name}
+                         component={Link}
+                         to={link.path}
+                         sx={{
+                           my: 2,
+                           color:
+                             location.pathname === link.path
+                               ? "#1976d2"
+                               : "rgba(0, 0, 0, 0.87)",
+                           display: "block",
+                           mx: 1,
+                           textTransform: "none",
+                           fontSize: "0.95rem",
+                           fontWeight:
+                             location.pathname === link.path ? "bold" : "normal",
+                           borderBottom:
+                             location.pathname === link.path
+                               ? "2px solid #1976d2"
+                               : "none",
+                         }}
+                       >
+                         {link.name}
+                       </Button>
+                     ))}
+                   </Box>
+       
+                   {/* Auth Buttons */}
+                   <Box>
+                     {/* <Link to="/signin" style={{ textDecoration: 'none' }}>
+                       <Button 
+                         color="primary" 
+                         sx={{ 
+                           mr: 2, 
+                           textTransform: 'none',
+                           fontWeight: 500 
+                         }}
+                       >
+                         Sign In
+                       </Button>
+                       </Link> */}
+                     <Link to="/profile" style={{ textDecoration: "none" }}>
+                       <Button
+                         variant="contained"
+                         color="primary"
+                         sx={{
+                           borderRadius: 1,
+                           textTransform: "none",
+                           fontWeight: 500,
+                         }}
+                       >
+                         Profile
+                       </Button>
+                     </Link>
+                   </Box>
+                 </Toolbar>
+               </Container>
       </AppBar>
 
 
 
-      <Container maxWidth="lg" sx={{ mt: 9, mb: 6 }}>
+      <Container maxWidth="lg" sx={{ mt: 15, mb: 6 }}>
         {/* Header */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -370,10 +345,10 @@ const EventsPage = (props) => {
                 <CardMedia
                   component="img"
                   height="160"
-                  image={ev.bannerImage || 'https://via.placeholder.com/300x160?text=Event+Image'}
+                  image={ev.bannerImage || 'https://www.hire4event.com/blogs/wp-content/uploads/2019/03/Type-of-events.jpg'}
                   alt={ev.title}
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/300x160?text=Event+Image';
+                    e.target.src = 'https://www.hire4event.com/blogs/wp-content/uploads/2019/03/Type-of-events.jpg';
                   }}
                 />
                 <CardContent sx={{ flexGrow: 1, p: 2 }}>
