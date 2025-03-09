@@ -85,7 +85,7 @@ const generateMoreAlumni = async () => {
     console.log("Fetching from API...");
     let name = localStorage.getItem("name");
     const response = await fetch(
-      "http://127.0.0.1:5000/get_recommendations?student_name=" + name
+      "http://localhost:4001/get_recommendations?student_name=" + name
     );
 
     if (!response.ok) {

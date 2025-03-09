@@ -16,7 +16,6 @@ import {
   Alert,
   Grid
 } from '@mui/material';
-import Head from 'next/head';
 
 export default function PostJobPage() {
   const [formData, setFormData] = useState({

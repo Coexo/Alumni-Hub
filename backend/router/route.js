@@ -52,6 +52,11 @@ router.get("/courses", controller.getAllCourses);
 // Route to create a new course
 router.post("/courses", controller.createCourse);
 
+router.post("/create-internship", controller.createInternship);
+router.delete("/delete-internship/:id", controller.deleteInternship);
+router.patch("/update-internship/:id", controller.updateInternship);
+router.get("/get-internships-list", controller.internshipsList);
+
 // router.route("/user/:id").get(
 //     controller.verifyToken, controller.getEduData
 // )

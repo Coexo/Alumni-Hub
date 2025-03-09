@@ -47,51 +47,52 @@ const theme = createTheme({
 
 // Expanded sample data for contacts (more users added)
 const contacts = [
-  {
-    id: 1,
-    name: 'Jared Woods',
-    email: 'bertie.british@royalnav.net',
-    avatar: 'https://i.pravatar.cc/150?img=1',
-    lastActivity: '10:02 AM',
-    hasUnread: true
-  },
-  {
-    id: 2,
-    name: 'Marc Hopkins',
-    email: 'drinking_man@copycat.ca',
-    avatar: 'https://i.pravatar.cc/150?img=2',
-    lastActivity: '9:45 AM',
-    hasUnread: false
-  },
-  {
-    id: 3,
-    name: 'Connor Stevenson',
-    email: 'clara.mccarthy@axios.com',
-    avatar: 'https://i.pravatar.cc/150?img=3',
-    lastActivity: 'Yesterday',
-    hasUnread: true
-  },
-  {
-    id: 4,
-    name: 'George Johnston',
-    email: 'eric.chavez@hotmail.com',
-    avatar: 'https://i.pravatar.cc/150?img=4',
-    lastActivity: 'Yesterday',
-    hasUnread: false
-  },
-  {
-    id: 5,
-    name: 'Timothy Garrett',
-    email: 'paper_doodles@libertha.us',
-    avatar: 'https://i.pravatar.cc/150?img=5',
-    lastActivity: 'Mar 5',
-    hasUnread: false
-  },
+  
+    {
+      "id": 1,
+      "name": "Opal Bhonsle",
+      "email": "opal.bhonsle@mailbox.com",
+      "avatar": "https://i.pinimg.com/474x/83/60/f6/8360f6e8e6167d545b0c34de7490cc1e.jpg",
+      "lastActivity": "10:02 AM",
+      "hasUnread": true
+    },
+    {
+      "id": 2,
+      "name": "Nara Chakraborty",
+      "email": "nara.chakraborty@webmail.com",
+      "avatar": "https://i.pinimg.com/originals/6b/7e/d6/6b7ed698713c09ad9e6afc7dcb996a09.jpg",
+      "lastActivity": "9:45 AM",
+      "hasUnread": false
+    },
+    {
+      "id": 3,
+      "name": "Gatha Sagar",
+      "email": "gatha.sagar@fastmail.com",
+      "avatar": "https://i.pinimg.com/originals/ac/18/50/ac1850ddee8ed3b5864a4a68612a12d3.jpg",
+      "lastActivity": "Yesterday",
+      "hasUnread": true
+    },
+    {
+      "id": 4,
+      "name": "Bhishma Arya",
+      "email": "bhishma.arya@postmail.com",
+      "avatar": "https://i.pinimg.com/474x/4a/5c/2f/4a5c2f2a828314d79432bb91afeb3ef3.jpg",
+      "lastActivity": "Yesterday",
+      "hasUnread": false
+    },
+    {
+      "id": 5,
+      "name": "Kalkin Goswami",
+      "email": "kalkin.goswami@securemail.com",
+      "avatar": "https://i.pinimg.com/originals/4c/cd/08/4ccd086a8b7970c7a1ab4961e9bfcafc.jpg",
+      "lastActivity": "Mar 5",
+      "hasUnread": false
+    },  
   {
     id: 6,
-    name: 'George Lloyd',
+    name: 'Brenda H Condon',
     email: 'raymond.martin@redrock.ca',
-    avatar: 'https://i.pravatar.cc/150?img=6',
+    avatar: 'https://t4.ftcdn.net/jpg/07/57/61/23/360_F_757612374_09Q9dyxOKbynCiT3hMUyk3iEuoR1RgJy.jpg',
     lastActivity: 'Mar 4',
     hasUnread: false
   },
@@ -579,8 +580,10 @@ function ContactsList({ onSelectContact, selectedContact, contactsRef }) {
         <IconButton
           sx={{
             position: "absolute",
+            width: "33px",
+            height: "33px",
             bottom: 80,
-            right: 16,
+            right: 19.8,
             bgcolor: "white",
             boxShadow: 2,
             "&:hover": { bgcolor: "#f5f5f5" },

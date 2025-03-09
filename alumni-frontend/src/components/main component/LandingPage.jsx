@@ -28,7 +28,6 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import Head from 'next/head';
 
 const theme = createTheme({
   palette: {
@@ -95,17 +94,6 @@ export default function LandingPage() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Head>
-        <title>AlumniHub - Connect, Grow, and Give Back</title>
-        <meta
-          name="description"
-          content="Connect with fellow alumni, find mentorship opportunities, and advance your career."
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-        />
-      </Head>
 
       <Box sx={{ flexGrow: 1, bgcolor: "background.default", mt: "-64px" }}>
         {/* Hero Section */}
