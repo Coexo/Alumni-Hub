@@ -187,7 +187,7 @@ export default function OpportunitiesComp(props) {
             align="center"
             sx={{ fontWeight: "bold", mb: 4 }}
           >
-            Alumni Jobs & Internship Opportunities
+            Jobs & Internship Opportunities
           </Typography>
 
           {/* Tab Navigation */}
