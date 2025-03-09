@@ -25,7 +25,7 @@ import {
   LocationOn,
   ArrowForward
 } from '@mui/icons-material';
-import AppTheme from '../signup component/shared-theme/AppTheme';
+import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Link } from 'react-router-dom';
 import {

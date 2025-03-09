@@ -30,7 +30,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AppTheme from '../signupcomponent/shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Mock data for alumni
 const mockAlumni = [
@@ -83,8 +83,9 @@ const generateMoreAlumni = async () => {
     }
 
     console.log("Fetching from API...");
+    let name = localStorage.getItem("name");
     const response = await fetch(
-      "http://127.0.0.1:5000/get_recommendations?student_name=User 15"
+      "http://127.0.0.1:5000/get_recommendations?student_name=" + name
     );
 
     if (!response.ok) {
