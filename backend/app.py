@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app) 
 
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://Vedant:bMhYa18KjBD0rJzV@alumni.twxqi.mongodb.net/")  # Update with your MongoDB URI
+client = MongoClient("string")  # Update with your MongoDB URI
 db = client["alumni"]  # Database name
 collection = db["users"]  # Collection name
 
